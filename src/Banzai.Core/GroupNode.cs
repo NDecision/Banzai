@@ -1,65 +1,38 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using System.Threading.Tasks;
 
 namespace Banzai.Core
 {
-    public abstract class GroupNode<T> : Node<T>, IGroupNode<T>
+    public interface IGroupNode<T> : IMultiNode<T>
     {
-        private readonly List<INode<T>> _children = new List<INode<T>>();
+    }
 
-        public IReadOnlyList<INode<T>> Children { get { return _children; } }
+    /// <summary>
+    /// This node runs all children simultaneously using async, but does not use the parallel library to process them.
+    /// This is a good choice for multiple i/o operations.  The node will not complete until all children complete.
+    /// </summary>
+    public class GroupNode<T> : MultiNode<T>
+    {
 
-        public void AddChild(INode<T> child)
+        protected override async Task<NodeResultStatus> ExecuteChildrenAsync(ExecutionContext<T> context)
         {
-            _children.Add(child);
-        }
+            Task<NodeResult<T>[]> aggregateTask = Task.WhenAll(Children.Select(x => x.ExecuteAsync(context)));
+            NodeResult<T>[] results;
 
-        public void AddChildren(IEnumerable<INode<T>> children)
-        {
-            _children.AddRange(children);
-        }
-
-        public void RemoveChild(INode<T> child)
-        {
-            _children.Remove(child);
-        }
-
-        protected static NodeResultStatus AggregateNodeResults(IEnumerable<NodeResult<T>> results)
-        {
-            bool hasFailure = false;
-            bool hasSuccess = false;
-            bool hasSuccessWithErrors = false;
-
-            foreach (var nodeResult in results)
+            try
             {
-                if (nodeResult.Status == NodeResultStatus.SucceededWithErrors)
-                {
-                    hasSuccessWithErrors = true;
-                    break;
-                }
+                results = await aggregateTask.ConfigureAwait(false);
+            }
+            catch
+            {
+                if(aggregateTask.Exception != null)
+                    throw aggregateTask.Exception;
 
-                if (nodeResult.Status == NodeResultStatus.Failed)
-                {
-                    hasFailure = true;
-                }
-                else if (nodeResult.Status == NodeResultStatus.Succeeded)
-                {
-                    hasSuccess = true;
-                }
-                if (hasSuccess && hasFailure)
-                {
-                    hasSuccessWithErrors = true;
-                    break;
-                }
+                throw;
             }
 
-            if (hasSuccessWithErrors)
-                return NodeResultStatus.SucceededWithErrors;
-            if (hasSuccess)
-                return NodeResultStatus.Succeeded;
-            if (hasFailure)
-                return NodeResultStatus.Failed;
-
-            return NodeResultStatus.NotRun;
+            return AggregateNodeResults(results);
         }
+
     }
 }

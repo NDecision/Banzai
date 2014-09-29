@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A8077697-24C3-4B06-B0F0-3B7F47F5FD0A}</ProjectGuid>
+    <ProjectGuid>{2B172DE9-5CA1-451F-90A8-20513D3A3307}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Banzai.Core</RootNamespace>
-    <AssemblyName>Banzai.Core</AssemblyName>
+    <RootNamespace>Banzai.Core.Test</RootNamespace>
+    <AssemblyName>Banzai.Core.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -39,20 +42,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExecutionContext.cs" />
-    <Compile Include="FirstMatchNode.cs" />
-    <Compile Include="MultiNode.cs" />
-    <Compile Include="Utility\Guard.cs" />
-    <Compile Include="GroupNode.cs" />
-    <Compile Include="Node.cs" />
-    <Compile Include="ExecutionOptions.cs" />
-    <Compile Include="NodeResult.cs" />
-    <Compile Include="NodeRunStatus.cs" />
-    <Compile Include="NodeResultStatus.cs" />
-    <Compile Include="Pipeline.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Banzai.Core\Banzai.Core.csproj">
+      <Project>{a8077697-24c3-4b06-b0f0-3b7f47f5fd0a}</Project>
+      <Name>Banzai.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

@@ -1,42 +1,102 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Banzai.Core
 {
-    /// <summary>
-    /// This node runs all children simultaneously using async, but does not use the parallel library to process them.
-    /// This is a good choice for multiple i/o operations.  The node will not complete until all children complete.
-    /// </summary>
-    public class MultiNode<T> : GroupNode<T>
+    public interface IMultiNode<T> : INode<T>
     {
-        protected override async Task<NodeResultStatus> PerformExecuteAsync(T subject)
+        IReadOnlyList<INode<T>> Children { get; }
+
+        void AddChild(INode<T> child);
+
+        void AddChildren(IEnumerable<INode<T>> children);
+
+        void RemoveChild(INode<T> child);
+    }
+
+
+    public abstract class MultiNode<T> : Node<T>, IMultiNode<T>
+    {
+        private readonly List<INode<T>> _children = new List<INode<T>>();
+
+        public IReadOnlyList<INode<T>> Children { get { return _children; } }
+
+        public void AddChild(INode<T> child)
+        {
+            _children.Add(child);
+        }
+
+        public void AddChildren(IEnumerable<INode<T>> children)
+        {
+            _children.AddRange(children);
+        }
+
+        public void RemoveChild(INode<T> child)
+        {
+            _children.Remove(child);
+        }
+
+        protected override async Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<T> context)
         {
             if (Children == null || Children.Count == 0)
             {
                 return NodeResultStatus.NotRun;
             }
 
-            Task<NodeResult<T>[]> aggregateTask = Task.WhenAll(Children.Select(x => x.ExecuteAsync(subject)));
-            NodeResult<T>[] results;
-
-            try
-            {
-                results = await aggregateTask.ConfigureAwait(false);
-            }
-            catch
-            {
-                if(aggregateTask.Exception != null)
-                    throw aggregateTask.Exception;
-
-                throw;
-            }
-
-            return AggregateNodeResults(results);
-
+            return await ExecuteChildrenAsync(context);
         }
 
-        
+        protected override ExecutionContext<T> PrepareExecutionContext(ExecutionContext<T> context, NodeResult<T> currentResult)
+        {
+            var derivedContext = new ExecutionContext<T>(context, currentResult);
+            derivedContext.AddResult(currentResult);
+
+            if (LocalOptions != null)
+                derivedContext.EffectiveOptions = LocalOptions;
+
+            return derivedContext;
+        }
+
+        protected abstract Task<NodeResultStatus> ExecuteChildrenAsync(ExecutionContext<T> context);
+
+
+        protected static NodeResultStatus AggregateNodeResults(IEnumerable<NodeResult<T>> results)
+        {
+            bool hasFailure = false;
+            bool hasSuccess = false;
+            bool hasSuccessWithErrors = false;
+
+            foreach (var nodeResult in results)
+            {
+                if (nodeResult.Status == NodeResultStatus.SucceededWithErrors)
+                {
+                    hasSuccessWithErrors = true;
+                    break;
+                }
+
+                if (nodeResult.Status == NodeResultStatus.Failed)
+                {
+                    hasFailure = true;
+                }
+                else if (nodeResult.Status == NodeResultStatus.Succeeded)
+                {
+                    hasSuccess = true;
+                }
+                if (hasSuccess && hasFailure)
+                {
+                    hasSuccessWithErrors = true;
+                    break;
+                }
+            }
+
+            if (hasSuccessWithErrors)
+                return NodeResultStatus.SucceededWithErrors;
+            if (hasSuccess)
+                return NodeResultStatus.Succeeded;
+            if (hasFailure)
+                return NodeResultStatus.Failed;
+
+            return NodeResultStatus.NotRun;
+        }
     }
 }
