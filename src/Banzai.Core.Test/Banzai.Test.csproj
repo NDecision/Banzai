@@ -7,8 +7,8 @@
     <ProjectGuid>{2B172DE9-5CA1-451F-90A8-20513D3A3307}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Banzai.Core.Test</RootNamespace>
-    <AssemblyName>Banzai.Core.Test</AssemblyName>
+    <RootNamespace>Banzai.Test</RootNamespace>
+    <AssemblyName>Banzai.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -55,9 +55,9 @@
     <Compile Include="WhenRunningPipeline.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Banzai.Core\Banzai.Core.csproj">
+    <ProjectReference Include="..\Banzai.Core\Banzai.csproj">
       <Project>{a8077697-24c3-4b06-b0f0-3b7f47f5fd0a}</Project>
-      <Name>Banzai.Core</Name>
+      <Name>Banzai</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

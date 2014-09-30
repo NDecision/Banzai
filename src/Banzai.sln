@@ -3,9 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banzai.Core", "Banzai.Core\Banzai.Core.csproj", "{A8077697-24C3-4B06-B0F0-3B7F47F5FD0A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banzai", "Banzai.Core\Banzai.csproj", "{A8077697-24C3-4B06-B0F0-3B7F47F5FD0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banzai.Core.Test", "Banzai.Core.Test\Banzai.Core.Test.csproj", "{2B172DE9-5CA1-451F-90A8-20513D3A3307}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banzai.Test", "Banzai.Core.Test\Banzai.Test.csproj", "{2B172DE9-5CA1-451F-90A8-20513D3A3307}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6BBE752C-25E1-492E-A5C2-81C61602E72E}"
+	ProjectSection(SolutionItems) = preProject
+		..\LICENSE = ..\LICENSE
+		..\README.md = ..\README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
