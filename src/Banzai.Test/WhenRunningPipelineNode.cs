@@ -1,11 +1,11 @@
 ﻿using NUnit.Framework;
 using Should;
 
-namespace Banzai.Core.Test
+namespace Banzai.Test
 {
 
     [TestFixture]
-    public class WhenRunningPipeline
+    public class WhenRunningPipelineNode
     {
         [Test]
         public async void Successful_Pipeline_Run_Status_Is_Succeeded()

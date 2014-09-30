@@ -1,4 +1,4 @@
-﻿namespace Banzai.Core
+﻿namespace Banzai
 {
     public enum NodeRunStatus
     {

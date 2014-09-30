@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Banzai.Core.Utility;
+using Banzai.Utility;
 
-namespace Banzai.Core
+namespace Banzai
 {
 
     /// <summary>

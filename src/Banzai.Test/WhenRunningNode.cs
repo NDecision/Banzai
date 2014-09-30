@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using Should;
 
-namespace Banzai.Core.Test
+namespace Banzai.Test
 {
     [TestFixture]
     public class When_Running_Basic_Node

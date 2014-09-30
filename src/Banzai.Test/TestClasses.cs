@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Banzai.Core.Test
+namespace Banzai.Test
 {
     public class SimpleTestNodeA1 : Node<TestObjectA>
     {

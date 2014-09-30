@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 
-namespace Banzai.Core
+namespace Banzai
 {
     public interface IGroupNode<T> : IMultiNode<T>
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Banzai.Core
+namespace Banzai
 {
     public interface IPipelineNode<T> : IMultiNode<T>
     {

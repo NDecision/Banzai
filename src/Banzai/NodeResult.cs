@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 
-namespace Banzai.Core
+namespace Banzai
 {
     public class NodeResult<T>
     {

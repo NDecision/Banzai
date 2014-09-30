@@ -44,6 +44,8 @@
   <ItemGroup>
     <Compile Include="ExecutionContext.cs" />
     <Compile Include="FirstMatchNode.cs" />
+    <Compile Include="FuncNodeAsync.cs" />
+    <Compile Include="FuncNodeSync.cs" />
     <Compile Include="MultiNode.cs" />
     <Compile Include="Utility\Guard.cs" />
     <Compile Include="GroupNode.cs" />

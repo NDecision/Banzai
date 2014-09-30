@@ -1,6 +1,6 @@
-﻿using Banzai.Core.Utility;
+﻿using Banzai.Utility;
 
-namespace Banzai.Core
+namespace Banzai
 {
     /// <summary>
     /// This execution context is passed down the chain during execution so that child nodes can base decisions on 

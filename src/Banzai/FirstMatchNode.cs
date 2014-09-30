@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Banzai.Core
+namespace Banzai
 {
 
     public interface IFirstMatchNode<T> : IMultiNode<T>
