@@ -1,3 +1,5 @@
+![Banzai Pipeline Image](http://upload.wikimedia.org/wikipedia/commons/0/03/Empty_wave_at_Banzai_Pipeline.jpeg)
+
 ##Banzai!! - Your Simple Pipeline Solution
 
 Banzai is an easy .Net pipeline solution that contains composable nodes for construcing simple and complex pipelines.  
