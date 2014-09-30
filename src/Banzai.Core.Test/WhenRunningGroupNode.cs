@@ -21,9 +21,24 @@ namespace Banzai.Core.Test
         }
 
         [Test]
-        public async void Group_Run_With_Partial_Failure_Returns_Succeeded_With_Errors_Status()
+        public async void Group_Run_With_Failure_Returns_Failed_Status()
         {
             var groupNode = new GroupNode<TestObjectA>();
+
+            groupNode.AddChild(new SimpleTestNodeA1());
+            groupNode.AddChild(new FailingTestNode());
+
+            var testObject = new TestObjectA();
+            NodeResult<TestObjectA> result = await groupNode.ExecuteAsync(testObject);
+
+            result.Status.ShouldEqual(NodeResultStatus.Failed);
+            groupNode.Status.ShouldEqual(NodeRunStatus.Completed);
+        }
+
+        [Test]
+        public async void Group_Run_With_Failure_And_ContinueOnError_Returns_SucceededWithErrors_Status()
+        {
+            var groupNode = new GroupNode<TestObjectA> {LocalOptions = new ExecutionOptions {ContinueOnFailure = true}};
 
             groupNode.AddChild(new SimpleTestNodeA1());
             groupNode.AddChild(new FailingTestNode());
@@ -36,9 +51,24 @@ namespace Banzai.Core.Test
         }
 
         [Test]
-        public async void Group_Run_With_Partial_Fault_Returns_Succeeded_With_Errors_Status()
+        public async void Group_Run_With_Fault_Returns_Failed_Status()
         {
             var groupNode = new GroupNode<TestObjectA>();
+
+            groupNode.AddChild(new SimpleTestNodeA1());
+            groupNode.AddChild(new FaultingTestNode());
+
+            var testObject = new TestObjectA();
+            NodeResult<TestObjectA> result = await groupNode.ExecuteAsync(testObject);
+
+            result.Status.ShouldEqual(NodeResultStatus.Failed);
+            groupNode.Status.ShouldEqual(NodeRunStatus.Completed);
+        }
+
+        [Test]
+        public async void Group_Run_With_Fault_And_ContinueOnError_Returns_SucceededWithErrors_Status()
+        {
+            var groupNode = new GroupNode<TestObjectA> { LocalOptions = new ExecutionOptions { ContinueOnFailure = true } };
 
             groupNode.AddChild(new SimpleTestNodeA1());
             groupNode.AddChild(new FaultingTestNode());

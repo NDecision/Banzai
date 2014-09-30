@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Banzai.Core
@@ -68,7 +69,7 @@ namespace Banzai.Core
 
         protected abstract Task<NodeResultStatus> ExecuteChildrenAsync(ExecutionContext<T> context);
 
-        protected static NodeResultStatus AggregateNodeResults(IEnumerable<NodeResult<T>> results)
+        protected static NodeResultStatus AggregateNodeResults(IEnumerable<NodeResult<T>> results, ExecutionOptions options)
         {
             bool hasFailure = false;
             bool hasSuccess = false;
@@ -76,17 +77,15 @@ namespace Banzai.Core
 
             foreach (var nodeResult in results)
             {
-                if (nodeResult.Status == NodeResultStatus.SucceededWithErrors)
+                if (!hasSuccessWithErrors && nodeResult.Status == NodeResultStatus.SucceededWithErrors)
                 {
                     hasSuccessWithErrors = true;
-                    break;
                 }
-
-                if (nodeResult.Status == NodeResultStatus.Failed)
+                else if (!hasFailure && nodeResult.Status == NodeResultStatus.Failed)
                 {
                     hasFailure = true;
                 }
-                else if (nodeResult.Status == NodeResultStatus.Succeeded)
+                else if (!hasSuccess && nodeResult.Status == NodeResultStatus.Succeeded)
                 {
                     hasSuccess = true;
                 }
@@ -98,7 +97,15 @@ namespace Banzai.Core
             }
 
             if (hasSuccessWithErrors)
+            {
+                if (hasFailure && !options.ContinueOnFailure)
+                {
+                    return NodeResultStatus.Failed;
+                }
+
                 return NodeResultStatus.SucceededWithErrors;
+            }
+            
             if (hasSuccess)
                 return NodeResultStatus.Succeeded;
             if (hasFailure)

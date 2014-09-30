@@ -20,13 +20,13 @@ namespace Banzai.Core
 
                 results.Add(result);
 
-                if (result.Status == NodeResultStatus.Failed && !context.EffectiveOptions.ContinueOnError)
+                if (result.Status == NodeResultStatus.Failed && !context.EffectiveOptions.ContinueOnFailure)
                 {
                     break;
                 }
             }
 
-            return AggregateNodeResults(results);
+            return AggregateNodeResults(results, context.EffectiveOptions);
         }
     }
 }

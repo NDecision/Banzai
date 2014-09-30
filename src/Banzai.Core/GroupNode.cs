@@ -31,7 +31,7 @@ namespace Banzai.Core
                 throw;
             }
 
-            return AggregateNodeResults(results);
+            return AggregateNodeResults(results, context.EffectiveOptions);
         }
 
     }

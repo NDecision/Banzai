@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using Should;
 
 namespace Banzai.Core.Test
@@ -25,10 +26,38 @@ namespace Banzai.Core.Test
             var context = new ExecutionContext<TestObjectA>(testObject);
 
             var result = await testNode.ExecuteAsync(context);
+            result.Exception.ShouldNotBeNull();
 
             testNode.Status.ShouldEqual(NodeRunStatus.Faulted);
         }
 
+        [Test]
+        public async void Failed_Node_Run_Status_Is_Completed_With_Failed_Result()
+        {
+            var testNode = new FailingTestNode();
+
+            var testObject = new TestObjectA();
+
+            var context = new ExecutionContext<TestObjectA>(testObject);
+
+            var result = await testNode.ExecuteAsync(context);
+
+            testNode.Status.ShouldEqual(NodeRunStatus.Completed);
+            result.Status.ShouldEqual(NodeResultStatus.Failed);
+        }
+
+        [Test]
+        public void Errant_Node_Run_With_ThrowOnError_True_Throws()
+        {
+            var testNode = new FaultingTestNode();
+
+            var testObject = new TestObjectA();
+
+            var context = new ExecutionContext<TestObjectA>(testObject) {GlobalOptions = {ThrowOnError = true}};
+
+            Assert.Throws<Exception>(async () => await testNode.ExecuteAsync(context));
+        }
+        
         [Test]
         public async void Successful_Node_Run_Status_Is_Completed()
         {
