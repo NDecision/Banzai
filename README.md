@@ -11,10 +11,17 @@ Flows are composed from nodes, of which there are a few types.
 
 * Node/INode - The simplest node type.  This is overridden to provide functionality.
 
+* FuncNodeAsync/IFuncNodeAsync - Node implementation that accepts Task delegates for ShouldExecute and Execute methods.
+
+* FuncNodeSync/IFuncNodeSync - Node implementation that accepts synchronous delegates for ShouldExecute and Execute methods.
+
 * GroupNode/IGroupNode - An aggregation of nodes that are run on a subject using the asyncrhonous Task.WhenAll pattern.
 
 * FirstMatchNode/IFirstMatchNode - An aggregation of nodes of which the first matching it's ShouldExecute condition is run on the subject.
 
 * PipelineNode/IPipelineNode - Runs a group of nodes serially on the subject.
+
+
+####More documentation to follow shortly....
 
 
