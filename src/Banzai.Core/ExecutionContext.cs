@@ -11,31 +11,23 @@ namespace Banzai.Core
     {
         private ExecutionOptions _effectiveOptions;
 
-        public ExecutionContext(ExecutionContext<T> parentContext, NodeResult<T> parentResult = null) 
-        {
-            Guard.AgainstNullArgument("parentContext", parentContext);
-            Guard.AgainstNullArgumentProperty("parentContext", "Subject", parentContext.Subject);
-            Guard.AgainstNullArgumentProperty("parentContext", "Subject", parentContext.RootResult);
-
-            Subject = parentContext.Subject;
-            GlobalOptions = parentContext.GlobalOptions;
-
-            if (RootResult == null)
-            {
-                RootResult = parentResult;
-            }
-            else
-            {
-                ParentResult = parentResult;
-            }
-        }
-
         public ExecutionContext(T subject, ExecutionOptions globalOptions = null, NodeResult<T> rootResult = null)
         {
             Subject = subject;
             GlobalOptions = globalOptions ?? new ExecutionOptions();
             if (rootResult != null)
-                RootResult = rootResult;
+                ParentResult = rootResult;
+        }
+
+        protected internal ExecutionContext(ExecutionContext<T> parentContext, NodeResult<T> parentResult = null) 
+        {
+            Guard.AgainstNullArgument("parentContext", parentContext);
+            Guard.AgainstNullArgumentProperty("parentContext", "Subject", parentContext.Subject);
+            Guard.AgainstNullArgumentProperty("parentContext", "GlobalOptions", parentContext.GlobalOptions);
+
+            Subject = parentContext.Subject;
+            GlobalOptions = parentContext.GlobalOptions;
+            ParentResult = parentResult;
         }
 
         public T Subject { get; protected set; }
@@ -62,10 +54,6 @@ namespace Banzai.Core
             internal set { _effectiveOptions = value; }
         }
 
-        /// <summary>
-        /// Rollup of this result and all results under this result
-        /// </summary>
-        public NodeResult<T> RootResult { get; private set; }
 
         /// <summary>
         /// Rollup of this result and all results under this result
@@ -78,9 +66,8 @@ namespace Banzai.Core
         /// <param name="result">The result to add</param>
         internal void AddResult(NodeResult<T> result)
         {
-            if (RootResult == null)
+            if (ParentResult == null)
             {
-                RootResult = result;
                 ParentResult = result;
             }
             else

@@ -49,7 +49,7 @@
     <Compile Include="NodeResult.cs" />
     <Compile Include="NodeRunStatus.cs" />
     <Compile Include="NodeResultStatus.cs" />
-    <Compile Include="Pipeline.cs" />
+    <Compile Include="PipelineNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

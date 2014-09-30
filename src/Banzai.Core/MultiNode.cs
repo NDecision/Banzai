@@ -36,6 +36,15 @@ namespace Banzai.Core
             _children.Remove(child);
         }
 
+        public override void Reset()
+        {
+            base.Reset();
+            foreach (var child in Children)
+            {
+                child.Reset();
+            }
+        }
+
         protected override async Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<T> context)
         {
             if (Children == null || Children.Count == 0)
@@ -58,7 +67,6 @@ namespace Banzai.Core
         }
 
         protected abstract Task<NodeResultStatus> ExecuteChildrenAsync(ExecutionContext<T> context);
-
 
         protected static NodeResultStatus AggregateNodeResults(IEnumerable<NodeResult<T>> results)
         {
