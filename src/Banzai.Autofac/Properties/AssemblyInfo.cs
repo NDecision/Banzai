@@ -4,15 +4,16 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Banzai")]
-[assembly: AssemblyDescription("An easy async pipeline orchestration library")]
+[assembly: AssemblyTitle("Banzai.Autofac")]
+[assembly: AssemblyDescription("An easy Autofac extension for registering nodes from an assembly")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
+
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("cdbbc75d-62c4-4f60-b095-ea7168853959")]
+[assembly: Guid("c7f5b0dd-916c-47bc-9c52-65a91907d487")]
 
 // Version information for an assembly consists of the following four values:
 //
