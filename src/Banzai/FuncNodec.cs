@@ -4,7 +4,7 @@ using Banzai.Utility;
 
 namespace Banzai
 {
-    public interface IFuncNodeAsync<T> : INode<T>
+    public interface IFuncNode<T> : INode<T>
     {
         Func<ExecutionContext<T>, Task<bool>> ShouldExecuteFunc { get; set; }
 
@@ -12,7 +12,7 @@ namespace Banzai
     }
 
 
-    public class FuncNodeAsync<T> : Node<T>, IFuncNodeAsync<T>
+    public class FuncNode<T> : Node<T>, IFuncNode<T>
     {
         public Func<ExecutionContext<T>, Task<bool>> ShouldExecuteFunc { get; set; }
 

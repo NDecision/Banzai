@@ -55,6 +55,35 @@ namespace Banzai.Test
         }
     }
 
+    public class SubjectChangingNode1 : Node<TestObjectA>
+    {
+        private readonly bool _shouldExecute = true;
+
+        public SubjectChangingNode1()
+        {
+        }
+
+        public SubjectChangingNode1(bool shouldExecute)
+        {
+            _shouldExecute = shouldExecute;
+        }
+
+        public override Task<bool> ShouldExecute(ExecutionContext<TestObjectA> context)
+        {
+            return Task.FromResult(_shouldExecute);
+        }
+
+        protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<TestObjectA> context)
+        {
+            context.ChangeSubject(new TestObjectA()
+            {
+                TestValueString = "New Instance"
+            });
+
+            return Task.FromResult(NodeResultStatus.Succeeded);
+        }
+    }
+
     public class FaultingTestNode : Node<TestObjectA>
     {
         protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<TestObjectA> context)

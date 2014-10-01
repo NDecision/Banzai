@@ -5,7 +5,7 @@ using Should;
 namespace Banzai.Test
 {
     [TestFixture]
-    public class When_Running_Basic_Node
+    public class WhenRunningNode
     {
 
         [Test]

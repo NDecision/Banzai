@@ -13,7 +13,7 @@ namespace Banzai
             Subject = subject;
         }
         
-        public T Subject { get; private set; }
+        public T Subject { get; protected internal set; }
 
         public NodeResultStatus Status { get; protected internal set; }
 

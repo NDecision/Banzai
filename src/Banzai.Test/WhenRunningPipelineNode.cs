@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Linq;
+using NUnit.Framework;
 using Should;
 
 namespace Banzai.Test
@@ -19,6 +20,36 @@ namespace Banzai.Test
             NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
 
             pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
+        }
+
+        [Test]
+        public async void Pipeline_Result_Should_Equal_Initial_Subject()
+        {
+            var pipelineNode = new PipelineNode<TestObjectA>();
+
+            pipelineNode.AddChild(new SimpleTestNodeA1());
+            pipelineNode.AddChild(new SimpleTestNodeA2());
+
+            var testObject = new TestObjectA();
+            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+
+            pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
+            result.Subject.ShouldBeSameAs(testObject);
+        }
+
+        [Test]
+        public async void Pipeline_Child_Result_Count_Equals_Child_Node_Count()
+        {
+            var pipelineNode = new PipelineNode<TestObjectA>();
+
+            pipelineNode.AddChild(new SimpleTestNodeA1());
+            pipelineNode.AddChild(new SimpleTestNodeA2());
+
+            var testObject = new TestObjectA();
+            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+
+            pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
+            result.ChildResults.Count().ShouldEqual(2);
         }
 
         [Test]

@@ -96,11 +96,13 @@ namespace Banzai
             try
             {
                 result.Status = await PerformExecuteAsync(context);
+                result.Subject = context.Subject;
                 Status = NodeRunStatus.Completed;
             }
             catch (Exception ex)
             {
                 Status = NodeRunStatus.Faulted;
+                result.Subject = context.Subject;
                 result.Status = NodeResultStatus.Failed;
                 result.Exception = ex;
 
@@ -116,6 +118,7 @@ namespace Banzai
         protected virtual ExecutionContext<T> PrepareExecutionContext(ExecutionContext<T> context, NodeResult<T> currentResult)
         {
             context.AddResult(currentResult);
+
             if (LocalOptions != null)
                 context.EffectiveOptions = LocalOptions;
             return context;

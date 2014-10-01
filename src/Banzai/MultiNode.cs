@@ -58,7 +58,6 @@ namespace Banzai
         protected override ExecutionContext<T> PrepareExecutionContext(ExecutionContext<T> context, NodeResult<T> currentResult)
         {
             var derivedContext = new ExecutionContext<T>(context, currentResult);
-            derivedContext.AddResult(currentResult);
 
             if (LocalOptions != null)
                 derivedContext.EffectiveOptions = LocalOptions;

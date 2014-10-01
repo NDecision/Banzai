@@ -49,8 +49,11 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestClasses.cs" />
+    <Compile Include="WhenChangingTheSubject.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="WhenRunningFirstMatchNode.cs" />
-    <Compile Include="WhenRunningFuncNodeAsync.cs" />
+    <Compile Include="WhenRunningFuncNode.cs" />
     <Compile Include="WhenRunningFuncNodeSync.cs" />
     <Compile Include="WhenRunningGroupNode.cs" />
     <Compile Include="WhenRunningNode.cs" />

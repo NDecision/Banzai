@@ -54,11 +54,19 @@ namespace Banzai
             internal set { _effectiveOptions = value; }
         }
 
-
         /// <summary>
         /// Rollup of this result and all results under this result
         /// </summary>
         public NodeResult<T> ParentResult { get; private set; }
+
+        /// <summary>
+        /// Changes the current subject to the instance provided.
+        /// </summary>
+        /// <param name="subject">The new subject.</param>
+        public void ChangeSubject(T subject)
+        {
+            Subject = subject;
+        }
 
         /// <summary>
         /// Adds a result to the execution context.
