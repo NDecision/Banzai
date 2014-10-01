@@ -107,6 +107,11 @@ namespace Banzai.Autofac
                 .AsSelf()
                 .InstancePerDependency();
 
+            builder.RegisterGeneric(typeof(AutofacNodeFactory<>))
+                .AsImplementedInterfaces()
+                .AsSelf()
+                .InstancePerLifetimeScope();
+
             return builder;
         }
 

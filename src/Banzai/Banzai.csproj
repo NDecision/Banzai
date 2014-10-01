@@ -47,6 +47,7 @@
     <Compile Include="FuncNodec.cs" />
     <Compile Include="FuncNodeSync.cs" />
     <Compile Include="MultiNode.cs" />
+    <Compile Include="INodeFactory.cs" />
     <Compile Include="NodeSync.cs" />
     <Compile Include="Properties\SolutionVersion.cs" />
     <Compile Include="Utility\Guard.cs" />
