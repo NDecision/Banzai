@@ -7,7 +7,7 @@ namespace Banzai
     {
     }
 
-    public class FirstMatchNode<T> : MultiNode<T>
+    public class FirstMatchNode<T> : MultiNode<T>, IFirstMatchNode<T>
     {
 
         protected override async Task<NodeResultStatus> ExecuteChildrenAsync(ExecutionContext<T> context)
