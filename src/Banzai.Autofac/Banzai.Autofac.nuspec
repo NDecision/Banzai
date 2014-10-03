@@ -15,7 +15,7 @@
         <language />
         <tags>Pipeline Dataflow</tags>
         <dependencies>
-          <dependency id="Banzai" version="1.0.1" />
+          <dependency id="Banzai" version="$version$" />
         </dependencies>
     </metadata>
   <files>
