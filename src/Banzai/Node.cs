@@ -29,7 +29,7 @@ namespace Banzai
         /// <summary>
         /// Method that defines the async function to execute on the subject for this node.
         /// </summary>
-        Func<ExecutionContext<T>, Task<NodeResultStatus>> PerformExecuteFuncAsync { get; set; }
+        Func<ExecutionContext<T>, Task<NodeResultStatus>> ExecutedFuncAsync { get; set; }
 
         /// <summary>
         /// Determines if the node should be executed.
@@ -64,7 +64,7 @@ namespace Banzai
         public Node()
         {
             ShouldExecuteFuncAsync = ShouldExecuteAsync;
-            PerformExecuteFuncAsync = PerformExecuteAsync;
+            ExecutedFuncAsync = PerformExecuteAsync;
         }
 
         public Node(ExecutionOptions localOptions) : this()
@@ -76,7 +76,7 @@ namespace Banzai
 
         public Func<ExecutionContext<T>, Task<bool>> ShouldExecuteFuncAsync { get; set; }
 
-        public Func<ExecutionContext<T>, Task<NodeResultStatus>> PerformExecuteFuncAsync { get; set; }
+        public Func<ExecutionContext<T>, Task<NodeResultStatus>> ExecutedFuncAsync { get; set; }
 
         /// <summary>
         /// Determines if the current node should execute.
@@ -123,7 +123,7 @@ namespace Banzai
 
             try
             {
-                result.Status = await PerformExecuteFuncAsync(context);
+                result.Status = await ExecutedFuncAsync(context);
                 result.Subject = context.Subject;
                 Status = NodeRunStatus.Completed;
             }
