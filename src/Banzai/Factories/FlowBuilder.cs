@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Banzai.Factories
+﻿namespace Banzai.Factories
 {
     public class FlowBuilder<T>
     {

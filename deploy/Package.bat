@@ -6,5 +6,7 @@ powershell -NoProfile -ExecutionPolicy unrestricted -Command "& {.\archive.ps1; 
 powershell -NoProfile -ExecutionPolicy unrestricted -Command "& {.\package.ps1 -PackageName 'Banzai'; exit $error.Count}"
 
 
+powershell -NoProfile -ExecutionPolicy unrestricted -Command "& {.\package.ps1 -PackageName 'Banzai.Autofac'; exit $error.Count}"
+
 
 pause
