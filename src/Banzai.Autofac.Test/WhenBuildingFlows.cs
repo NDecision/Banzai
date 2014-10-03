@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System;
+using Autofac;
 using Banzai.Factories;
 using NUnit.Framework;
 using Should;
@@ -152,6 +153,44 @@ namespace Banzai.Autofac.Test
             var subflow = (IPipelineNode<object>)flow.Children[1];
             subflow.Children.Count.ShouldEqual(3);
             subflow.Children[1].ShouldBeType<TestNode3>();
+        }
+
+        [Test]
+        public void Adding_Child_Node_To_Simple_Node_Errs()
+        {
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+
+            var flowBuilder = new FlowBuilder<object>(new AutofacFlowRegistrar(containerBuilder));
+
+            var componentBuilder = flowBuilder.CreateFlow("TestFlow")
+                .AddRoot<ITestNode4>();
+
+            Assert.Throws<InvalidOperationException>(() => componentBuilder.AddChild<ITestNode4>());
+
+        }
+
+        [Test]
+        public void Adding_Child_Flow_To_Simple_Node_Errs()
+        {
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+
+            var flowBuilder = new FlowBuilder<object>(new AutofacFlowRegistrar(containerBuilder));
+
+            flowBuilder.CreateFlow("TestFlow2")
+                .AddRoot<IPipelineNode<object>>()
+                .AddChild<ITestNode4>()
+                .AddChild<ITestNode3>()
+                .AddChild<ITestNode2>();
+
+            flowBuilder.Register();
+
+            var componentBuilder = flowBuilder.CreateFlow("TestFlow")
+                .AddRoot<ITestNode4>();
+
+            Assert.Throws<InvalidOperationException>(() => componentBuilder.AddFlow("TestFlow2"));
+
         }
 
     }

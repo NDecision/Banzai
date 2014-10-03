@@ -88,6 +88,9 @@ namespace Banzai.Factories
         {
             Guard.AgainstNullOrEmptyArgument("name", name);
 
+            if (!typeof(IMultiNode<T>).IsAssignableFrom(_component.Type))
+                throw new InvalidOperationException("In order to have children, nodeType must be assignable to IMultiNode<T>.");
+
             _component.AddChild(new FlowComponent<T> { Type = typeof(T), Name = name, IsFlow = true });
             return this;
         }
@@ -144,7 +147,7 @@ namespace Banzai.Factories
                 throw new ArgumentException("nodeType must be assignable to INode<T>.", "nodeType");
 
             if (!typeof(IMultiNode<T>).IsAssignableFrom(_component.Type))
-                throw new ArgumentException("In order to have children, nodeType must be assignable to IMultiNode<T>.", "nodeType");
+                throw new InvalidOperationException("In order to have children, nodeType must be assignable to IMultiNode<T>.");
 
             _component.AddChild(new FlowComponent<T> { Type = nodeType, Name = name });
             return this;
