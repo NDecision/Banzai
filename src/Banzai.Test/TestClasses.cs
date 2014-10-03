@@ -16,7 +16,7 @@ namespace Banzai.Test
             _shouldExecute = shouldExecute;
         }
 
-        public override Task<bool> ShouldExecute(ExecutionContext<TestObjectA> context)
+        public override Task<bool> ShouldExecuteAsync(ExecutionContext<TestObjectA> context)
         {
             return Task.FromResult(_shouldExecute);
         }
@@ -42,7 +42,7 @@ namespace Banzai.Test
             _shouldExecute = shouldExecute;
         }
 
-        public override Task<bool> ShouldExecute(ExecutionContext<TestObjectA> context)
+        public override Task<bool> ShouldExecuteAsync(ExecutionContext<TestObjectA> context)
         {
             return Task.FromResult(_shouldExecute);
         }
@@ -68,7 +68,7 @@ namespace Banzai.Test
             _shouldExecute = shouldExecute;
         }
 
-        public override Task<bool> ShouldExecute(ExecutionContext<TestObjectA> context)
+        public override Task<bool> ShouldExecuteAsync(ExecutionContext<TestObjectA> context)
         {
             return Task.FromResult(_shouldExecute);
         }

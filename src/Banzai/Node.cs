@@ -22,6 +22,23 @@ namespace Banzai
         NodeRunStatus Status { get; }
 
         /// <summary>
+        /// Method that defines the async function to call to determine if this node should be executed.
+        /// </summary>
+        Func<ExecutionContext<T>, Task<bool>> ShouldExecuteFuncAsync { get; set; }
+
+        /// <summary>
+        /// Method that defines the async function to execute on the subject for this node.
+        /// </summary>
+        Func<ExecutionContext<T>, Task<NodeResultStatus>> PerformExecuteFuncAsync { get; set; }
+
+        /// <summary>
+        /// Determines if the node should be executed.
+        /// </summary>
+        /// <param name="context">The current execution context.</param>
+        /// <returns>Bool indicating if the current node should be run.</returns>
+        Task<bool> ShouldExecuteAsync(ExecutionContext<T> context);
+
+        /// <summary>
         /// Used to kick off execution of a node with a default execution context.
         /// </summary>
         /// <param name="subject">Subject to be moved through the node.</param>
@@ -36,29 +53,40 @@ namespace Banzai
         Task<NodeResult<T>> ExecuteAsync(ExecutionContext<T> sourceContext);
 
         /// <summary>
-        /// Determines if the node should be executed.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        Task<bool> ShouldExecute(ExecutionContext<T> context);
-
-        /// <summary>
         /// Used to reset the node to a prerun state
         /// </summary>
         void Reset();
     }
 
-    public abstract class Node<T> : INode<T>
-    {
-        protected Node()
-        { }
 
-        protected Node(ExecutionOptions localOptions)
+    public class Node<T> : INode<T>
+    {
+        public Node()
+        {
+            ShouldExecuteFuncAsync = ShouldExecuteAsync;
+            PerformExecuteFuncAsync = PerformExecuteAsync;
+        }
+
+        public Node(ExecutionOptions localOptions) : this()
         {
             LocalOptions = localOptions;
         }
         
         public ExecutionOptions LocalOptions { get; set; }
+
+        public Func<ExecutionContext<T>, Task<bool>> ShouldExecuteFuncAsync { get; set; }
+
+        public Func<ExecutionContext<T>, Task<NodeResultStatus>> PerformExecuteFuncAsync { get; set; }
+
+        /// <summary>
+        /// Determines if the current node should execute.
+        /// </summary>
+        /// <param name="context">Current ExecutionContext</param>
+        /// <returns>Bool indicating if this node should run.</returns>
+        public virtual async Task<bool> ShouldExecuteAsync(ExecutionContext<T> context)
+        {
+            return true;
+        }
 
         /// <summary>
         /// Used to kick off execution of a node with a default execution context.
@@ -88,14 +116,14 @@ namespace Banzai
 
             ExecutionContext<T> context = PrepareExecutionContext(sourceContext, result);
 
-            if (! await ShouldExecute(context))
+            if (! await ShouldExecuteFuncAsync(context))
                 return result;
 
             Status = NodeRunStatus.Running;
 
             try
             {
-                result.Status = await PerformExecuteAsync(context);
+                result.Status = await PerformExecuteFuncAsync(context);
                 result.Subject = context.Subject;
                 Status = NodeRunStatus.Completed;
             }
@@ -111,8 +139,12 @@ namespace Banzai
                     throw;
                 }
             }
-
             return result;
+        }
+
+        protected virtual Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<T> context)
+        {
+            return Task.FromResult(NodeResultStatus.Succeeded);
         }
 
         protected virtual ExecutionContext<T> PrepareExecutionContext(ExecutionContext<T> context, NodeResult<T> currentResult)
@@ -123,13 +155,6 @@ namespace Banzai
                 context.EffectiveOptions = LocalOptions;
             return context;
         }
-
-        public virtual Task<bool> ShouldExecute(ExecutionContext<T> context)
-        {
-            return Task.FromResult(true);
-        }
-
-        protected abstract Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<T> context);
 
         public virtual void Reset()
         {

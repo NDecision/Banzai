@@ -9,7 +9,7 @@ namespace Banzai.Test
         [Test]
         public async void Successful_FuncNodeSync_Values_Match_Expected()
         {
-            var node = new FuncNodeSync<TestObjectA>();
+            var node = new NodeSync<TestObjectA>();
 
             node.ShouldExecuteFunc = context => context.Subject.TestValueInt == 0;
             node.ExecuteFunc = context => { context.Subject.TestValueString = "Completed"; return NodeResultStatus.Succeeded; };
@@ -25,7 +25,7 @@ namespace Banzai.Test
         [Test]
         public async void FuncNodeSync_With_ShouldExecute_False_Shouldnt_Run()
         {
-            var node = new FuncNodeSync<TestObjectA>();
+            var node = new NodeSync<TestObjectA>();
 
             node.ShouldExecuteFunc = context => context.Subject.TestValueInt == 5;
             node.ExecuteFunc = context => { context.Subject.TestValueString = "Completed"; return NodeResultStatus.Succeeded; };

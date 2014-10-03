@@ -8,12 +8,12 @@ namespace Banzai.Test
     public class WhenRunningFuncNode
     {
         [Test]
-        public async void Successful_FuncNodeSync_Values_Match_Expected()
+        public async void Successful_FuncNode_Values_Match_Expected()
         {
-            var node = new FuncNode<TestObjectA>();
+            var node = new Node<TestObjectA>();
 
-            node.ShouldExecuteFunc = context => Task.FromResult(context.Subject.TestValueInt == 0);
-            node.ExecuteFunc = context => { context.Subject.TestValueString = "Completed"; return Task.FromResult(NodeResultStatus.Succeeded); };
+            node.ShouldExecuteFuncAsync = context => Task.FromResult(context.Subject.TestValueInt == 0);
+            node.PerformExecuteFuncAsync = context => { context.Subject.TestValueString = "Completed"; return Task.FromResult(NodeResultStatus.Succeeded); };
 
             var testObject = new TestObjectA();
             NodeResult<TestObjectA> result = await node.ExecuteAsync(testObject);
@@ -24,12 +24,12 @@ namespace Banzai.Test
         }
 
         [Test]
-        public async void FuncNodeSync_With_ShouldExecute_False_Shouldnt_Run()
+        public async void FuncNode_With_ShouldExecute_False_Shouldnt_Run()
         {
-            var node = new FuncNode<TestObjectA>();
+            var node = new Node<TestObjectA>();
 
-            node.ShouldExecuteFunc = context => Task.FromResult(context.Subject.TestValueInt == 5);
-            node.ExecuteFunc = context => { context.Subject.TestValueString = "Completed"; return Task.FromResult(NodeResultStatus.Succeeded); };
+            node.ShouldExecuteFuncAsync = context => Task.FromResult(context.Subject.TestValueInt == 5);
+            node.PerformExecuteFuncAsync = context => { context.Subject.TestValueString = "Completed"; return Task.FromResult(NodeResultStatus.Succeeded); };
 
             var testObject = new TestObjectA();
             NodeResult<TestObjectA> result = await node.ExecuteAsync(testObject);

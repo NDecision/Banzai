@@ -49,8 +49,6 @@
     <Compile Include="Factories\IFlowRegistrar.cs" />
     <Compile Include="Factories\NodeFactoryBase.cs" />
     <Compile Include="FirstMatchNode.cs" />
-    <Compile Include="FuncNode.cs" />
-    <Compile Include="FuncNodeSync.cs" />
     <Compile Include="MultiNode.cs" />
     <Compile Include="Factories\INodeFactory.cs" />
     <Compile Include="NodeSync.cs" />
