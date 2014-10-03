@@ -54,5 +54,19 @@ namespace Banzai.Utility
             }
         }
 
+        /// <summary>
+        /// Guards against a null or empty argument.
+        /// </summary>
+        /// <param name="parameterName">Name of the parameter.</param>
+        /// <param name="argument">The argument.</param>
+        /// <exception cref="System.ArgumentNullException"><paramref name="argument" /> is <c>null</c>.</exception>
+        public static void AgainstNullOrEmptyArgument(string parameterName, string argument)
+        {
+            if (string.IsNullOrEmpty(argument))
+            {
+                throw new ArgumentNullException(parameterName, string.Format(CultureInfo.InvariantCulture, "{0} is null or empty.", parameterName));
+            }
+        }
+
     }
 }

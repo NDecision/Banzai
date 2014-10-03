@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Autofac;
 using Autofac.Core.Registration;
+using Banzai.Factories;
 using NUnit.Framework;
 using Should;
 

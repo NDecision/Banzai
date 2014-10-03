@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Banzai
+namespace Banzai.Factories
 {
     public interface INodeFactory<T>
     {
@@ -16,6 +16,9 @@ namespace Banzai
         IEnumerable<INode<T>> GetNodes(IEnumerable<Type> types);
 
         IEnumerable<TNode> GetAllNodes<TNode>() where TNode : INode<T>;
+
+        INode<T> GetFlow(string name);
+
     }
 
 }

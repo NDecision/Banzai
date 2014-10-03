@@ -45,6 +45,7 @@
     <Compile Include="..\Banzai\Properties\SolutionVersion.cs">
       <Link>Properties\SolutionVersion.cs</Link>
     </Compile>
+    <Compile Include="AutofacFlowRegistrar.cs" />
     <Compile Include="AutofacNodeFactory.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

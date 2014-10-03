@@ -43,11 +43,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExecutionContext.cs" />
+    <Compile Include="Factories\FlowBuilder.cs" />
+    <Compile Include="Factories\FlowComponent.cs" />
+    <Compile Include="Factories\FlowComponentBuilder.cs" />
+    <Compile Include="Factories\IFlowRegistrar.cs" />
+    <Compile Include="Factories\NodeFactoryBase.cs" />
     <Compile Include="FirstMatchNode.cs" />
     <Compile Include="FuncNodec.cs" />
     <Compile Include="FuncNodeSync.cs" />
     <Compile Include="MultiNode.cs" />
-    <Compile Include="INodeFactory.cs" />
+    <Compile Include="Factories\INodeFactory.cs" />
     <Compile Include="NodeSync.cs" />
     <Compile Include="Properties\SolutionVersion.cs" />
     <Compile Include="Utility\Guard.cs" />
