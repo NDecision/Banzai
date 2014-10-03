@@ -17,7 +17,7 @@ namespace Banzai
         /// <summary>
         /// Function to be performed when the node is executed.
         /// </summary>
-        Func<ExecutionContext<T>, NodeResultStatus> ExecuteFunc { get; set; }
+        Func<ExecutionContext<T>, NodeResultStatus> PerformExecuteFunc { get; set; }
 
         /// <summary>
         /// Determines if the node should be executed.
@@ -33,7 +33,7 @@ namespace Banzai
         public NodeSync()
         {
             ShouldExecuteFunc = ShouldExecute;
-            ExecuteFunc = PerformExecute;
+            PerformExecuteFunc = PerformExecute;
         }
 
         public NodeSync(ExecutionOptions localOptions): this()
@@ -43,7 +43,7 @@ namespace Banzai
 
         public Func<ExecutionContext<T>, bool> ShouldExecuteFunc { get; set; }
 
-        public Func<ExecutionContext<T>, NodeResultStatus> ExecuteFunc { get; set; }
+        public Func<ExecutionContext<T>, NodeResultStatus> PerformExecuteFunc { get; set; }
 
 
         public virtual bool ShouldExecute(ExecutionContext<T> context)
@@ -63,7 +63,7 @@ namespace Banzai
 
         protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<T> context)
         {
-            return Task.FromResult(ExecuteFunc(context));
+            return Task.FromResult(PerformExecuteFunc(context));
         }
     }
 }
