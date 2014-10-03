@@ -1,4 +1,5 @@
-﻿using Banzai.Utility;
+﻿using System.Dynamic;
+using Banzai.Utility;
 
 namespace Banzai
 {
@@ -13,6 +14,7 @@ namespace Banzai
 
         public ExecutionContext(T subject, ExecutionOptions globalOptions = null, NodeResult<T> rootResult = null)
         {
+            State = new ExpandoObject();
             Subject = subject;
             GlobalOptions = globalOptions ?? new ExecutionOptions();
             if (rootResult != null)
@@ -26,11 +28,20 @@ namespace Banzai
             Guard.AgainstNullArgumentProperty("parentContext", "GlobalOptions", parentContext.GlobalOptions);
 
             Subject = parentContext.Subject;
+            State = parentContext.State;
             GlobalOptions = parentContext.GlobalOptions;
             ParentResult = parentResult;
         }
 
+        /// <summary>
+        /// The subject that the workflow operates on.
+        /// </summary>
         public T Subject { get; protected set; }
+
+        /// <summary>
+        /// A dynamic object of additional state that must be passed through the workflow.
+        /// </summary>
+        public dynamic State { get; protected set; }
 
         /// <summary>
         /// The global options that this node is using for execution

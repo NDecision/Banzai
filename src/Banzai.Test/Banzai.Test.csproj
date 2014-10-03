@@ -52,6 +52,7 @@
     <Compile Include="WhenChangingTheSubject.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="WhenPassingState.cs" />
     <Compile Include="WhenRunningFirstMatchNode.cs" />
     <Compile Include="WhenRunningFuncNode.cs" />
     <Compile Include="WhenRunningFuncNodeSync.cs" />

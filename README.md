@@ -14,30 +14,45 @@ or provided via a function accept an ExecutionContext.  All node executions retu
 ###Basic Nodes
 These are the nodes that actually contain functions that run against the subject of the pipeline.
 
-* Node/INode NodeSync/INodeSync - The simplest node type.  This is overridden to provide functionality.  NodeSync provides a convenience wrapper for synchronous methods.
-
+  * <b>Node/INode NodeSync/INodeSync</b> - The simplest node type.  This is overridden to provide functionality.  NodeSync provides a convenience wrapper for synchronous methods.
   * Override PerformExecute/PerformExecuteAsync to perform operations on the subject.
-
   * Override ShouldExecute to determine if the node should execute.
-
   * Provide a function to PerformExecuteFunc/PerformExecuteFuncAsync and/or ShouldExecuteFunc/ShouldExecuteFuncAsync instead of overriding the function provided by the Node/NodeSync class.
-
   * NodeSync just provides some convenience overloads for implementing synchronous results that are wrapped for you.
 
 ###Grouping Nodes
 The following nodes allow 
 
-* PipelineNode/IPipelineNode - Runs a group of nodes serially on the subject.  This will be the root node of most flows.
-
-* GroupNode/IGroupNode - An aggregation of nodes that are run on a subject using the asyncrhonous Task.WhenAll pattern.
-
-* FirstMatchNode/IFirstMatchNode - An aggregation of nodes of which the first matching it's ShouldExecute condition is run on the subject.
+* <b>PipelineNode/IPipelineNode</b> - Runs a group of nodes serially on the subject.  This will be the root node of most flows.
+* <b>GroupNode/IGroupNode</b> - An aggregation of nodes that are run on a subject using the asyncrhonous Task.WhenAll pattern.
+* <b>FirstMatchNode/IFirstMatchNode</b> - An aggregation of nodes of which the first matching it's ShouldExecute condition is run on the subject.
 
 ###ExecutionContext
+The execution context flows through all nodes in the flow.  The execution context contains options for running the flow as well as the
+instance of the subject that the flow is executed on.  
+
+####Subject
+This is the main subject instance that all nodes in the flow operate on.  If it is necessary to change the subject reference, use the ChangeSubject() method of the 
+ExecutionContext to do so.
+
+####State
+The execution context also contains a dynamic State property that can be used to 
+flow any random state needed for the workflow.  Any node in the flow can update the state or add dynamic properties to the state.
 
 ###NodeResult
+When a node executes, it returns a NodeResult.  The NodeResult will contain:
+  * The NodeResultStatus - Which represents the status of this node.  If this is a parent node, it represents a rollup status of all child nodes.
+  * A reference to the subject.
+  * A collection of child result nodes corresponding to the current node's children.
+  * An Exception if an exception occurred during execution of the node.
 
 ####NodeResultStatus
+Each node returns a result that contains a status when run.  The status will be one of the following:
+
+  * NotRun - Node has not been run
+  * SucceededWithErrors - Node is flagged as succeeded, but some error occurred.  Typically indicates that a subnode failed but "ContinueOnError" was set to true.
+  * Succeeded - Node Succeed
+  * Failed - Node reported a failure or an exception was thrown during the execution of the node.
 
 ###NodeRunStatus
 
