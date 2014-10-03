@@ -14,17 +14,15 @@ or provided via a function accept an ExecutionContext.  All node executions retu
 ###Basic Nodes
 These are the nodes that actually contain functions that run against the subject of the pipeline.
 
-* Node/NodeSync/INode - The simplest node type.  This is overridden to provide functionality.  NodeSync provides a convenience wrapper for synchronous methods.
+* Node/INode NodeSync/INodeSync - The simplest node type.  This is overridden to provide functionality.  NodeSync provides a convenience wrapper for synchronous methods.
 
-  * Provide an implementation of PerformExecute/PerformExecuteAsync to perform operations on the subject.
+  * Override PerformExecute/PerformExecuteAsync to perform operations on the subject.
 
   * Override ShouldExecute to determine if the node should execute.
 
-* FuncNode/IFuncNode - Node implementation that accepts Task delegates for ShouldExecute and Execute methods.
+  * Provide a function to PerformExecuteFunc/PerformExecuteFuncAsync and/or ShouldExecuteFunc/ShouldExecuteFuncAsync instead of overriding the function provided by the Node/NodeSync class.
 
-  * Provide a function to ExecuteFunc and/or ShouldExecuteFunc instead of overriding the function provided by Node.
-
-* FuncNodeSync/IFuncNodeSync - Node implementation that accepts synchronous delegates for ShouldExecute and Execute methods.
+  * NodeSync just provides some convenience overloads for implementing synchronous results that are wrapped for you.
 
 ###Grouping Nodes
 The following nodes allow 
