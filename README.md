@@ -51,7 +51,7 @@ Example of providing functionality via functions
         };
 
 ###Grouping Nodes
-The following nodes allow 
+The following nodes allow you to organize and run other nodes together.
 
 <b>PipelineNode/IPipelineNode</b> - Runs a group of nodes serially on the subject.  This will be the root node of most flows.
 
@@ -117,10 +117,10 @@ Defaults to false.
 
 ###NodeResult
 When a node executes, it returns a NodeResult.  The NodeResult will contain:
-  * The NodeResultStatus - Which represents the status of this node.  If this is a parent node, it represents a rollup status of all child nodes.
-  * A reference to the subject.
-  * A collection of child result nodes corresponding to the current node's children.
-  * An Exception if an exception occurred during execution of the node.
+<b>NodeResultStatus</b> - Represents the status of this node.  If this is a parent node, it represents a rollup status of all child nodes.
+<b>Subject</b> - A reference to the subject.
+<b>ChildResults</b> - A collection of child result nodes corresponding to the current node's children.
+<b>Exception</b> - An Exception if any exception occurred during execution of the node.
 
 ####NodeResultStatus
 Each node returns a result that contains a status when run.  The status will be one of the following:
@@ -131,8 +131,33 @@ Each node returns a result that contains a status when run.  The status will be 
   * Failed - Node reported a failure or an exception was thrown during the execution of the node.
 
 ###NodeRunStatus
+Represents the run status of the node.  The status will be one of the following:
+  * NotRun - The node has not been run
+  * Running - The node is in process
+  * Completed - The node has completed
+  * Faulted - The node faulted (threw an exception)
 
 ##Registering Nodes
+Registering nodes with an IOC container is easy with Autofac using the extensions available in the Banzai.Autofac library.  
+These extensions scan the indicated assembly for any custom nodes you have created and register them as themselves and their implemented interfaces.
+Nodes are registered as Transient/PerDependency.
+
+Scan the current assembly
+
+    var containerBuilder = new ContainerBuilder();
+    containerBuilder.RegisterBanzaiNodes(GetType().Assembly);
+
+or
+
+    containerBuilder.RegisterBanzaiNodes<TypeFromAssembly>();
+
+All the RegisterBanzaiNode methods have an optional parameter that automatically registers the Banzai nodes and other classes:
+
+    containerBuilder.RegisterBanzaiNodes(GetType().Assembly, **true**);
+
+Or to explicitly register the Banzai nodes and classes using the overload with no arguments:
+
+    containerBuilder.RegisterBanzaiNodes();
 
 ##Building Flows
 There are multiple ways in which flows can be built up.
