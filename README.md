@@ -107,6 +107,14 @@ These are the options evaluated when executing a node.
 
 <b>ParentResult</b> - The root result of this node execution and all of its children.
 
+####ExecutionOptions
+The execution options impact the behavior of node execution. 
+ 
+<b>ContinueOnFailure</b> - Continue execution of other nodes under the parent if this node fails. Defaults to false.
+
+<b>ThrowOnException</b> - Should a node execution exception throw or register as a failure and store the exception in the NodeResults exception property.
+Defaults to false.
+
 ###NodeResult
 When a node executes, it returns a NodeResult.  The NodeResult will contain:
   * The NodeResultStatus - Which represents the status of this node.  If this is a parent node, it represents a rollup status of all child nodes.
