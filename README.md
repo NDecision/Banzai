@@ -45,14 +45,49 @@ Example of providing functionality via functions
 
     node.ShouldExecuteFuncAsync = context => Task.FromResult(context.Subject.TestValueInt == 5);
     node.ExecutedFuncAsync = context => 
-        { context.Subject.TestValueString = "Completed"; return Task.FromResult(NodeResultStatus.Succeeded); };
+        { context.Subject.TestValueString = "Completed"; 
+          return Task.FromResult(NodeResultStatus.Succeeded); 
+        };
 
 ###Grouping Nodes
 The following nodes allow 
 
 * <b>PipelineNode/IPipelineNode</b> - Runs a group of nodes serially on the subject.  This will be the root node of most flows.
+
+    var pipelineNode = new PipelineNode<TestObjectA>();
+
+    pipelineNode.AddChild(new SimpleTestNodeA1());
+    pipelineNode.AddChild(new SimpleTestNodeA2());
+
+    var testObject = new TestObjectA();
+    NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+
 * <b>GroupNode/IGroupNode</b> - An aggregation of nodes that are run on a subject using the asyncrhonous Task.WhenAll pattern.
+
+    var groupNode = new GroupNode<TestObjectA>();
+
+    groupNode.AddChild(new SimpleTestNodeA1());
+    groupNode.AddChild(new SimpleTestNodeA2());
+
+    var testObject = new TestObjectA();
+    NodeResult<TestObjectA> result =  await groupNode.ExecuteAsync(testObject);
+
 * <b>FirstMatchNode/IFirstMatchNode</b> - An aggregation of nodes of which the first matching it's ShouldExecute condition is run on the subject.
+
+    var matchNode = new FirstMatchNode<TestObjectA>();
+
+    var firstNode = new SimpleTestNodeA1();
+    firstNode.ShouldExecuteFuncAsync = 
+        context => Task.FromResult(context.Subject.TestValueInt == 0);
+    matchNode.AddChild(firstNode);
+
+    var secondNode = new SimpleTestNodeA2();
+    secondNode.ShouldExecuteFuncAsync = 
+        context => Task.FromResult(context.Subject.TestValueInt == 1);
+    matchNode.AddChild(secondNode);
+
+    var testObject = new TestObjectA();
+    NodeResult<TestObjectA> result = await matchNode.ExecuteAsync(testObject);
 
 ###ExecutionContext
 The execution context flows through all nodes in the flow.  The execution context contains options for running the flow as well as the
