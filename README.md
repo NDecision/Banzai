@@ -14,11 +14,45 @@ or provided via a function accept an ExecutionContext.  All node executions retu
 ###Basic Nodes
 These are the nodes that actually contain functions that run against the subject of the pipeline.
 
-  * <b>Node/INode NodeSync/INodeSync</b> - The simplest node type.  This is overridden to provide functionality.  NodeSync provides a convenience wrapper for synchronous methods.
+  * <b>Node/INode</b> - The simplest node type.  This is overridden to provide functionality or via the function properties.  
+  * <b>NodeSync/INodeSync</b> - Inherits from Node/INode and provides convenience methods for synchronous methods.
+
+####Node Usage
   * Override PerformExecute/PerformExecuteAsync to perform operations on the subject.
   * Override ShouldExecute to determine if the node should execute.
-  * Provide a function to PerformExecuteFunc/PerformExecuteFuncAsync and/or ShouldExecuteFunc/ShouldExecuteFuncAsync instead of overriding the function provided by the Node/NodeSync class.
-  * NodeSync just provides some convenience overloads for implementing synchronous results that are wrapped for you.
+  * PerformExecuteFunc/PerformExecuteFuncAsync - Function property that accepts a function to perform on the subject.
+  * ShouldExecuteFunc/ShouldExecuteFuncAsync - Function property that accepts a function to determine if the node should be executed.
+
+Example of overriding to provide functionality
+
+    public class SimpleTestNodeA1 : Node<TestObjectA>
+    {
+        private readonly bool _shouldExecute = true;
+
+        public SimpleTestNodeA1(bool shouldExecute)
+        {
+            _shouldExecute = shouldExecute;
+        }
+
+        public override Task<bool> ShouldExecuteAsync(ExecutionContext<TestObjectA> context)
+        {
+            return Task.FromResult(_shouldExecute);
+        }
+
+        protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<TestObjectA> context)
+        {
+            context.Subject.TestValueString = "Completed";
+            return Task.FromResult(NodeResultStatus.Succeeded);
+        }
+    }
+
+Example of providing functionality via functions
+
+    var node = new Node<TestObjectA>();
+
+    node.ShouldExecuteFuncAsync = context => Task.FromResult(context.Subject.TestValueInt == 5);
+    node.ExecutedFuncAsync = context => 
+        { context.Subject.TestValueString = "Completed"; return Task.FromResult(NodeResultStatus.Succeeded); };
 
 ###Grouping Nodes
 The following nodes allow 
