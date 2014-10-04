@@ -73,7 +73,7 @@ The following nodes allow
     var testObject = new TestObjectA();
     NodeResult<TestObjectA> result =  await groupNode.ExecuteAsync(testObject);
 
-<b>FirstMatchNode/IFirstMatchNode</b> - An aggregation of nodes of which the first matching it's ShouldExecute condition is run on the subject.
+<b>FirstMatchNode/IFirstMatchNode</b> - An aggregation of nodes of which the first matching its ShouldExecute condition is run on the subject.
 
     var matchNode = new FirstMatchNode<TestObjectA>();
 
@@ -94,13 +94,18 @@ The following nodes allow
 The execution context flows through all nodes in the flow.  The execution context contains options for running the flow as well as the
 instance of the subject that the flow is executed on.  
 
-####Subject
-This is the main subject instance that all nodes in the flow operate on.  If it is necessary to change the subject reference, use the ChangeSubject() method of the 
+<b>Subject</b> - This is the main subject instance that all nodes in the flow operate on.  If it is necessary to change the subject reference, use the ChangeSubject() method of the 
 ExecutionContext to do so.
 
-####State
-The execution context also contains a dynamic State property that can be used to 
+<b>State</b> - The execution context also contains a dynamic State property that can be used to 
 flow any random state needed for the workflow.  Any node in the flow can update the state or add dynamic properties to the state.
+
+<b>GlobalOptions</b> - ExecutionOptions that are set in the context and applied to every node.
+
+<b>EffectiveOptions</b> - Overrides the GlobalOptions with any ExecutionOptions that are set on the specific node being executed.  
+These are the options evaluated when executing a node.
+
+<b>ParentResult</b> - The root result of this node execution and all of its children.
 
 ###NodeResult
 When a node executes, it returns a NodeResult.  The NodeResult will contain:
