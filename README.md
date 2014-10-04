@@ -27,16 +27,9 @@ Example of overriding to provide functionality
 
     public class SimpleTestNodeA1 : Node<TestObjectA>
     {
-        private readonly bool _shouldExecute = true;
-
-        public SimpleTestNodeA1(bool shouldExecute)
-        {
-            _shouldExecute = shouldExecute;
-        }
-
         public override Task<bool> ShouldExecuteAsync(ExecutionContext<TestObjectA> context)
         {
-            return Task.FromResult(_shouldExecute);
+            return Task.FromResult(true);
         }
 
         protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<TestObjectA> context)
