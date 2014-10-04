@@ -45,14 +45,15 @@ Example of providing functionality via functions
 
     node.ShouldExecuteFuncAsync = context => Task.FromResult(context.Subject.TestValueInt == 5);
     node.ExecutedFuncAsync = context => 
-        { context.Subject.TestValueString = "Completed"; 
+        { 
+          context.Subject.TestValueString = "Completed"; 
           return Task.FromResult(NodeResultStatus.Succeeded); 
         };
 
 ###Grouping Nodes
 The following nodes allow 
 
-* <b>PipelineNode/IPipelineNode</b> - Runs a group of nodes serially on the subject.  This will be the root node of most flows.
+<b>PipelineNode/IPipelineNode</b> - Runs a group of nodes serially on the subject.  This will be the root node of most flows.
 
     var pipelineNode = new PipelineNode<TestObjectA>();
 
@@ -62,7 +63,7 @@ The following nodes allow
     var testObject = new TestObjectA();
     NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
 
-* <b>GroupNode/IGroupNode</b> - An aggregation of nodes that are run on a subject using the asyncrhonous Task.WhenAll pattern.
+<b>GroupNode/IGroupNode</b> - An aggregation of nodes that are run on a subject using the asyncrhonous Task.WhenAll pattern.
 
     var groupNode = new GroupNode<TestObjectA>();
 
@@ -72,7 +73,7 @@ The following nodes allow
     var testObject = new TestObjectA();
     NodeResult<TestObjectA> result =  await groupNode.ExecuteAsync(testObject);
 
-* <b>FirstMatchNode/IFirstMatchNode</b> - An aggregation of nodes of which the first matching it's ShouldExecute condition is run on the subject.
+<b>FirstMatchNode/IFirstMatchNode</b> - An aggregation of nodes of which the first matching it's ShouldExecute condition is run on the subject.
 
     var matchNode = new FirstMatchNode<TestObjectA>();
 
