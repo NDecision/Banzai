@@ -100,6 +100,9 @@ ExecutionContext to do so.
 <b>State</b> - The execution context also contains a dynamic State property that can be used to 
 flow any random state needed for the workflow.  Any node in the flow can update the state or add dynamic properties to the state.
 
+    var context = new ExecutionContext<object>(new object());
+    context.State.Foo = "Bar";
+
 <b>GlobalOptions</b> - ExecutionOptions that are set in the context and applied to every node.
 
 <b>EffectiveOptions</b> - Overrides the GlobalOptions with any ExecutionOptions that are set on the specific node being executed.  
@@ -163,8 +166,30 @@ Or to explicitly register the Banzai nodes and classes using the overload with n
 There are multiple ways in which flows can be built up.
 
 ###Manually Constructing Flows
+Any node can be manually added to the Children collection of any Multinode (Pipeline, Group, FirstMatch) using the AddChild or AddChildren methods.
+Multinodes can be added to other multinodes, allowing a node tree to be built.
+
+    var pipelineNode = new PipelineNode<TestObjectA>();
+
+    pipelineNode.AddChild(new SimpleTestNodeA1());
+    pipelineNode.AddChild(new SimpleTestNodeA2());
+
+Alternately, if the children are known at design time, the children may simply be added in the parents constructor.  
+However, this approach will be problematic if the child nodes have dependencies injected. 
 
 ###Injecting Child Nodes
+If nodes are registerd with the DI container (See [RegisteringNodes](##registeringnodes)), they can be injected into the 
+constructor of any node.
+
+    public class Pipeline1 : PipelineNode<TestObjectA>
+    {
+        private ISimpleTestNode _child1;
+
+        public Pipeline1(ISimpleTestNode child1)
+        {
+            _child1 = child1;
+        }
+    }
 
 ###Injecting INodeFactory
 
@@ -179,6 +204,6 @@ In some cases, you may want to switch the subject reference during part of the f
 service within a node and it returns a different subject reference back to you.  In this case, you want to nodes following the 
 current node to recieve the new subject.  This can be accomplished by calling the ExecutionContext.ChangeSubject() method.
 
-####More documentation to follow shortly....
+####More documentation to follow shortly...
 
 
