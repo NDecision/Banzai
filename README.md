@@ -178,7 +178,7 @@ Alternately, if the children are known at design time, the children may simply b
 However, this approach will be problematic if the child nodes have dependencies injected. 
 
 ###Injecting Child Nodes
-If nodes are registerd with the DI container (See [Registering Nodes](##registering nodes)), they can be injected into the 
+If nodes are registerd with the DI container (See [Registering Nodes](#registering-nodes)), they can be injected into the 
 constructor of any node.
 
     public class Pipeline1 : PipelineNode<TestObjectA>
