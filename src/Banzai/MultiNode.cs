@@ -52,6 +52,7 @@ namespace Banzai
 
         protected override async Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<T> context)
         {
+
             if (Children == null || Children.Count == 0)
             {
                 return NodeResultStatus.NotRun;

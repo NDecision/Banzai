@@ -88,6 +88,14 @@ namespace Banzai
 
         public Func<ExecutionContext<T>, Task<NodeResultStatus>> ExecutedFuncAsync { get; set; }
 
+        public virtual void OnBeforeExecute(ExecutionContext<T> context)
+        {
+        }
+
+        public virtual void OnAfterExecute(ExecutionContext<T> context)
+        {
+        }
+
         /// <summary>
         /// Determines if the current node should execute.
         /// </summary>
@@ -129,6 +137,8 @@ namespace Banzai
 
             ExecutionContext<T> context = PrepareExecutionContext(sourceContext, result);
 
+            OnBeforeExecute(context);
+
             if (! await ShouldExecuteFuncAsync(context))
             {
                 LogWriter.Info("ShouldExecute returned a false, skipping execution");
@@ -158,6 +168,9 @@ namespace Banzai
                     throw;
                 }
             }
+
+            OnAfterExecute(context);
+
             return result;
         }
 
