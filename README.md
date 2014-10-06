@@ -195,7 +195,7 @@ constructor of any node.
 As an alternative to directly injecting child nodes into a parent node, you can use the INodeFactory instead.  An INodeFactory
 is automatically set up when you register core constructs with RegisterBanzaiNodes. Any node that implements IMultiNode 
 (Pipeline/Group/FirstMatch or an implementation you provide) will have the INodeFactory automatically injected into the NodeFactory property (as of 1.0.6).  
-Yes it's somewhat like using a service locator for nodes ([so so terrible right? o_O](www.youtube.com/watch?v=aNUr__-VZeQ)).  
+Yes it's somewhat like using a service locator for nodes ([so so terrible right? o_O](https://www.youtube.com/watch?v=aNUr__-VZeQ)).  
 Typically, nodes want to concern themselves with injecting things that provide additional functionality such as external services/repositories etc...
 so this declutters the constructor and I see this as a cross-cutting concern.  Additionally, this allows the parent flow to apply logic to adding child flows 
 rather than just receiving the same child flows each time via straight injection.
