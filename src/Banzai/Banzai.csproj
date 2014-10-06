@@ -58,6 +58,7 @@
     <Compile Include="Factories\INodeFactory.cs" />
     <Compile Include="NodeSync.cs" />
     <Compile Include="Properties\SolutionVersion.cs" />
+    <Compile Include="Utility\DynamicDictionary.cs" />
     <Compile Include="Utility\Guard.cs" />
     <Compile Include="GroupNode.cs" />
     <Compile Include="Node.cs" />

@@ -1,0 +1,30 @@
+﻿using System.Collections.Concurrent;
+using System.Dynamic;
+
+namespace Banzai.Utility
+{
+    public class DynamicDictionary : DynamicObject
+    {
+        private readonly ConcurrentDictionary<string, object> _dictionary = new ConcurrentDictionary<string, object>();
+
+        public int Count
+        {
+            get
+            {
+                return _dictionary.Count;
+            }
+        }
+
+        public override bool TryGetMember(GetMemberBinder binder, out object result)
+        {
+            _dictionary.TryGetValue(binder.Name, out result);
+            return true;
+        }
+
+        public override bool TrySetMember(SetMemberBinder binder, object value)
+        {
+            _dictionary.AddOrUpdate(binder.Name, value, (s, o) => value);
+            return true;
+        }
+    }
+}

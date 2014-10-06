@@ -1,5 +1,4 @@
-﻿using System.Dynamic;
-using Banzai.Utility;
+﻿using Banzai.Utility;
 
 namespace Banzai
 {
@@ -14,7 +13,7 @@ namespace Banzai
 
         public ExecutionContext(T subject, ExecutionOptions globalOptions = null, NodeResult<T> rootResult = null)
         {
-            State = new ExpandoObject();
+            State = new DynamicDictionary();
             Subject = subject;
             GlobalOptions = globalOptions ?? new ExecutionOptions();
             if (rootResult != null)

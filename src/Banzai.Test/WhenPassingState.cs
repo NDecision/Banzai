@@ -34,6 +34,18 @@ namespace Banzai.Test
             result.Status.ShouldEqual(NodeResultStatus.Succeeded);
 
             Assert.AreEqual("Bar", context.State.Foo);
+        }
+
+        [Test]
+        public void Accessing_Nonexistent_State_Returns_Null()
+        {
+            var testObject = new TestObjectA();
+            var context = new ExecutionContext<TestObjectA>(testObject);
+
+            object result = context.State.NonexistentProperty;
+
+            result.ShouldBeNull();
         } 
+
     }
 }
