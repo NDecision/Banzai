@@ -120,9 +120,13 @@ Defaults to false.
 
 ###NodeResult
 When a node executes, it returns a NodeResult.  The NodeResult will contain:
+
 <b>NodeResultStatus</b> - Represents the status of this node.  If this is a parent node, it represents a rollup status of all child nodes.
+
 <b>Subject</b> - A reference to the subject.
+
 <b>ChildResults</b> - A collection of child result nodes corresponding to the current node's children.
+
 <b>Exception</b> - An Exception if any exception occurred during execution of the node.
 
 ####NodeResultStatus

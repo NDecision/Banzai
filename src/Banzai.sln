@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banzai.Autofac", "Banzai.Au
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banzai.Autofac.Test", "Banzai.Autofac.Test\Banzai.Autofac.Test.csproj", "{D1E838A4-FD05-49AD-9532-EF32DC1A2AB3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banzai.Log4Net", "Banzai.Log4Net\Banzai.Log4Net.csproj", "{A21720BE-9257-4F4E-9CAF-C52D614D499D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{D1E838A4-FD05-49AD-9532-EF32DC1A2AB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1E838A4-FD05-49AD-9532-EF32DC1A2AB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1E838A4-FD05-49AD-9532-EF32DC1A2AB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A21720BE-9257-4F4E-9CAF-C52D614D499D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A21720BE-9257-4F4E-9CAF-C52D614D499D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A21720BE-9257-4F4E-9CAF-C52D614D499D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A21720BE-9257-4F4E-9CAF-C52D614D499D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
