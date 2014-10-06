@@ -82,19 +82,25 @@ namespace Banzai
         
         public ExecutionOptions LocalOptions { get; set; }
 
+        /// <summary>
+        /// Current run status of this node.
+        /// </summary>
+        public NodeRunStatus Status { get; private set; }
+
+        /// <summary>
+        /// LogWriter used to write to the log from this node.
+        /// </summary>
         public ILogWriter LogWriter { get { return Logging.LogWriter.GetLogger(this); } }
 
+        /// <summary>
+        /// Function used to evaluate if this node should execute.  Takes precedence over overridden ShouldExecute method.
+        /// </summary>
         public Func<ExecutionContext<T>, Task<bool>> ShouldExecuteFuncAsync { get; set; }
 
+        /// <summary>
+        /// Function executed when the node executes. Takes precedence over overridden PerformExecute method.
+        /// </summary>
         public Func<ExecutionContext<T>, Task<NodeResultStatus>> ExecutedFuncAsync { get; set; }
-
-        public virtual void OnBeforeExecute(ExecutionContext<T> context)
-        {
-        }
-
-        public virtual void OnAfterExecute(ExecutionContext<T> context)
-        {
-        }
 
         /// <summary>
         /// Determines if the current node should execute.
@@ -174,6 +180,11 @@ namespace Banzai
             return result;
         }
 
+        /// <summary>
+        /// Method to override to provide functionality to the current node.
+        /// </summary>
+        /// <param name="context">Current execution context.</param>
+        /// <returns>Final result execution status of the node.</returns>
         protected virtual Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<T> context)
         {
             return Task.FromResult(NodeResultStatus.Succeeded);
@@ -198,6 +209,21 @@ namespace Banzai
             Status = NodeRunStatus.NotRun;
         }
 
-        public NodeRunStatus Status { get; private set; }
+        /// <summary>
+        /// Called before the node is executed. Override to add functionality.
+        /// </summary>
+        /// <param name="context">Effective context for execution.</param>
+        protected virtual void OnBeforeExecute(ExecutionContext<T> context)
+        {
+        }
+
+        /// <summary>
+        /// Called after the node is executed. Override to add functionality.
+        /// </summary>
+        /// <param name="context">Effective context for execution.</param>
+        protected virtual void OnAfterExecute(ExecutionContext<T> context)
+        {
+        }
+
      }
 }

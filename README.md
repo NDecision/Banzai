@@ -220,6 +220,16 @@ If you've used Banzai.Autofac to register your nodes, INodeFactory will be able 
         }
     }
 
+or
+
+    public class MyComplexNode : IPipeline<object>
+    {
+        public MyComplexNode(INodeFactory<object> nodeFactory
+        {
+            var node = nodeFactory.GetNode<ITestNode<object>>();
+        }
+    }
+
 
 ###Using FlowBuilder
 FlowBuilder allows you to build complex workflows with a simple fluent interface.  Complex flows can be constructed by 
