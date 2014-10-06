@@ -145,7 +145,7 @@ Represents the run status of the node.  The status will be one of the following:
   * Faulted - The node faulted (threw an exception)
 
 ##Registering Nodes
-Registering nodes with an IOC container is easy.  Currently, we provide Autofac helpers in the Banzai.Autofac library.  
+Registering nodes with an IOC container is easy.  Currently, we provide Autofac helpers in the [Banzai.Autofac library](https://www.nuget.org/packages/Banzai.Autofac/).  
 These extensions scan the indicated assembly for any custom nodes you have created and register them as themselves and their implemented interfaces.
 Nodes are registered as Transient/PerDependency.
 
@@ -255,6 +255,19 @@ Or via the nodefactory:
 
     var nodeFactory = container.Resolve<INodeFactory<object>>();
     var flow = (IPipelineNode<object>)factory.GetFlow("TestFlow1");
+
+
+##Logging
+By default, Banzai will log to the Debug console in debug mode and will not log in release mode.  The [Banzai.Log4Net package](https://www.nuget.org/packages/Banzai.Log4Net/) will
+allow you to log to Log4Net.  Obviously, you must configure Log4Net as you normally would.
+
+Banzai will log a number of Error/Info/Debug operations to the log by default.  From any INode (v1.0.7 or greater), a LogWriter
+will be exposed for your own custom logging.
+
+Setting up Log4Net (after installing the package)
+
+    LogWriter.SetFactory(new Log4NetWriterFactory());
+
 
 ##Advanced Scenarios
 

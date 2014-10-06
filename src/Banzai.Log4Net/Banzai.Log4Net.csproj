@@ -28,6 +28,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Banzai.Log4Net.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net">
@@ -56,6 +57,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Banzai.Log4Net.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

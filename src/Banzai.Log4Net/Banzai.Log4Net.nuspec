@@ -10,13 +10,13 @@
         <iconUrl>http://upload.wikimedia.org/wikipedia/commons/0/03/Empty_wave_at_Banzai_Pipeline.jpeg</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>$description$</description>
-        <summary>An easy Autofac extension for registering nodes from an assembly</summary>
+        <summary>Enables Banzai to log to Log4Net.</summary>
         <copyright>Copyright 2014 Eric Swann, et. al. - All rights reserved.</copyright>
         <language />
-        <tags>Banzai Pipeline Dataflow Workflow Autofac</tags>
+        <tags>Banzai Pipeline Dataflow Workflow Log4Net</tags>
         <dependencies>
           <dependency id="Banzai" version="$version$" />
-          <dependency id="Autofac" version="3.4.0" />
+          <dependency id="log4net" version="2.0.3" />
         </dependencies>
     </metadata>
   <files>
