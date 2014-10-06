@@ -214,7 +214,7 @@ If you've used Banzai.Autofac to register your nodes, INodeFactory will be able 
 
     public class MyComplexNode : IPipeline<object>
     {
-        public MyComplexNode(INodeFactory<object> nodeFactory
+        public MyComplexNode(INodeFactory<object> nodeFactory)
         {
             var node = nodeFactory.GetNode<ITestNode<object>>();
         }
@@ -224,9 +224,10 @@ or
 
     public class MyComplexNode : IPipeline<object>
     {
-        public MyComplexNode(INodeFactory<object> nodeFactory
+        public override void OnBeforeExecute(ExecutionContext<object> context)
         {
-            var node = nodeFactory.GetNode<ITestNode<object>>();
+            //Use the built-in nodefactory (not available yet in the constructor)
+            var node = NodeFactory.GetNode<ITestNode<object>>();
         }
     }
 
