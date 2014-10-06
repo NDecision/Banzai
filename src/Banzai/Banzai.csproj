@@ -50,6 +50,7 @@
     <Compile Include="Factories\NodeFactoryBase.cs" />
     <Compile Include="FirstMatchNode.cs" />
     <Compile Include="Logging\DebugLogWriter.cs" />
+    <Compile Include="Logging\DebugLogWriterFactory.cs" />
     <Compile Include="Logging\ILogWriter.cs" />
     <Compile Include="Logging\ILogWriterFactory.cs" />
     <Compile Include="Logging\LogWriter.cs" />

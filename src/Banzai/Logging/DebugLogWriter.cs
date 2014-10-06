@@ -32,11 +32,6 @@ namespace Banzai.Logging
             System.Diagnostics.Debug.WriteLine(BuildMessage("Fatal: " + string.Format(format, formatArgs)));
         }
 
-        public void Fatal(string format, Exception exception = null, params object[] formatArgs)
-        {
-            System.Diagnostics.Debug.WriteLine(BuildMessage("Fatal: " + string.Format(format, formatArgs), exception));
-        }
-
         public void Fatal(Func<string> deferredWrite, Exception exception = null)
         {
             System.Diagnostics.Debug.WriteLine(BuildMessage("Fatal: " + deferredWrite(), exception));
@@ -50,11 +45,6 @@ namespace Banzai.Logging
         public void Error(string format, params object[] formatArgs)
         {
             System.Diagnostics.Debug.WriteLine(BuildMessage("Error: " + string.Format(format, formatArgs)));
-        }
-
-        public void Error(string format, Exception exception = null, params object[] formatArgs)
-        {
-            System.Diagnostics.Debug.WriteLine(BuildMessage("Error: " + string.Format(format, formatArgs), exception));
         }
 
         public void Error(Func<string> deferredWrite, Exception exception = null)
@@ -72,11 +62,6 @@ namespace Banzai.Logging
             System.Diagnostics.Debug.WriteLine(BuildMessage("Warn: " + string.Format(format, formatArgs)));
         }
 
-        public void Warn(string format, Exception exception = null, params object[] formatArgs)
-        {
-            System.Diagnostics.Debug.WriteLine(BuildMessage("Warn: " + string.Format(format, formatArgs), exception));
-        }
-
         public void Warn(Func<string> deferredWrite, Exception exception = null)
         {
             System.Diagnostics.Debug.WriteLine(BuildMessage("Warn: " + deferredWrite(), exception));
@@ -90,11 +75,6 @@ namespace Banzai.Logging
         public void Info(string format, params object[] formatArgs)
         {
             System.Diagnostics.Debug.WriteLine(BuildMessage("Info: " + string.Format(format, formatArgs)));
-        }
-
-        public void Info(string format, Exception exception = null, params object[] formatArgs)
-        {
-            System.Diagnostics.Debug.WriteLine(BuildMessage("Info: " + string.Format(format, formatArgs), exception));
         }
 
         public void Info(Func<string> deferredWrite, Exception exception = null)
@@ -112,35 +92,11 @@ namespace Banzai.Logging
             System.Diagnostics.Debug.WriteLine(BuildMessage("Debug: " + string.Format(format, formatArgs)));
         }
 
-        public void Debug(string format, Exception exception = null, params object[] formatArgs)
-        {
-            System.Diagnostics.Debug.WriteLine(BuildMessage("Debug: " + string.Format(format, formatArgs), exception));
-        }
-
         public void Debug(Func<string> deferredWrite, Exception exception = null)
         {
             System.Diagnostics.Debug.WriteLine(BuildMessage("Debug: " + deferredWrite(), exception));
         }
 
-        public void Trace(string message, Exception exception = null)
-        {
-            System.Diagnostics.Debug.WriteLine(BuildMessage("Trace: " + message, exception));
-        }
-
-        public void Trace(string format, Exception exception = null, params object[] formatArgs)
-        {
-            System.Diagnostics.Debug.WriteLine(BuildMessage("Trace: " + string.Format(format, formatArgs), exception));
-        }
-
-        public void Trace(string format, params object[] formatArgs)
-        {
-            System.Diagnostics.Debug.WriteLine(BuildMessage("Trace: " + string.Format(format, formatArgs)));
-        }
-
-        public void Trace(Func<string> deferredWrite, Exception exception = null)
-        {
-            System.Diagnostics.Debug.WriteLine(BuildMessage("Trace: " + deferredWrite(), exception));
-        }
 
         private string BuildMessage(string message, Exception exception = null)
         {
@@ -149,13 +105,5 @@ namespace Banzai.Logging
             return fullMessage;
         }
 
-    }
-
-    public class DebugLogWriterFactory : ILogWriterFactory
-    {
-        public ILogWriter GetLogger(Type type)
-        {
-            return new DebugLogWriter(type);
-        }
     }
 }

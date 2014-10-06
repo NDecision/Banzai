@@ -19,14 +19,6 @@ namespace Banzai.Logging
         void Fatal(string messageFormat, params object[] formatArgs);
 
         /// <summary>
-        /// Log a fatal exception.  
-        /// </summary>
-        /// <param name="messageFormat">Format of the message.  Defers format until logging level is assessed.</param>
-        /// <param name="exception">Exception associated with the error.</param>
-        /// <param name="formatArgs">Args to be formatted into the message format.</param>
-        void Fatal(string messageFormat, Exception exception = null, params object[] formatArgs);
-
-        /// <summary>
         /// Log a fatal exception.
         /// </summary>
         /// <param name="deferredWrite">Defers the write operation until logging level is assessed. 
@@ -49,14 +41,6 @@ namespace Banzai.Logging
         void Error(string messageFormat, params object[] formatArgs);
 
         /// <summary>
-        /// Log an error.  
-        /// </summary>
-        /// <param name="messageFormat">Format of the message.  Defers format until logging level is assessed.</param>
-        /// <param name="exception">Exception associated with the error.</param>
-        /// <param name="formatArgs">Args to be formatted into the message format.</param>
-        void Error(string messageFormat, Exception exception = null, params object[] formatArgs);
-
-        /// <summary>
         /// Log an error.
         /// </summary>
         /// <param name="deferredWrite">Defers the write operation until logging level is assessed. 
@@ -77,14 +61,6 @@ namespace Banzai.Logging
         /// <param name="messageFormat">Format of the message.  Defers format until logging level is assessed.</param>
         /// <param name="formatArgs">Args to be formatted into the message format.</param>
         void Warn(string messageFormat, params object[] formatArgs);
-
-        /// <summary>
-        /// Log a warning. 
-        /// </summary>
-        /// <param name="messageFormat">Format of the message.  Defers format until logging level is assessed.</param>
-        /// <param name="exception">Exception associated with the error.</param>
-        /// <param name="formatArgs">Args to be formatted into the message format.</param>
-        void Warn(string messageFormat, Exception exception = null, params object[] formatArgs);
 
         /// <summary>
         /// Log a warning.
@@ -111,14 +87,6 @@ namespace Banzai.Logging
         /// <summary>
         /// Log an info message.
         /// </summary>
-        /// <param name="messageFormat">Format of the message.  Defers format until logging level is assessed.</param>
-        /// <param name="exception">Exception associated with the error.</param>
-        /// <param name="formatArgs">Args to be formatted into the message format.</param>
-        void Info(string messageFormat, Exception exception = null, params object[] formatArgs);
-
-        /// <summary>
-        /// Log an info message.
-        /// </summary>
         /// <param name="deferredWrite">Defers the write operation until logging level is assessed. 
         /// Can be useful when expensive concatenation operations are required.</param>
         /// <param name="exception">Exception associated with the error.</param>
@@ -139,50 +107,12 @@ namespace Banzai.Logging
         void Debug(string messageFormat, params object[] formatArgs);
 
         /// <summary>
-        /// Log a debug message.  
-        /// </summary>
-        /// <param name="messageFormat">Format of the message.  Defers format until logging level is assessed.</param>
-        /// <param name="exception">Exception associated with the error.</param>
-        /// <param name="formatArgs">Args to be formatted into the message format.</param>
-        void Debug(string messageFormat, Exception exception = null, params object[] formatArgs);
-
-        /// <summary>
         /// Log a debug message.
         /// </summary>
         /// <param name="deferredWrite">Defers the write operation until logging level is assessed. 
         /// Can be useful when expensive concatenation operations are required.</param>
         /// <param name="exception">Exception associated with the error.</param>
         void Debug(Func<string> deferredWrite, Exception exception = null);
-
-        /// <summary>
-        /// Log a trace message.
-        /// </summary>
-        /// <param name="message">Message to log.</param>
-        /// <param name="exception">Exception associated with the error.</param>
-        void Trace(string message, Exception exception = null);
-
-        /// <summary>
-        /// Log a trace message. 
-        /// </summary>
-        /// <param name="messageFormat">Format of the message.  Defers format until logging level is assessed.</param>
-        /// <param name="formatArgs">Args to be formatted into the message format.</param>
-        void Trace(string messageFormat, params object[] formatArgs);
-
-        /// <summary>
-        /// Log a trace message. 
-        /// </summary>
-        /// <param name="messageFormat">Format of the message.  Defers format until logging level is assessed.</param>
-        /// <param name="exception">Exception associated with the error.</param>
-        /// <param name="formatArgs">Args to be formatted into the message format.</param>
-        void Trace(string messageFormat, Exception exception = null, params object[] formatArgs);
-
-        /// <summary>
-        /// Log a trace message.
-        /// </summary>
-        /// <param name="deferredWrite">Defers the write operation until logging level is assessed. 
-        /// Can be useful when expensive concatenation operations are required.</param>
-        /// <param name="exception">Exception associated with the error.</param>
-        void Trace(Func<string> deferredWrite, Exception exception = null);
 
     }
 }
