@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Banzai.Logging;
 using Banzai.Utility;
 
 namespace Banzai
@@ -21,6 +22,11 @@ namespace Banzai
         /// Gets the current runstatus of this node.
         /// </summary>
         NodeRunStatus Status { get; }
+
+        /// <summary>
+        /// Gets the current log writer
+        /// </summary>
+        ILogWriter LogWriter { get; }
 
         /// <summary>
         /// Method that defines the async function to call to determine if this node should be executed.
@@ -76,6 +82,8 @@ namespace Banzai
         
         public ExecutionOptions LocalOptions { get; set; }
 
+        public ILogWriter LogWriter { get { return Logging.LogWriter.GetLogger(this); } }
+
         public Func<ExecutionContext<T>, Task<bool>> ShouldExecuteFuncAsync { get; set; }
 
         public Func<ExecutionContext<T>, Task<NodeResultStatus>> ExecutedFuncAsync { get; set; }
@@ -110,8 +118,11 @@ namespace Banzai
             Guard.AgainstNullArgument("context", sourceContext);
             Guard.AgainstNullArgumentProperty("context", "Subject", sourceContext.Subject);
 
-            if(Status != NodeRunStatus.NotRun)
+            if (Status != NodeRunStatus.NotRun)
+            {
+                LogWriter.Debug("Status does not equal 'NotRun', resetting the node before execution");
                 Reset();
+            }
 
             var subject = sourceContext.Subject;
             var result = new NodeResult<T>(subject);
@@ -119,18 +130,24 @@ namespace Banzai
             ExecutionContext<T> context = PrepareExecutionContext(sourceContext, result);
 
             if (! await ShouldExecuteFuncAsync(context))
+            {
+                LogWriter.Info("ShouldExecute returned a false, skipping execution");
                 return result;
+            }
 
             Status = NodeRunStatus.Running;
+            LogWriter.Debug("Executing the node");
 
             try
             {
                 result.Status = await ExecutedFuncAsync(context);
                 result.Subject = context.Subject;
                 Status = NodeRunStatus.Completed;
+                LogWriter.Info("Node completed execution, status is {0}", result.Status);
             }
             catch (Exception ex)
             {
+                LogWriter.Error("Node erred during execution, status is Failed", ex);
                 Status = NodeRunStatus.Faulted;
                 result.Subject = context.Subject;
                 result.Status = NodeResultStatus.Failed;
@@ -151,10 +168,15 @@ namespace Banzai
 
         protected virtual ExecutionContext<T> PrepareExecutionContext(ExecutionContext<T> context, NodeResult<T> currentResult)
         {
+            LogWriter.Debug("Preparing the execution context for execution.");
             context.AddResult(currentResult);
 
             if (LocalOptions != null)
+            {
+                LogWriter.Debug("Local options detected, merging with global settings. Local Options - ContinueOnFailure:{0}", 
+                    LocalOptions.ContinueOnFailure, LocalOptions.ThrowOnError);
                 context.EffectiveOptions = LocalOptions;
+            }
             return context;
         }
 

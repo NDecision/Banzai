@@ -8,7 +8,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Log4Net Library for Banzai")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
