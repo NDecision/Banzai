@@ -11,6 +11,7 @@ namespace Banzai
     /// <typeparam name="T">Type that the pipeline acts upon.</typeparam>
     public interface INode<T>
     {
+
         /// <summary>
         /// Gets the local options associated with this node.  These options will apply only to the current node.
         /// </summary>
@@ -51,6 +52,7 @@ namespace Banzai
         /// <param name="sourceContext">Subject to be moved through the node.</param>
         /// <returns>A NodeResult</returns>
         Task<NodeResult<T>> ExecuteAsync(ExecutionContext<T> sourceContext);
+
 
         /// <summary>
         /// Used to reset the node to a prerun state

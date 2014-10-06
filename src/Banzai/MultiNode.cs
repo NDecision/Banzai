@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Banzai.Factories;
 
 namespace Banzai
 {
+
     public interface IMultiNode<T> : INode<T>
     {
         IReadOnlyList<INode<T>> Children { get; }
@@ -12,12 +14,15 @@ namespace Banzai
         void AddChildren(IEnumerable<INode<T>> children);
 
         void RemoveChild(INode<T> child);
-    }
 
+        INodeFactory<T> NodeFactory { get; set; }
+    }
 
     public abstract class MultiNode<T> : Node<T>, IMultiNode<T>
     {
         private readonly List<INode<T>> _children = new List<INode<T>>();
+
+        public INodeFactory<T> NodeFactory { get; set; }
 
         public IReadOnlyList<INode<T>> Children { get { return _children; } }
 

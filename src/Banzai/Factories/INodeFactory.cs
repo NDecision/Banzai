@@ -3,7 +3,12 @@ using System.Collections.Generic;
 
 namespace Banzai.Factories
 {
-    public interface INodeFactory<T>
+
+    /// <summary>
+    /// Interface for the node factory.  Used to create child nodes.
+    /// </summary>
+    /// <typeparam name="T">Type of the underlying node subject.</typeparam>
+    public interface INodeFactory<T> 
     {
         TNode GetNode<TNode>() where TNode : INode<T>;
 

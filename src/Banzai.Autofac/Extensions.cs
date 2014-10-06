@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using System.Reflection;
 using Autofac;
+using Autofac.Core;
+using Banzai.Factories;
 
 namespace Banzai.Autofac
 {
@@ -50,17 +52,33 @@ namespace Banzai.Autofac
             {
                 if (type.IsGenericTypeDefinition)
                 {
-                    builder.RegisterGeneric(type)
+                    var registrationBuilder = builder.RegisterGeneric(type)
                         .AsSelf()
                         .AsImplementedInterfaces()
                         .InstancePerDependency();
+
+                    if (type.IsAssignableFrom(typeof (IMultiNode<>)))
+                    {
+                        registrationBuilder.WithProperty(
+                            new ResolvedParameter(
+                                (pi, c) => pi.IsNodeFactory(),
+                                (pi, c) => c.Resolve(pi.ParameterType)));
+                    }
                 }
                 else
                 {
-                    builder.RegisterType(type)
+                    var registrationBuilder = builder.RegisterType(type)
                         .AsSelf()
                         .AsImplementedInterfaces()
                         .InstancePerDependency();
+
+                    if (type.IsAssignableFrom(typeof(IMultiNode<>)))
+                    {
+                        registrationBuilder.WithProperty(
+                            new ResolvedParameter(
+                                (pi, c) => pi.IsNodeFactory(),
+                                (pi, c) => c.Resolve(pi.ParameterType)));
+                    }
                 }
             }
 
@@ -92,27 +110,42 @@ namespace Banzai.Autofac
         /// <returns>Builder including added nodes.</returns>
         public static ContainerBuilder RegisterBanzaiNodes(this ContainerBuilder builder)
         {
-            builder.RegisterGeneric(typeof(GroupNode<>))
-                .AsImplementedInterfaces()
-                .AsSelf()
-                .InstancePerDependency();
-
-            builder.RegisterGeneric(typeof(PipelineNode<>))
-                .AsImplementedInterfaces()
-                .AsSelf()
-                .InstancePerDependency();
-
-            builder.RegisterGeneric(typeof(FirstMatchNode<>))
-                .AsImplementedInterfaces()
-                .AsSelf()
-                .InstancePerDependency();
-
-            builder.RegisterGeneric(typeof(AutofacNodeFactory<>))
+            builder.RegisterGeneric(typeof (AutofacNodeFactory<>))
                 .AsImplementedInterfaces()
                 .AsSelf()
                 .InstancePerLifetimeScope();
 
+            builder.RegisterGeneric(typeof (GroupNode<>))
+                .AsImplementedInterfaces()
+                .AsSelf()
+                .InstancePerDependency()
+                .WithProperty(new ResolvedParameter(
+                    (pi, c) => pi.IsNodeFactory(),
+                    (pi, c) => c.Resolve(pi.ParameterType)));
+
+            builder.RegisterGeneric(typeof (PipelineNode<>))
+
+                .AsImplementedInterfaces()
+                .AsSelf()
+                .InstancePerDependency()
+                .WithProperty(new ResolvedParameter(
+                    (pi, c) => pi.IsNodeFactory(),
+                    (pi, c) => c.Resolve(pi.ParameterType)));
+
+            builder.RegisterGeneric(typeof (FirstMatchNode<>))
+                .AsImplementedInterfaces()
+                .AsSelf()
+                .InstancePerDependency()
+                .WithProperty(new ResolvedParameter(
+                    (pi, c) => pi.IsNodeFactory(),
+                    (pi, c) => c.Resolve(pi.ParameterType)));
+
             return builder;
+        }
+
+        public static bool IsNodeFactory(this ParameterInfo parameterInfo)
+        {
+            return parameterInfo.Member.Name == "set_NodeFactory" && parameterInfo.ParameterType.IsClosedTypeOf(typeof (INodeFactory<>));
         }
 
     }

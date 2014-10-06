@@ -67,6 +67,32 @@ namespace Banzai.Autofac.Test
             Assert.Throws<ComponentNotRegisteredException>(() => nodeFactory.GetNode<ITestNode<object>>("TestName2"));
         }
 
+        [Test]
+        public void NodeFactory_Is_Automatically_Set_On_MultiNode()
+        {
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+
+            var container = containerBuilder.Build();
+            var pipelineNode = container.Resolve<PipelineNode<object>>();
+
+            pipelineNode.NodeFactory.ShouldNotBeNull();
+        }
+
+        [Test]
+        public void NodeFactory_On_MultiNode_Can_Resolve_Other_Nodes()
+        {
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+
+            var container = containerBuilder.Build();
+            var pipelineNode = container.Resolve<PipelineNode<object>>();
+
+            var retrievedNode = pipelineNode.NodeFactory.GetNode<ITestNode2>();
+
+            retrievedNode.ShouldNotBeNull();
+        }
+
 
     }
 

@@ -141,7 +141,7 @@ Represents the run status of the node.  The status will be one of the following:
   * Faulted - The node faulted (threw an exception)
 
 ##Registering Nodes
-Registering nodes with an IOC container is easy with Autofac using the extensions available in the Banzai.Autofac library.  
+Registering nodes with an IOC container is easy.  Currently, we provide Autofac helpers in the Banzai.Autofac library.  
 These extensions scan the indicated assembly for any custom nodes you have created and register them as themselves and their implemented interfaces.
 Nodes are registered as Transient/PerDependency.
 
@@ -192,10 +192,65 @@ constructor of any node.
     }
 
 ###Injecting INodeFactory
+As an alternative to directly injecting child nodes into a parent node, you can use the INodeFactory instead.  An INodeFactory
+is automatically set up when you register core constructs with RegisterBanzaiNodes. Any node that implements IMultiNode 
+(Pipeline/Group/FirstMatch or an implementation you provide) will have the INodeFactory automatically injected into the NodeFactory property (as of 1.0.6).  
+Yes it's somewhat like using a service locator for nodes ([so so terrible right? o_O](www.youtube.com/watch?v=aNUr__-VZeQ)).  
+Typically, nodes want to concern themselves with injecting things that provide additional functionality such as external services/repositories etc...
+so this declutters the constructor and I see this as a cross-cutting concern.  Additionally, this allows the parent flow to apply logic to adding child flows 
+rather than just receiving the same child flows each time via straight injection.
+
+If you've used Banzai.Autofac to register your nodes, INodeFactory will be able to request nodes via any interface implemented or via the class type itself.
+
+    var containerBuilder = new ContainerBuilder();
+    containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+
+    var container = containerBuilder.Build();
+    var nodeFactory = container.Resolve<INodeFactory<object>>();
+
+    public class MyComplexNode : IPipeline<object>
+    {
+        public MyComplexNode(INodeFactory<object> nodeFactory
+        {
+            var node = nodeFactory.GetNode<ITestNode<object>>();
+        }
+    }
+
 
 ###Using FlowBuilder
 FlowBuilder allows you to build complex workflows with a simple fluent interface.  Complex flows can be constructed by 
-adding both nodes and subflows.
+adding both nodes and subflows.  Once a flow is registered, it can be accessed from the container or via the INodeFactory.
+
+####Methods
+<b>CreateFlow</b> - Initiates flow creation and returns a FlowBuilder for the flow.
+<b>AddRoot</b> - Adds a root node to a flow.  Returns a reference to a FlowComponentBuilder for the root node.
+<b>AddChild</b> - Adds a child to the current node and returns the same FlowComponentBuilder for the current node (not the child).
+<b>AddFlow</b> - Allows the addition of one flow as a child of the current node.  Allows for the creation of common flows that can be added to other flows.
+<b>ForChild</b> - Changes the FlowComponentBuilder context to the specified child node.
+<b>Register</b> - Must be called to indicate the flow definition as been completed and to register the flow with the container. 
+
+    var flowBuilder = new FlowBuilder<object>(new AutofacFlowRegistrar(containerBuilder));
+
+    flowBuilder.CreateFlow("TestFlow1")
+      .AddRoot<IPipelineNode<object>>()
+      .AddChild<ITestNode2>()
+      .AddChild<IPipelineNode<object>>()
+        .ForChild<IPipelineNode<object>>()
+        .AddChild<ITestNode4>()
+        .AddChild<ITestNode3>()
+        .AddChild<ITestNode2>();
+    flowBuilder.Register();
+
+    var container = containerBuilder.Build();
+
+Access it via the container:
+
+    var flow = container.ResolveNamed<FlowComponent<object>>("TestFlow1");
+
+Or via the nodefactory:
+
+    var nodeFactory = container.Resolve<INodeFactory<object>>();
+    var flow = (IPipelineNode<object>)factory.GetFlow("TestFlow1");
 
 ##Advanced Scenarios
 
