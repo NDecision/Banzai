@@ -23,7 +23,7 @@ namespace Banzai.Factories
         }
 
 
-        public INode<T> BuildNode(FlowComponent<T> component)
+        protected INode<T> BuildNode(FlowComponent<T> component)
         {
             INode<T> node;
             //Get the node or flow from the flowComponent

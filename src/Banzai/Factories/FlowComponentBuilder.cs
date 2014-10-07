@@ -6,6 +6,10 @@ using Banzai.Utility;
 namespace Banzai.Factories
 {
 
+    /// <summary>
+    /// Allows the construction of a root flow.
+    /// </summary>
+    /// <typeparam name="T">Type of the flow subject.</typeparam>
     public interface IFlowBuilder<T>
     {
         /// <summary>
@@ -25,6 +29,10 @@ namespace Banzai.Factories
         IFlowComponentBuilder<T> AddRoot(Type nodeType, string name = null);
     }
 
+    /// <summary>
+    /// Allows the addition of flow components (nodes or subflows) to a parent flow or component.
+    /// </summary>
+    /// <typeparam name="T">Type of the flow subject.</typeparam>
     public interface IFlowComponentBuilder<T>
     {
         /// <summary>

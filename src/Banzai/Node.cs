@@ -145,7 +145,7 @@ namespace Banzai
 
             OnBeforeExecute(context);
 
-            if (! await ShouldExecuteFuncAsync(context))
+            if (! await ShouldExecuteFuncAsync(context).ConfigureAwait(false))
             {
                 LogWriter.Info("ShouldExecute returned a false, skipping execution");
                 return result;
@@ -156,7 +156,7 @@ namespace Banzai
 
             try
             {
-                result.Status = await ExecutedFuncAsync(context);
+                result.Status = await ExecutedFuncAsync(context).ConfigureAwait(false);
                 result.Subject = context.Subject;
                 Status = NodeRunStatus.Completed;
                 LogWriter.Info("Node completed execution, status is {0}", result.Status);

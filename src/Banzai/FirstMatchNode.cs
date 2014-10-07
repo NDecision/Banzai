@@ -16,7 +16,7 @@ namespace Banzai
             
             foreach (var childNode in Children)
             {
-                result = await childNode.ExecuteAsync(context);
+                result = await childNode.ExecuteAsync(context).ConfigureAwait(false);
 
                 if (result.Status != NodeResultStatus.NotRun)
                     break;

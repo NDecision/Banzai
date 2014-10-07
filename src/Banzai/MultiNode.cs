@@ -52,18 +52,19 @@ namespace Banzai
 
         protected override async Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<T> context)
         {
-
             if (Children == null || Children.Count == 0)
             {
                 return NodeResultStatus.NotRun;
             }
 
-            return await ExecuteChildrenAsync(context);
+            return await ExecuteChildrenAsync(context).ConfigureAwait(false);
         }
 
         protected override ExecutionContext<T> PrepareExecutionContext(ExecutionContext<T> context, NodeResult<T> currentResult)
         {
             var derivedContext = new ExecutionContext<T>(context, currentResult);
+
+            context.AddResult(currentResult);
 
             if (LocalOptions != null)
                 derivedContext.EffectiveOptions = LocalOptions;

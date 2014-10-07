@@ -219,5 +219,22 @@ namespace Banzai.Test
             testObject.TestValueInt.ShouldEqual(100);
         }
 
+        [Test]
+        public async void Nested_Pipeline_Results_Contain_All_Child_Results()
+        {
+            var pipelineNode = new PipelineNode<TestObjectA>();
+            var pipelineNode2 = new PipelineNode<TestObjectA>();
+
+            pipelineNode.AddChild(pipelineNode2);
+            pipelineNode2.AddChild(new SimpleTestNodeA2());
+            pipelineNode2.AddChild(new SimpleTestNodeA2());
+
+            var testObject = new TestObjectA();
+            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+
+            result.ChildResults.Count().ShouldEqual(1);
+            result.ChildResults.First().ChildResults.Count().ShouldEqual(2);
+        }
+
     }
 }

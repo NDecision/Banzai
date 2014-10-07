@@ -16,7 +16,7 @@ namespace Banzai
 
             foreach (var childNode in Children)
             {
-                var result = await childNode.ExecuteAsync(context);
+                var result = await childNode.ExecuteAsync(context).ConfigureAwait(false);
 
                 results.Add(result);
 
@@ -25,7 +25,7 @@ namespace Banzai
                     break;
                 }
             }
-
+            
             return AggregateNodeResults(results, context.EffectiveOptions);
         }
     }

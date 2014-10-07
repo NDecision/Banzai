@@ -7,7 +7,7 @@ namespace Banzai
     /// context created globally or mutated by previous nodes.
     /// </summary>
     /// <typeparam name="T">Type of the subject that the nodes operate on.</typeparam>
-    public class ExecutionContext<T>
+    public sealed class ExecutionContext<T>
     {
         private ExecutionOptions _effectiveOptions;
 
@@ -20,7 +20,7 @@ namespace Banzai
                 ParentResult = rootResult;
         }
 
-        protected internal ExecutionContext(ExecutionContext<T> parentContext, NodeResult<T> parentResult = null) 
+        internal ExecutionContext(ExecutionContext<T> parentContext, NodeResult<T> parentResult = null) 
         {
             Guard.AgainstNullArgument("parentContext", parentContext);
             Guard.AgainstNullArgumentProperty("parentContext", "Subject", parentContext.Subject);
@@ -88,11 +88,10 @@ namespace Banzai
             {
                 ParentResult = result;
             }
-            else
+            else if(ParentResult != result)
             {
                 ParentResult.AddChildResult(result);
             }
-            
         }
 
     }

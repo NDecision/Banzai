@@ -1,6 +1,6 @@
 ﻿namespace Banzai
 {
-    public class ExecutionOptions
+    public sealed class ExecutionOptions
     {
         /// <summary>
         /// Indicates that parent processing should continue if the current node fails.

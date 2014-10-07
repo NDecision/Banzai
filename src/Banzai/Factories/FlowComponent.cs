@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Banzai.Factories
 {
     /// <summary>
-    /// Represents the definition of a flow component.  Can represent a flow or a node.
+    /// Represents the definition of a flow component. Can represent a flow or a node.
     /// </summary>
     public class FlowComponent<T>
     {
