@@ -2,14 +2,14 @@
 
 ##Banzai!! - Your Simple Pipeline Solution
 
-Banzai is an easy .Net pipeline solution that contains composable nodes for construcing simple and complex pipelines.  
+Banzai is an easy .Net pipeline solution that contains composable nodes for constructing simple and complex pipelines.  
 Yes, there is TPL Dataflow and it's really cool, but I was looking for something easy that solved the 80% case of simple
 asynchronous pipelines in my business applications.
 
 ##Basic Construction 
 Flows are composed from nodes, of which there are a few types.  All flows accept a Subject Type (T).  
 This the type of the subject that is acted upon by the workflow.  All methods that are either overridden 
-or provided via a function accept an ExecutionContext.  All node executions return a NodeResult.
+or provided via a function accept an ExecutionContext.  All node executions return a [NodeResult](#noderesult).
 
 ###Basic Nodes
 These are the nodes that actually contain functions that run against the subject of the pipeline.
