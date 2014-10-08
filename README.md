@@ -14,11 +14,10 @@ Flows are composed from nodes, of which there are a few types.  All flows accept
 This the type of the subject that is acted upon by the workflow.  All methods that are either overridden 
 or provided via a function accept an ExecutionContext.  All node executions return a [NodeResult](#noderesult).
 
-###Basic Nodes
-These are the nodes that actually contain functions that run against the subject of the pipeline.
+###Basic Node
+This is the that actually contain functions that run against the subject of the pipeline.
 
-  * <b>Node/INode</b> - The simplest node type.  This is overridden to provide functionality or via the function properties.  
-  * <b>NodeSync/INodeSync</b> - Inherits from Node/INode and provides convenience methods for synchronous methods.
+<b>Node/INode</b> - The simplest node type.  This is overridden to provide functionality or via the function properties.  
 
 ####Node Usage
   * Override PerformExecute/PerformExecuteAsync to perform operations on the subject.
