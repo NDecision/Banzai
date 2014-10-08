@@ -78,10 +78,19 @@ namespace Banzai.Factories
     }
 
 
+    /// <summary>
+    /// Allows the addition of flow components (nodes or subflows) to a parent flow or component.
+    /// Also underlies the FlowBuilder.
+    /// </summary>
+    /// <typeparam name="T">Type of the flow subject.</typeparam>
     public class FlowComponentBuilder<T> : IFlowComponentBuilder<T>, IFlowBuilder<T>
     {
         private readonly FlowComponent<T> _component;
 
+        /// <summary>
+        /// Constructs a new FlowComponentBuilder.
+        /// </summary>
+        /// <param name="component">FlowComponent to build up.</param>
         public FlowComponentBuilder(FlowComponent<T> component)
         {
             _component = component;

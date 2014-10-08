@@ -66,20 +66,33 @@ namespace Banzai
         void Reset();
     }
 
-
+    /// <summary>
+    /// The basic class for a functional node to be run by the pipeline.
+    /// </summary>
+    /// <typeparam name="T">Type that the pipeline acts upon.</typeparam>
     public class Node<T> : INode<T>
     {
+        /// <summary>
+        /// Creates a new Node.
+        /// </summary>
         public Node()
         {
             ShouldExecuteFuncAsync = ShouldExecuteAsync;
             ExecutedFuncAsync = PerformExecuteAsync;
         }
 
+        /// <summary>
+        /// Creates a new Node with local options to override global options.
+        /// </summary>
+        /// <param name="localOptions">Local options to override global options.</param>
         public Node(ExecutionOptions localOptions) : this()
         {
             LocalOptions = localOptions;
         }
         
+        /// <summary>
+        /// Local options which override the global options when this Node is run.  Applies only to the current node.
+        /// </summary>
         public ExecutionOptions LocalOptions { get; set; }
 
         /// <summary>
@@ -107,9 +120,9 @@ namespace Banzai
         /// </summary>
         /// <param name="context">Current ExecutionContext</param>
         /// <returns>Bool indicating if this node should run.</returns>
-        public virtual async Task<bool> ShouldExecuteAsync(ExecutionContext<T> context)
+        public virtual Task<bool> ShouldExecuteAsync(ExecutionContext<T> context)
         {
-            return true;
+            return Task.FromResult(true);
         }
 
         /// <summary>
@@ -190,6 +203,12 @@ namespace Banzai
             return Task.FromResult(NodeResultStatus.Succeeded);
         }
 
+        /// <summary>
+        /// Prepares the execution context before the current node is run.
+        /// </summary>
+        /// <param name="context">Source context for preparation.</param>
+        /// <param name="currentResult">A referene to the result of the current node.</param>
+        /// <returns>The execution context to be used in node execution.</returns>
         protected virtual ExecutionContext<T> PrepareExecutionContext(ExecutionContext<T> context, NodeResult<T> currentResult)
         {
             LogWriter.Debug("Preparing the execution context for execution.");
@@ -204,6 +223,9 @@ namespace Banzai
             return context;
         }
 
+        /// <summary>
+        /// Resets the current node to unrun state.
+        /// </summary>
         public virtual void Reset()
         {
             Status = NodeRunStatus.NotRun;

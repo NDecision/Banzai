@@ -6,6 +6,9 @@ using Banzai.Factories;
 
 namespace Banzai.Autofac
 {
+    /// <summary>
+    /// Extensions for assistence in registering nodes via Autofac.
+    /// </summary>
     public static class Extensions
     {
         /// <summary>
@@ -143,7 +146,7 @@ namespace Banzai.Autofac
             return builder;
         }
 
-        public static bool IsNodeFactory(this ParameterInfo parameterInfo)
+        private static bool IsNodeFactory(this ParameterInfo parameterInfo)
         {
             return parameterInfo.Member.Name == "set_NodeFactory" && parameterInfo.ParameterType.IsClosedTypeOf(typeof (INodeFactory<>));
         }

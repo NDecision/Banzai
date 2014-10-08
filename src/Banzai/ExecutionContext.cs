@@ -11,6 +11,12 @@ namespace Banzai
     {
         private ExecutionOptions _effectiveOptions;
 
+        /// <summary>
+        /// Creates a new execution context.
+        /// </summary>
+        /// <param name="subject">Subject of the current flow.</param>
+        /// <param name="globalOptions">Global options of the current flow.</param>
+        /// <param name="rootResult">Root result if one has already been established.</param>
         public ExecutionContext(T subject, ExecutionOptions globalOptions = null, NodeResult<T> rootResult = null)
         {
             State = new DynamicDictionary();
@@ -20,6 +26,11 @@ namespace Banzai
                 ParentResult = rootResult;
         }
 
+        /// <summary>
+        /// Creates a child context based on the parent context.  Used for nesting multi-nodes inside of other nodes.
+        /// </summary>
+        /// <param name="parentContext">Parent of this context.</param>
+        /// <param name="parentResult">Parent result to set on the new context, if any.</param>
         internal ExecutionContext(ExecutionContext<T> parentContext, NodeResult<T> parentResult = null) 
         {
             Guard.AgainstNullArgument("parentContext", parentContext);
@@ -35,12 +46,12 @@ namespace Banzai
         /// <summary>
         /// The subject that the workflow operates on.
         /// </summary>
-        public T Subject { get; protected set; }
+        public T Subject { get; private set; }
 
         /// <summary>
         /// A dynamic object of additional state that must be passed through the workflow.
         /// </summary>
-        public dynamic State { get; protected set; }
+        public dynamic State { get; private set; }
 
         /// <summary>
         /// The global options that this node is using for execution

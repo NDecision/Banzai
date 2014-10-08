@@ -2,6 +2,9 @@
 
 namespace Banzai.Logging
 {
+    /// <summary>
+    /// Interface for providing a log writer.
+    /// </summary>
     public interface ILogWriterFactory
     {
         /// <summary>

@@ -1,5 +1,8 @@
 ﻿namespace Banzai
 {
+    /// <summary>
+    /// Options that define how execution of the nodes is conducted.
+    /// </summary>
     public sealed class ExecutionOptions
     {
         /// <summary>

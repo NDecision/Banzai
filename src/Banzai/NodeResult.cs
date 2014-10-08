@@ -24,17 +24,17 @@ namespace Banzai
         /// <summary>
         /// Subject operated on by the node.
         /// </summary>
-        public T Subject { get; protected internal set; }
+        public T Subject { get; internal set; }
 
         /// <summary>
         /// Success status of the node operation.
         /// </summary>
-        public NodeResultStatus Status { get; protected internal set; }
+        public NodeResultStatus Status { get; internal set; }
 
         /// <summary>
         /// Exception, if any, that happened on this node during execution.
         /// </summary>
-        public Exception Exception { get; protected internal set; }
+        public Exception Exception { get; internal set; }
 
         /// <summary>
         /// Child results if the node contained child nodes.

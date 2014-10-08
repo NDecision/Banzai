@@ -33,6 +33,11 @@ namespace Banzai.Factories
             get { return _children; }
         }
 
+        /// <summary>
+        /// Adds a child to this FlowComponent.
+        /// </summary>
+        /// <param name="child">Child to add.</param>
+        /// <returns>Updated FlowComponent.</returns>
         protected internal FlowComponent<T> AddChild(FlowComponent<T> child)
         {
             if(IsFlow && _children.Count > 0)

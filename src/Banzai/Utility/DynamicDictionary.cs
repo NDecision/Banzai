@@ -3,7 +3,10 @@ using System.Dynamic;
 
 namespace Banzai.Utility
 {
-    public class DynamicDictionary : DynamicObject
+    /// <summary>
+    /// Dynamic dictionary for storing state.
+    /// </summary>
+    internal class DynamicDictionary : DynamicObject
     {
         private readonly ConcurrentDictionary<string, object> _dictionary = new ConcurrentDictionary<string, object>();
 
