@@ -52,8 +52,9 @@ Example of providing functionality via functions
           return Task.FromResult(NodeResultStatus.Succeeded); 
         };
 
-###Grouping Nodes
-The following nodes allow you to organize and run other nodes together.
+###Multi Nodes
+The following nodes allow you to organize and run other nodes together. These nodes are sealed and are intended for direct use.
+If you wish to create a custom MultiNode, reference [Abstract Multi Nodes](#abstract-multi-nodes) below.
 
 <b>PipelineNode/IPipelineNode</b> - Runs a group of nodes serially on the subject.  This will be the root node of most flows.
 
@@ -91,6 +92,17 @@ The following nodes allow you to organize and run other nodes together.
 
     var testObject = new TestObjectA();
     NodeResult<TestObjectA> result = await matchNode.ExecuteAsync(testObject);
+
+###Abstract Multi Nodes
+These nodes are synonymous with the above nodes, but are abstract and intended to serve as a base class for custom implementations.
+If you wish to create your own multi-node, inherit from one of these.  These abstract classes contain all of the functionality 
+of the corresponding concrete multi-nodes (the concrete multi-nodes directly inherit from these).
+
+<b>PipelineNodeBase/IPipelineNodeBase</b> - Base for concrete pipelines.
+
+<b>GroupNodeBase/IGroupNodeBase</b> - Base for concrete group nodes.
+
+<b>FirstMatchNodeBase/IFirstMatchNodeBase</b> - Base for concrete first match nodes.
 
 ###ExecutionContext
 The execution context flows through all nodes in the flow.  The execution context contains options for running the flow as well as the
