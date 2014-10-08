@@ -86,11 +86,25 @@ namespace Banzai.Autofac.Test
             containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
 
             var container = containerBuilder.Build();
-            var pipelineNode = container.Resolve<PipelineNode<object>>();
+            var pipelineNode = container.Resolve<TestPipelineNode1>();
 
             var retrievedNode = pipelineNode.NodeFactory.GetNode<ITestNode2>();
 
             retrievedNode.ShouldNotBeNull();
+        }
+
+        [Test]
+        public async void NodeFactory_Is_Available_In_OnBeforeExecute()
+        {
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+
+            var container = containerBuilder.Build();
+            var pipelineNode = container.Resolve<TestPipelineNode1>();
+
+            var result = await pipelineNode.ExecuteAsync(new object());
+
+            result.Status.ShouldEqual(NodeResultStatus.Succeeded);
         }
 
 

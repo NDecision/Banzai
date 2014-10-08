@@ -63,7 +63,7 @@ namespace Banzai.Autofac.Test
             var flowBuilder = new FlowBuilder<object>(new AutofacFlowRegistrar(containerBuilder));
 
             flowBuilder.CreateFlow("TestFlow1")
-                .AddRoot<IPipelineNode<object>>()
+                .AddRoot<PipelineNode<object>>()
                 .AddChild<ITestNode2>()
                 .AddChild<IPipelineNode<object>>()
                 .ForChild<IPipelineNode<object>>()
@@ -128,7 +128,7 @@ namespace Banzai.Autofac.Test
             var flowBuilder = new FlowBuilder<object>(new AutofacFlowRegistrar(containerBuilder));
 
             flowBuilder.CreateFlow("TestFlow2")
-                .AddRoot<IPipelineNode<object>>()
+                .AddRoot<PipelineNode<object>>()
                 .AddChild<ITestNode4>()
                 .AddChild<ITestNode3>()
                 .AddChild<ITestNode2>();
@@ -136,7 +136,7 @@ namespace Banzai.Autofac.Test
             flowBuilder.Register();
 
             flowBuilder.CreateFlow("TestFlow1")
-                .AddRoot<IPipelineNode<object>>()
+                .AddRoot<PipelineNode<object>>()
                 .AddChild<ITestNode2>()
                 .AddFlow("TestFlow2");
                 

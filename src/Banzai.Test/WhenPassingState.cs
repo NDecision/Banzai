@@ -12,8 +12,8 @@ namespace Banzai.Test
             var pipelineNode = new PipelineNode<TestObjectA>();
 
             pipelineNode.AddChild(new SimpleTestNodeA1());
-            pipelineNode.AddChild(new NodeSync<TestObjectA> { ExecutedFunc = ctxt => { ctxt.State.Foo = "Bar"; return NodeResultStatus.Succeeded; } });
-            pipelineNode.AddChild(new NodeSync<TestObjectA> { ExecutedFunc = ctxt => (ctxt.State.Foo == "Bar") ? NodeResultStatus.Succeeded : NodeResultStatus.Failed });
+            pipelineNode.AddChild(new Node<TestObjectA> { ExecutedFunc = ctxt => { ctxt.State.Foo = "Bar"; return NodeResultStatus.Succeeded; } });
+            pipelineNode.AddChild(new Node<TestObjectA> { ExecutedFunc = ctxt => (ctxt.State.Foo == "Bar") ? NodeResultStatus.Succeeded : NodeResultStatus.Failed });
 
             var testObject = new TestObjectA();
             NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
@@ -26,7 +26,7 @@ namespace Banzai.Test
             var pipelineNode = new PipelineNode<TestObjectA>();
 
             pipelineNode.AddChild(new SimpleTestNodeA1());
-            pipelineNode.AddChild(new NodeSync<TestObjectA> { ExecutedFunc = ctxt => { ctxt.State.Foo = "Bar"; return NodeResultStatus.Succeeded; } });
+            pipelineNode.AddChild(new Node<TestObjectA> { ExecutedFunc = ctxt => { ctxt.State.Foo = "Bar"; return NodeResultStatus.Succeeded; } });
 
             var testObject = new TestObjectA();
             var context = new ExecutionContext<TestObjectA>(testObject);

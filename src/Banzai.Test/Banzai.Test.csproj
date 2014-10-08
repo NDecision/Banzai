@@ -58,7 +58,6 @@
     </Compile>
     <Compile Include="WhenRunningFirstMatchNode.cs" />
     <Compile Include="WhenRunningFuncNode.cs" />
-    <Compile Include="WhenRunningFuncNodeSync.cs" />
     <Compile Include="WhenRunningGroupNode.cs" />
     <Compile Include="WhenRunningNode.cs" />
     <Compile Include="WhenRunningPipelineNode.cs" />

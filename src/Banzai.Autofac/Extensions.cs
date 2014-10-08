@@ -20,12 +20,12 @@ namespace Banzai.Autofac
         /// <returns>Builder including added nodes.</returns>
         public static ContainerBuilder RegisterBanzaiNodes(this ContainerBuilder builder, Assembly[] assemblies, bool includeCore = false)
         {
-            if (assemblies == null)
-                return builder;
-
-            foreach (var assembly in assemblies)
+            if (assemblies != null)
             {
-                builder.RegisterBanzaiNodes(assembly);
+                foreach (var assembly in assemblies)
+                {
+                    builder.RegisterBanzaiNodes(assembly);
+                }
             }
 
             if (includeCore)
@@ -46,41 +46,42 @@ namespace Banzai.Autofac
         /// <returns>Builder including added nodes.</returns>
         public static ContainerBuilder RegisterBanzaiNodes(this ContainerBuilder builder, Assembly assembly, bool includeCore = false)
         {
-            if (assembly == null)
-                return builder;
-
-            var types = assembly.GetTypes().Where(t => t.IsClass && t.IsClosedTypeOf(typeof (INode<>)));
-
-            foreach (var type in types)
+            if (assembly != null)
             {
-                if (type.IsGenericTypeDefinition)
-                {
-                    var registrationBuilder = builder.RegisterGeneric(type)
-                        .AsSelf()
-                        .AsImplementedInterfaces()
-                        .InstancePerDependency();
 
-                    if (type.IsAssignableFrom(typeof (IMultiNode<>)))
+                var types = assembly.GetTypes().Where(t => t.IsClass && t.IsClosedTypeOf(typeof (INode<>)));
+
+                foreach (var type in types)
+                {
+                    if (type.IsGenericTypeDefinition)
                     {
-                        registrationBuilder.WithProperty(
-                            new ResolvedParameter(
-                                (pi, c) => pi.IsNodeFactory(),
-                                (pi, c) => c.Resolve(pi.ParameterType)));
+                        var registrationBuilder = builder.RegisterGeneric(type)
+                            .AsSelf()
+                            .AsImplementedInterfaces()
+                            .InstancePerDependency();
+
+                        if (type.IsClosedTypeOf(typeof (IMultiNode<>)))
+                        {
+                            registrationBuilder.WithProperty(
+                                new ResolvedParameter(
+                                    (pi, c) => pi.IsNodeFactory(),
+                                    (pi, c) => c.Resolve(pi.ParameterType)));
+                        }
                     }
-                }
-                else
-                {
-                    var registrationBuilder = builder.RegisterType(type)
-                        .AsSelf()
-                        .AsImplementedInterfaces()
-                        .InstancePerDependency();
-
-                    if (type.IsAssignableFrom(typeof(IMultiNode<>)))
+                    else
                     {
-                        registrationBuilder.WithProperty(
-                            new ResolvedParameter(
-                                (pi, c) => pi.IsNodeFactory(),
-                                (pi, c) => c.Resolve(pi.ParameterType)));
+                        var registrationBuilder = builder.RegisterType(type)
+                            .AsSelf()
+                            .AsImplementedInterfaces()
+                            .InstancePerDependency();
+
+                        if (type.IsClosedTypeOf(typeof (IMultiNode<>)))
+                        {
+                            registrationBuilder.WithProperty(
+                                new ResolvedParameter(
+                                    (pi, c) => pi.IsNodeFactory(),
+                                    (pi, c) => c.Resolve(pi.ParameterType)));
+                        }
                     }
                 }
             }

@@ -28,10 +28,28 @@ namespace Banzai
         /// </summary>
         ILogWriter LogWriter { get; }
 
+
+        /// <summary>
+        /// Determines if the node should be executed.
+        /// </summary>
+        /// <param name="context">The current execution context.</param>
+        /// <returns>Bool indicating if the current node should be run.</returns>
+        bool ShouldExecute(ExecutionContext<T> context);
+
+        /// <summary>
+        /// Function to define if this node should be executed.
+        /// </summary>
+        Func<ExecutionContext<T>, bool> ShouldExecuteFunc { get; set; }
+
         /// <summary>
         /// Method that defines the async function to call to determine if this node should be executed.
         /// </summary>
         Func<ExecutionContext<T>, Task<bool>> ShouldExecuteFuncAsync { get; set; }
+
+        /// <summary>
+        /// Function to be performed when the node is executed.
+        /// </summary>
+        Func<ExecutionContext<T>, NodeResultStatus> ExecutedFunc { get; set; }
 
         /// <summary>
         /// Method that defines the async function to execute on the subject for this node.
@@ -77,6 +95,9 @@ namespace Banzai
         /// </summary>
         public Node()
         {
+            ShouldExecuteFunc = ShouldExecute;
+            ExecutedFunc = PerformExecute;
+
             ShouldExecuteFuncAsync = ShouldExecuteAsync;
             ExecutedFuncAsync = PerformExecuteAsync;
         }
@@ -106,14 +127,34 @@ namespace Banzai
         public ILogWriter LogWriter { get { return Logging.LogWriter.GetLogger(this); } }
 
         /// <summary>
+        /// Synchronous function to determine if node ShouldExecute.  Takes precedence above overridden ShouldExecute method.
+        /// </summary>
+        public Func<ExecutionContext<T>, bool> ShouldExecuteFunc { get; set; }
+
+        /// <summary>
         /// Function used to evaluate if this node should execute.  Takes precedence over overridden ShouldExecute method.
         /// </summary>
         public Func<ExecutionContext<T>, Task<bool>> ShouldExecuteFuncAsync { get; set; }
 
         /// <summary>
+        /// Synchronous function that provides functionality for the node.  Takes precedence above overridden PerformExecute method.
+        /// </summary>
+        public Func<ExecutionContext<T>, NodeResultStatus> ExecutedFunc { get; set; }
+
+        /// <summary>
         /// Function executed when the node executes. Takes precedence over overridden PerformExecute method.
         /// </summary>
         public Func<ExecutionContext<T>, Task<NodeResultStatus>> ExecutedFuncAsync { get; set; }
+
+        /// <summary>
+        /// Determines if the current node should execute with synchronous wrapper.
+        /// </summary>
+        /// <param name="context">Current ExecutionContext</param>
+        /// <returns>Bool indicating if this node should run.</returns>
+        public virtual bool ShouldExecute(ExecutionContext<T> context)
+        {
+            return true;
+        }
 
         /// <summary>
         /// Determines if the current node should execute.
@@ -122,7 +163,7 @@ namespace Banzai
         /// <returns>Bool indicating if this node should run.</returns>
         public virtual Task<bool> ShouldExecuteAsync(ExecutionContext<T> context)
         {
-            return Task.FromResult(true);
+            return Task.FromResult(ShouldExecuteFunc(context));
         }
 
         /// <summary>
@@ -194,13 +235,23 @@ namespace Banzai
         }
 
         /// <summary>
+        /// Method to override to provide functionality to the current node with synchronous wrapper.
+        /// </summary>
+        /// <param name="context">Current execution context.</param>
+        /// <returns>Final result execution status of the node.</returns>
+        protected virtual NodeResultStatus PerformExecute(ExecutionContext<T> context)
+        {
+            return NodeResultStatus.Succeeded;
+        }
+
+        /// <summary>
         /// Method to override to provide functionality to the current node.
         /// </summary>
         /// <param name="context">Current execution context.</param>
         /// <returns>Final result execution status of the node.</returns>
         protected virtual Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<T> context)
         {
-            return Task.FromResult(NodeResultStatus.Succeeded);
+            return Task.FromResult(ExecutedFunc(context));
         }
 
         /// <summary>

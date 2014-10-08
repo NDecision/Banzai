@@ -8,7 +8,7 @@ namespace Banzai.Autofac.Test
     {
         protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<object> context)
         {
-            throw new System.NotImplementedException();
+            return Task.FromResult(NodeResultStatus.Succeeded);
         }
     }
 
@@ -18,7 +18,7 @@ namespace Banzai.Autofac.Test
     {
         protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<object> context)
         {
-            throw new System.NotImplementedException();
+            return Task.FromResult(NodeResultStatus.Succeeded);
         }
     }
 
@@ -28,7 +28,7 @@ namespace Banzai.Autofac.Test
     {
         protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<object> context)
         {
-            throw new System.NotImplementedException();
+            return Task.FromResult(NodeResultStatus.Succeeded);
         }
     }
 
@@ -38,7 +38,19 @@ namespace Banzai.Autofac.Test
     {
         protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<object> context)
         {
-            throw new System.NotImplementedException();
+            return Task.FromResult(NodeResultStatus.Succeeded);
+        }
+    }
+
+    public interface ITestPipelineNode1 : IPipelineNode<object> { }
+
+    public class TestPipelineNode1 : PipelineNode<object>, ITestPipelineNode1
+    {
+        protected override void OnBeforeExecute(ExecutionContext<object> context)
+        {
+            AddChild(NodeFactory.GetNode<ITestNode2>());
+            AddChild(NodeFactory.GetNode<ITestNode3>());
+            AddChild(NodeFactory.GetNode<ITestNode4>());
         }
     }
 }
