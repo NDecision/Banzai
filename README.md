@@ -130,7 +130,7 @@ When a node executes, it returns a NodeResult.  The NodeResult will contain:
 <b>Exception</b> - An Exception if any exception occurred during execution of the node.
 
 <b>GetFailExceptions()</b> - This method aggregates all the exceptions on the failure path of the current node and returns them as an IEnumerable&lt;Exception&gt;.  
-This basically means that any node that contributed to a failure status of this node.  It's important to know that if a PipelineNode is set to ContinueOnFailure 
+This includes any exception from nodes that contributed to a failure status of the current.  It's important to know that if a PipelineNode is set to ContinueOnFailure 
 and some of the nodes succeed, the PipelineNode will have a status of PartiallySucceeded and as such will not have failures added to this collection.
 
 ####NodeResultStatus
