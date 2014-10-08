@@ -44,7 +44,7 @@ namespace Banzai.Autofac.Test
 
     public interface ITestPipelineNode1 : IPipelineNode<object> { }
 
-    public class TestPipelineNode1 : PipelineNode<object>, ITestPipelineNode1
+    public class TestPipelineNode1 : PipelineNodeBase<object>, ITestPipelineNode1
     {
         protected override void OnBeforeExecute(ExecutionContext<object> context)
         {

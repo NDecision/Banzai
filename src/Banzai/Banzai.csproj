@@ -48,7 +48,13 @@
     <Compile Include="Factories\FlowComponentBuilder.cs" />
     <Compile Include="Factories\IFlowRegistrar.cs" />
     <Compile Include="Factories\NodeFactoryBase.cs" />
-    <Compile Include="FirstMatchNode.cs" />
+    <Compile Include="FirstMatchNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FirstMatchNodeBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GroupNode.cs" />
     <Compile Include="Logging\DebugLogWriter.cs" />
     <Compile Include="Logging\DebugLogWriterFactory.cs" />
     <Compile Include="Logging\ILogWriter.cs" />
@@ -56,16 +62,21 @@
     <Compile Include="Logging\LogWriter.cs" />
     <Compile Include="MultiNode.cs" />
     <Compile Include="Factories\INodeFactory.cs" />
+    <Compile Include="PipelineNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PipelineNodeBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\SolutionVersion.cs" />
     <Compile Include="Utility\DynamicDictionary.cs" />
     <Compile Include="Utility\Guard.cs" />
-    <Compile Include="GroupNode.cs" />
+    <Compile Include="GroupNodeBase.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="ExecutionOptions.cs" />
     <Compile Include="NodeResult.cs" />
     <Compile Include="NodeRunStatus.cs" />
     <Compile Include="NodeResultStatus.cs" />
-    <Compile Include="PipelineNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
