@@ -2,11 +2,12 @@
 
 ##Banzai!! - Your Simple Pipeline Solution
 
+[![Build status](https://ci.appveyor.com/api/projects/status/nbwvadetke6kx5ua)](https://ci.appveyor.com/project/eswann/banzai)
+
 Banzai is an easy .Net pipeline solution that contains composable nodes for constructing simple and complex pipelines.  
 Yes, there is TPL Dataflow and it's really cool, but I was looking for something easy that solved the 80% case of simple
 asynchronous pipelines in my business applications.
 
-AppVeyor: https://ci.appveyor.com/project/eswann/banzai
 
 ##Basic Construction 
 Flows are composed from nodes, of which there are a few types.  All flows accept a Subject Type (T).  
