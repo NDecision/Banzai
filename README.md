@@ -60,6 +60,8 @@ If you wish to create a custom MultiNode, reference [Abstract Multi Nodes](#abst
 
 <b>PipelineNode/IPipelineNode</b> - Runs a group of nodes serially on the subject.  This will be the root node of most flows.
 
+![Pipeline Node](/img/PipelineNode.png?raw=true "Pipeline Node")
+
     var pipelineNode = new PipelineNode<TestObjectA>();
 
     pipelineNode.AddChild(new SimpleTestNodeA1());
