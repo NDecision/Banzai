@@ -72,6 +72,8 @@ If you wish to create a custom MultiNode, reference [Abstract Multi Nodes](#abst
 
 <b>GroupNode/IGroupNode</b> - An aggregation of nodes that are run on a subject using the asyncrhonous Task.WhenAll pattern.
 
+![Group Node](/img/GroupNode.png?raw=true "Group Node")
+
     var groupNode = new GroupNode<TestObjectA>();
 
     groupNode.AddChild(new SimpleTestNodeA1());
@@ -81,6 +83,8 @@ If you wish to create a custom MultiNode, reference [Abstract Multi Nodes](#abst
     NodeResult<TestObjectA> result =  await groupNode.ExecuteAsync(testObject);
 
 <b>FirstMatchNode/IFirstMatchNode</b> - An aggregation of nodes of which the first matching its ShouldExecute condition is run on the subject.
+
+![First Match Node](/img/FirstMatchNode.png?raw=true "First Match Node")
 
     var matchNode = new FirstMatchNode<TestObjectA>();
 
