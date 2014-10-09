@@ -14,12 +14,14 @@ Flows are composed from nodes, of which there are a few types.  All flows accept
 This the type of the subject that is acted upon by the workflow.  All methods that are either overridden 
 or provided via a function accept an ExecutionContext.  All node executions return a [NodeResult](#noderesult).
 
-###Basic Node
-This is the that actually contain functions that run against the subject of the pipeline.
+###Basic Nodes
+These are the nodes that contain functionality that runs against the subject of the pipeline.  Basically, this is where most of your code goes.
 
-<b>Node/INode</b> - The simplest node type.  This is overridden to provide functionality or via the function properties.  
+<b>Node/INode</b> - The simplest node type.  This is overridden to provide functionality.  
 
-####Node Usage
+<b>FuncNode/IFuncNode</b> - Inherits node and allows functions to be assigned to provide functionality.
+
+####Node/FuncNode Usage
   * Override PerformExecute/PerformExecuteAsync to perform operations on the subject.
   * Override ShouldExecute to determine if the node should execute.
   * PerformExecuteFunc/PerformExecuteFuncAsync - Function property that accepts a function to perform on the subject.
@@ -103,6 +105,11 @@ of the corresponding concrete multi-nodes (the concrete multi-nodes directly inh
 <b>GroupNodeBase/IGroupNodeBase</b> - Base for concrete group nodes.
 
 <b>FirstMatchNodeBase/IFirstMatchNodeBase</b> - Base for concrete first match nodes.
+
+###Transition Nodes
+In some cases, you need to transition during your node from one type to another.  To accomplish this, use the TransitionNode or TranstionFuncNode.
+
+
 
 ###ExecutionContext
 The execution context flows through all nodes in the flow.  The execution context contains options for running the flow as well as the
