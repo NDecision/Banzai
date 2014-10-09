@@ -54,6 +54,7 @@
     <Compile Include="FirstMatchNodeBase.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="FuncNode.cs" />
     <Compile Include="GroupNode.cs" />
     <Compile Include="Logging\DebugLogWriter.cs" />
     <Compile Include="Logging\DebugLogWriterFactory.cs" />
@@ -69,6 +70,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\SolutionVersion.cs" />
+    <Compile Include="TransitionFuncNode.cs" />
+    <Compile Include="TransitionNode.cs" />
     <Compile Include="Utility\DynamicDictionary.cs" />
     <Compile Include="Utility\Guard.cs" />
     <Compile Include="GroupNodeBase.cs" />

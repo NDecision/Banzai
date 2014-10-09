@@ -89,7 +89,7 @@ namespace Banzai
         /// <summary>
         /// Resets this node and all its children to an unrun state.
         /// </summary>
-        public override void Reset()
+        public override sealed void Reset()
         {
             base.Reset();
             foreach (var child in Children)
@@ -103,7 +103,7 @@ namespace Banzai
         /// </summary>
         /// <param name="context">Current ExecutionContext.</param>
         /// <returns>NodeResultStatus representing the current node result.</returns>
-        protected override async Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<T> context)
+        protected override sealed async Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<T> context)
         {
             if (Children == null || Children.Count == 0)
             {
@@ -119,7 +119,7 @@ namespace Banzai
         /// <param name="context">Source context for preparation.</param>
         /// <param name="currentResult">A referene to the result of the current node.</param>
         /// <returns>The execution context to be used in node execution.</returns>
-        protected override ExecutionContext<T> PrepareExecutionContext(ExecutionContext<T> context, NodeResult<T> currentResult)
+        protected override sealed ExecutionContext<T> PrepareExecutionContext(ExecutionContext<T> context, NodeResult<T> currentResult)
         {
             var derivedContext = new ExecutionContext<T>(context, currentResult);
 

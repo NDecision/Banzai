@@ -57,7 +57,7 @@ namespace Banzai.Test
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
 
-            pipelineNode.AddChild(new FailingTestNode());
+            pipelineNode.AddChild(new FailingTestNodeA());
             pipelineNode.AddChild(new SimpleTestNodeA1());
 
             var testObject = new TestObjectA();
@@ -73,7 +73,7 @@ namespace Banzai.Test
             var pipelineNode = new PipelineNode<TestObjectA>();
 
             pipelineNode.AddChild(new SimpleTestNodeA1());
-            pipelineNode.AddChild(new FailingTestNode());
+            pipelineNode.AddChild(new FailingTestNodeA());
 
             var testObject = new TestObjectA();
             NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
@@ -88,7 +88,7 @@ namespace Banzai.Test
         {
             var pipelineNode = new PipelineNode<TestObjectA> { LocalOptions = new ExecutionOptions { ContinueOnFailure = true } };
 
-            pipelineNode.AddChild(new FailingTestNode());
+            pipelineNode.AddChild(new FailingTestNodeA());
             pipelineNode.AddChild(new SimpleTestNodeA1());
 
             var testObject = new TestObjectA();
@@ -104,7 +104,7 @@ namespace Banzai.Test
             var pipelineNode = new PipelineNode<TestObjectA> {LocalOptions = new ExecutionOptions {ContinueOnFailure = true}};
 
             pipelineNode.AddChild(new SimpleTestNodeA1());
-            pipelineNode.AddChild(new FailingTestNode());
+            pipelineNode.AddChild(new FailingTestNodeA());
 
             var testObject = new TestObjectA();
             NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
@@ -118,7 +118,7 @@ namespace Banzai.Test
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
 
-            pipelineNode.AddChild(new FaultingTestNode());
+            pipelineNode.AddChild(new FaultingTestNodeA());
             pipelineNode.AddChild(new SimpleTestNodeA1());
             
             var testObject = new TestObjectA();
@@ -134,7 +134,7 @@ namespace Banzai.Test
             var pipelineNode = new PipelineNode<TestObjectA>();
             
             pipelineNode.AddChild(new SimpleTestNodeA1());
-            pipelineNode.AddChild(new FaultingTestNode());
+            pipelineNode.AddChild(new FaultingTestNodeA());
 
             var testObject = new TestObjectA();
             NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
@@ -148,7 +148,7 @@ namespace Banzai.Test
         {
             var pipelineNode = new PipelineNode<TestObjectA> { LocalOptions = new ExecutionOptions { ContinueOnFailure = true } };
 
-            pipelineNode.AddChild(new FaultingTestNode());
+            pipelineNode.AddChild(new FaultingTestNodeA());
             pipelineNode.AddChild(new SimpleTestNodeA1());
 
             var testObject = new TestObjectA();
@@ -164,7 +164,7 @@ namespace Banzai.Test
             var pipelineNode = new PipelineNode<TestObjectA> { LocalOptions = new ExecutionOptions { ContinueOnFailure = true } };
 
             pipelineNode.AddChild(new SimpleTestNodeA1());
-            pipelineNode.AddChild(new FaultingTestNode());
+            pipelineNode.AddChild(new FaultingTestNodeA());
 
             var testObject = new TestObjectA();
             NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
@@ -178,8 +178,8 @@ namespace Banzai.Test
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
 
-            pipelineNode.AddChild(new FailingTestNode());
-            pipelineNode.AddChild(new FailingTestNode());
+            pipelineNode.AddChild(new FailingTestNodeA());
+            pipelineNode.AddChild(new FailingTestNodeA());
 
             var testObject = new TestObjectA();
             NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
@@ -193,8 +193,8 @@ namespace Banzai.Test
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
 
-            pipelineNode.AddChild(new FaultingTestNode());
-            pipelineNode.AddChild(new FaultingTestNode());
+            pipelineNode.AddChild(new FaultingTestNodeA());
+            pipelineNode.AddChild(new FaultingTestNodeA());
 
             var testObject = new TestObjectA();
             NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);

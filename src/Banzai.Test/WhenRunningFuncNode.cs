@@ -10,7 +10,7 @@ namespace Banzai.Test
         [Test]
         public async void Successful_FuncNode_Values_Match_Expected()
         {
-            var node = new Node<TestObjectA>();
+            var node = new FuncNode<TestObjectA>();
 
             node.ShouldExecuteFuncAsync = context => Task.FromResult(context.Subject.TestValueInt == 0);
             node.ExecutedFuncAsync = context => { context.Subject.TestValueString = "Completed"; return Task.FromResult(NodeResultStatus.Succeeded); };
@@ -26,7 +26,7 @@ namespace Banzai.Test
         [Test]
         public async void FuncNode_With_ShouldExecute_False_Shouldnt_Run()
         {
-            var node = new Node<TestObjectA>();
+            var node = new FuncNode<TestObjectA>();
 
             node.ShouldExecuteFuncAsync = context => Task.FromResult(context.Subject.TestValueInt == 5);
             node.ExecutedFuncAsync = context => { context.Subject.TestValueString = "Completed"; return Task.FromResult(NodeResultStatus.Succeeded); };
@@ -42,7 +42,7 @@ namespace Banzai.Test
         [Test]
         public async void Successful_Sync_FuncNode_Values_Match_Expected()
         {
-            var node = new Node<TestObjectA>();
+            var node = new FuncNode<TestObjectA>();
 
             node.ShouldExecuteFunc = context => context.Subject.TestValueInt == 0;
             node.ExecutedFunc = context => { context.Subject.TestValueString = "Completed"; return NodeResultStatus.Succeeded; };
@@ -58,7 +58,7 @@ namespace Banzai.Test
         [Test]
         public async void FuncNode_Sync_With_ShouldExecute_False_Shouldnt_Run()
         {
-            var node = new Node<TestObjectA>();
+            var node = new FuncNode<TestObjectA>();
 
             node.ShouldExecuteFunc = context => context.Subject.TestValueInt == 5;
             node.ExecutedFunc = context => { context.Subject.TestValueString = "Completed"; return NodeResultStatus.Succeeded; };

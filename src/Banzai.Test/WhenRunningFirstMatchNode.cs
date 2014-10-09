@@ -57,7 +57,7 @@ namespace Banzai.Test
         {
             var matchNode = new FirstMatchNode<TestObjectA>();
 
-            var firstNode = new FailingTestNode();
+            var firstNode = new FailingTestNodeA();
             matchNode.AddChild(firstNode);
 
             var secondNode = new SimpleTestNodeA2();
@@ -80,7 +80,7 @@ namespace Banzai.Test
         {
             var matchNode = new FirstMatchNode<TestObjectA>();
 
-            var firstNode = new FaultingTestNode();
+            var firstNode = new FaultingTestNodeA();
             matchNode.AddChild(firstNode);
 
             var secondNode = new SimpleTestNodeA2();

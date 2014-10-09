@@ -104,7 +104,7 @@ namespace Banzai.Autofac.Test
             var flow = (IPipelineNode<object>)factory.GetFlow("TestFlow1");
 
             var subflow = flow.Children[0];
-            subflow.ShouldExecuteFunc.ShouldNotBeNull();
+            subflow.ShouldExecuteFuncAsync.ShouldNotBeNull();
             (await subflow.ShouldExecuteFuncAsync(new ExecutionContext<object>(new object()))).ShouldBeFalse();
         }
 

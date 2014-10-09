@@ -12,7 +12,6 @@ namespace Banzai
     /// <typeparam name="T">Type that the pipeline acts upon.</typeparam>
     public interface INode<T>
     {
-
         /// <summary>
         /// Gets the local options associated with this node.  These options will apply only to the current node.
         /// </summary>
@@ -27,7 +26,6 @@ namespace Banzai
         /// Gets the current log writer
         /// </summary>
         ILogWriter LogWriter { get; }
-
 
         /// <summary>
         /// Determines if the node should be executed.
@@ -45,16 +43,6 @@ namespace Banzai
         /// Method that defines the async function to call to determine if this node should be executed.
         /// </summary>
         Func<ExecutionContext<T>, Task<bool>> ShouldExecuteFuncAsync { get; set; }
-
-        /// <summary>
-        /// Function to be performed when the node is executed.
-        /// </summary>
-        Func<ExecutionContext<T>, NodeResultStatus> ExecutedFunc { get; set; }
-
-        /// <summary>
-        /// Method that defines the async function to execute on the subject for this node.
-        /// </summary>
-        Func<ExecutionContext<T>, Task<NodeResultStatus>> ExecutedFuncAsync { get; set; }
 
         /// <summary>
         /// Determines if the node should be executed.
@@ -88,25 +76,20 @@ namespace Banzai
     /// The basic class for a functional node to be run by the pipeline.
     /// </summary>
     /// <typeparam name="T">Type that the pipeline acts upon.</typeparam>
-    public class Node<T> : INode<T>
+    public abstract class Node<T> : INode<T>
     {
         /// <summary>
         /// Creates a new Node.
         /// </summary>
-        public Node()
+        protected Node()
         {
-            ShouldExecuteFunc = ShouldExecute;
-            ExecutedFunc = PerformExecute;
-
-            ShouldExecuteFuncAsync = ShouldExecuteAsync;
-            ExecutedFuncAsync = PerformExecuteAsync;
         }
 
         /// <summary>
         /// Creates a new Node with local options to override global options.
         /// </summary>
         /// <param name="localOptions">Local options to override global options.</param>
-        public Node(ExecutionOptions localOptions) : this()
+        protected Node(ExecutionOptions localOptions) : this()
         {
             LocalOptions = localOptions;
         }
@@ -137,16 +120,6 @@ namespace Banzai
         public Func<ExecutionContext<T>, Task<bool>> ShouldExecuteFuncAsync { get; set; }
 
         /// <summary>
-        /// Synchronous function that provides functionality for the node.  Takes precedence above overridden PerformExecute method.
-        /// </summary>
-        public Func<ExecutionContext<T>, NodeResultStatus> ExecutedFunc { get; set; }
-
-        /// <summary>
-        /// Function executed when the node executes. Takes precedence over overridden PerformExecute method.
-        /// </summary>
-        public Func<ExecutionContext<T>, Task<NodeResultStatus>> ExecutedFuncAsync { get; set; }
-
-        /// <summary>
         /// Determines if the current node should execute with synchronous wrapper.
         /// </summary>
         /// <param name="context">Current ExecutionContext</param>
@@ -163,7 +136,23 @@ namespace Banzai
         /// <returns>Bool indicating if this node should run.</returns>
         public virtual Task<bool> ShouldExecuteAsync(ExecutionContext<T> context)
         {
-            return Task.FromResult(ShouldExecuteFunc(context));
+            return Task.FromResult(ShouldExecute(context));
+        }
+
+        /// <summary>
+        /// Internal method that combines all of the ShouldExecute functions and methods.
+        /// </summary>
+        /// <param name="context">Current ExecutionContext</param>
+        /// <returns>Bool indicating if the task should run.</returns>
+        private async Task<bool> ShouldExecuteInternal(ExecutionContext<T> context)
+        {
+            if (ShouldExecuteFuncAsync != null)
+                return await ShouldExecuteFuncAsync(context).ConfigureAwait(false);
+
+            if (ShouldExecuteFunc != null)
+                return ShouldExecuteFunc(context);
+
+            return await ShouldExecuteAsync(context).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -199,7 +188,7 @@ namespace Banzai
 
             OnBeforeExecute(context);
 
-            if (! await ShouldExecuteFuncAsync(context).ConfigureAwait(false))
+            if (! await ShouldExecuteInternal(context).ConfigureAwait(false))
             {
                 LogWriter.Info("ShouldExecute returned a false, skipping execution");
                 return result;
@@ -210,7 +199,8 @@ namespace Banzai
 
             try
             {
-                result.Status = await ExecutedFuncAsync(context).ConfigureAwait(false);
+                result.Status = await PerformExecuteAsync(context).ConfigureAwait(false);
+                //Reset the subject in case it was changed.
                 result.Subject = context.Subject;
                 Status = NodeRunStatus.Completed;
                 LogWriter.Info("Node completed execution, status is {0}", result.Status);
@@ -251,7 +241,7 @@ namespace Banzai
         /// <returns>Final result execution status of the node.</returns>
         protected virtual Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<T> context)
         {
-            return Task.FromResult(ExecutedFunc(context));
+            return Task.FromResult(PerformExecute(context));
         }
 
         /// <summary>

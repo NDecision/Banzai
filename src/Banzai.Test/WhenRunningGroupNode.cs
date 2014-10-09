@@ -26,7 +26,7 @@ namespace Banzai.Test
             var groupNode = new GroupNode<TestObjectA>();
 
             groupNode.AddChild(new SimpleTestNodeA1());
-            groupNode.AddChild(new FailingTestNode());
+            groupNode.AddChild(new FailingTestNodeA());
 
             var testObject = new TestObjectA();
             NodeResult<TestObjectA> result = await groupNode.ExecuteAsync(testObject);
@@ -41,7 +41,7 @@ namespace Banzai.Test
             var groupNode = new GroupNode<TestObjectA> {LocalOptions = new ExecutionOptions {ContinueOnFailure = true}};
 
             groupNode.AddChild(new SimpleTestNodeA1());
-            groupNode.AddChild(new FailingTestNode());
+            groupNode.AddChild(new FailingTestNodeA());
 
             var testObject = new TestObjectA();
             NodeResult<TestObjectA> result = await groupNode.ExecuteAsync(testObject);
@@ -56,7 +56,7 @@ namespace Banzai.Test
             var groupNode = new GroupNode<TestObjectA>();
 
             groupNode.AddChild(new SimpleTestNodeA1());
-            groupNode.AddChild(new FaultingTestNode());
+            groupNode.AddChild(new FaultingTestNodeA());
 
             var testObject = new TestObjectA();
             NodeResult<TestObjectA> result = await groupNode.ExecuteAsync(testObject);
@@ -71,7 +71,7 @@ namespace Banzai.Test
             var groupNode = new GroupNode<TestObjectA> { LocalOptions = new ExecutionOptions { ContinueOnFailure = true } };
 
             groupNode.AddChild(new SimpleTestNodeA1());
-            groupNode.AddChild(new FaultingTestNode());
+            groupNode.AddChild(new FaultingTestNodeA());
 
             var testObject = new TestObjectA();
             NodeResult<TestObjectA> result = await groupNode.ExecuteAsync(testObject);
@@ -85,8 +85,8 @@ namespace Banzai.Test
         {
             var groupNode = new GroupNode<TestObjectA>();
 
-            groupNode.AddChild(new FailingTestNode());
-            groupNode.AddChild(new FailingTestNode());
+            groupNode.AddChild(new FailingTestNodeA());
+            groupNode.AddChild(new FailingTestNodeA());
 
             var testObject = new TestObjectA();
             NodeResult<TestObjectA> result = await groupNode.ExecuteAsync(testObject);
@@ -100,8 +100,8 @@ namespace Banzai.Test
         {
             var groupNode = new GroupNode<TestObjectA>();
 
-            groupNode.AddChild(new FaultingTestNode());
-            groupNode.AddChild(new FaultingTestNode());
+            groupNode.AddChild(new FaultingTestNodeA());
+            groupNode.AddChild(new FaultingTestNodeA());
 
             var testObject = new TestObjectA();
             NodeResult<TestObjectA> result = await groupNode.ExecuteAsync(testObject);

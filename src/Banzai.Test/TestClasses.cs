@@ -84,7 +84,7 @@ namespace Banzai.Test
         }
     }
 
-    public class FaultingTestNode : Node<TestObjectA>
+    public class FaultingTestNodeA : Node<TestObjectA>
     {
         protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<TestObjectA> context)
         {
@@ -94,7 +94,7 @@ namespace Banzai.Test
         }
     }
 
-    public class FailingTestNode : Node<TestObjectA>
+    public class FailingTestNodeA : Node<TestObjectA>
     {
         protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<TestObjectA> context)
         {
@@ -104,10 +104,68 @@ namespace Banzai.Test
         }
     }
 
+    public class SimpleTestNodeB1 : Node<TestObjectB>
+    {
+        private readonly bool _shouldExecute = true;
+
+        public SimpleTestNodeB1()
+        {
+        }
+
+        public SimpleTestNodeB1(bool shouldExecute)
+        {
+            _shouldExecute = shouldExecute;
+        }
+
+        public override Task<bool> ShouldExecuteAsync(ExecutionContext<TestObjectB> context)
+        {
+            return Task.FromResult(_shouldExecute);
+        }
+
+        protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<TestObjectB> context)
+        {
+            context.Subject.TestValueBool = true;
+
+            return Task.FromResult(NodeResultStatus.Succeeded);
+        }
+    }
+
+    public class SimpleTestNodeB2 : Node<TestObjectB>
+    {
+        private readonly bool _shouldExecute = true;
+
+        public SimpleTestNodeB2()
+        {
+        }
+
+        public SimpleTestNodeB2(bool shouldExecute)
+        {
+            _shouldExecute = shouldExecute;
+        }
+
+        public override Task<bool> ShouldExecuteAsync(ExecutionContext<TestObjectB> context)
+        {
+            return Task.FromResult(_shouldExecute);
+        }
+
+        protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<TestObjectB> context)
+        {
+            context.Subject.TestValueBool = false;
+
+            return Task.FromResult(NodeResultStatus.Succeeded);
+        }
+    }
+
     public class TestObjectA
     {
         public string TestValueString { get; set; }
 
         public int TestValueInt { get; set; }
+    }
+
+    public class TestObjectB
+    {
+        public bool TestValueBool { get; set; }
+
     }
 }

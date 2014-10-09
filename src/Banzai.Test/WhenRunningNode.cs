@@ -19,7 +19,7 @@ namespace Banzai.Test
         [Test]
         public async void Errant_Node_Run_Status_Is_Faulted()
         {
-            var testNode = new FaultingTestNode();
+            var testNode = new FaultingTestNodeA();
 
             var testObject = new TestObjectA();
 
@@ -34,7 +34,7 @@ namespace Banzai.Test
         [Test]
         public async void Failed_Node_Run_Status_Is_Completed_With_Failed_Result()
         {
-            var testNode = new FailingTestNode();
+            var testNode = new FailingTestNodeA();
 
             var testObject = new TestObjectA();
 
@@ -49,7 +49,7 @@ namespace Banzai.Test
         [Test]
         public void Errant_Node_Run_With_ThrowOnError_True_Throws()
         {
-            var testNode = new FaultingTestNode();
+            var testNode = new FaultingTestNodeA();
 
             var testObject = new TestObjectA();
 

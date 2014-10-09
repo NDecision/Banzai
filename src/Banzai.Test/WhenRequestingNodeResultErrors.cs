@@ -14,7 +14,7 @@ namespace Banzai.Test
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
 
-            pipelineNode.AddChild(new FaultingTestNode());
+            pipelineNode.AddChild(new FaultingTestNodeA());
             pipelineNode.AddChild(new SimpleTestNodeA1());
 
             var testObject = new TestObjectA();
@@ -34,7 +34,7 @@ namespace Banzai.Test
                 LocalOptions = new ExecutionOptions {ContinueOnFailure = true}
             };
 
-            pipelineNode.AddChild(new FaultingTestNode());
+            pipelineNode.AddChild(new FaultingTestNodeA());
             pipelineNode.AddChild(new SimpleTestNodeA1());
 
             var testObject = new TestObjectA();
@@ -54,8 +54,8 @@ namespace Banzai.Test
                 LocalOptions = new ExecutionOptions { ContinueOnFailure = true }
             };
 
-            pipelineNode.AddChild(new FaultingTestNode());
-            pipelineNode.AddChild(new FaultingTestNode());
+            pipelineNode.AddChild(new FaultingTestNodeA());
+            pipelineNode.AddChild(new FaultingTestNodeA());
 
             var testObject = new TestObjectA();
             NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
@@ -75,7 +75,7 @@ namespace Banzai.Test
 
             pipelineNode.AddChild(pipelineNode2);
 
-            pipelineNode2.AddChild(new FaultingTestNode());
+            pipelineNode2.AddChild(new FaultingTestNodeA());
 
             var testObject = new TestObjectA();
             NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
@@ -91,8 +91,8 @@ namespace Banzai.Test
         {
             var pipelineNode = new GroupNode<TestObjectA>();
 
-            var faultNode1 = new FaultingTestNode();
-            var faultNode2 = new FaultingTestNode();
+            var faultNode1 = new FaultingTestNodeA();
+            var faultNode2 = new FaultingTestNodeA();
 
             pipelineNode.AddChild(faultNode1);
             pipelineNode.AddChild(faultNode2);
