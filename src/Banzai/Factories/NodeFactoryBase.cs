@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Banzai.Utility;
 
 namespace Banzai.Factories
@@ -65,15 +66,18 @@ namespace Banzai.Factories
 
             var flowRoot = GetFlowRoot(name);
 
-            return BuildNode(flowRoot.Children[0]);
+            return BuildNode(flowRoot.Children[0], flowRoot.ShouldExecuteFuncAsync, flowRoot.ShouldExecuteFunc);
         }
 
         /// <summary>
         /// Builds a node from the provided FlowComponent.
         /// </summary>
         /// <param name="component">Flowcomponent providing the node definition.</param>
+        /// <param name="shouldExecuteFunc">Allows a ShouldExecuteFunc to be specified from the parent.</param>
+        /// <param name="shouldExecuteFuncAsync">Allows a ShouldExecuteAsyncFunc to be specified from the parent.</param>
         /// <returns>A constructed INode.</returns>
-        protected INode<T> BuildNode(FlowComponent<T> component)
+        protected INode<T> BuildNode(FlowComponent<T> component,
+            Func<ExecutionContext<T>, Task<bool>> shouldExecuteFuncAsync = null, Func<ExecutionContext<T>, bool> shouldExecuteFunc = null)
         {
             INode<T> node;
             //Get the node or flow from the flowComponent
@@ -84,6 +88,23 @@ namespace Banzai.Factories
             else
             {
                 node = string.IsNullOrEmpty(component.Name) ? GetNode(component.Type) : GetNode(component.Type, component.Name);
+            }
+
+            if (component.ShouldExecuteFuncAsync != null)
+            {
+                node.ShouldExecuteFuncAsync = component.ShouldExecuteFuncAsync;
+            }
+            else if (shouldExecuteFuncAsync != null)
+            {
+                node.ShouldExecuteFuncAsync = shouldExecuteFuncAsync;
+            }
+            if (component.ShouldExecuteFunc != null)
+            {
+                node.ShouldExecuteFunc = component.ShouldExecuteFunc;
+            }
+            else if (shouldExecuteFunc != null)
+            {
+                node.ShouldExecuteFunc = shouldExecuteFunc;
             }
 
             if (component.Children != null && component.Children.Count > 0)

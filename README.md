@@ -260,6 +260,7 @@ adding both nodes and subflows.  Once a flow is registered, it can be accessed f
 <b>AddChild</b> - Adds a child to the current node and returns the same FlowComponentBuilder for the current node (not the child).
 <b>AddFlow</b> - Allows the addition of one flow as a child of the current node.  Allows for the creation of common flows that can be added to other flows.
 <b>ForChild</b> - Changes the FlowComponentBuilder context to the specified child node.
+<b>SetShouldExecute/SetShouldExecuteAsync</b> - Allows a ShouldExecute function to be set on the fly when building a flow with flowbuilder.
 <b>Register</b> - Must be called to indicate the flow definition as been completed and to register the flow with the container. 
 
     var flowBuilder = new FlowBuilder<object>(new AutofacFlowRegistrar(containerBuilder));
@@ -269,6 +270,7 @@ adding both nodes and subflows.  Once a flow is registered, it can be accessed f
       .AddChild<ITestNode2>()
       .AddChild<IPipelineNode<object>>()
         .ForChild<IPipelineNode<object>>()
+        .SetShouldExecute(ctxt => (ctxt.Subject.Foo == "bar"))
         .AddChild<ITestNode4>()
         .AddChild<ITestNode3>()
         .AddChild<ITestNode2>();

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Banzai.Utility;
 
 namespace Banzai.Factories
@@ -17,7 +18,7 @@ namespace Banzai.Factories
         /// </summary>
         /// <typeparam name="TNode">Type of the node to add.</typeparam>
         /// <param name="name">Optional name of the node if needed to find in IOC container.</param>
-        /// <returns>The current FlowComponent instance.</returns>
+        /// <returns>The current FlowComponentBuilder instance.</returns>
         IFlowComponentBuilder<T> AddRoot<TNode>(string name = null) where TNode : INode<T>;
 
         /// <summary>
@@ -25,7 +26,7 @@ namespace Banzai.Factories
         /// </summary>
         /// <param name="nodeType">Type of the node to add.</param>
         /// <param name="name">Optional name of the node if needed to find in IOC container.</param>
-        /// <returns>The current FlowComponent instance.</returns>
+        /// <returns>The current FlowComponentBuilder instance.</returns>
         IFlowComponentBuilder<T> AddRoot(Type nodeType, string name = null);
     }
 
@@ -39,7 +40,7 @@ namespace Banzai.Factories
         /// Adds a previously registered flow by name as a child of this node.
         /// </summary>
         /// <param name="name">The name of the flow to add.</param>
-        /// <returns>The current FlowComponent instance.</returns>
+        /// <returns>The current FlowComponentBuilder instance.</returns>
         IFlowComponentBuilder<T> AddFlow(string name);
 
         /// <summary>
@@ -47,7 +48,7 @@ namespace Banzai.Factories
         /// </summary>
         /// <typeparam name="TNode">Type of the node to add.</typeparam>
         /// <param name="name">Optional name of the node if needed to find in IOC container.</param>
-        /// <returns>The current FlowComponent instance.</returns>
+        /// <returns>The current FlowComponentBuilder instance.</returns>
         IFlowComponentBuilder<T> AddChild<TNode>(string name = null) where TNode : INode<T>;
 
         /// <summary>
@@ -55,8 +56,22 @@ namespace Banzai.Factories
         /// </summary>
         /// <param name="nodeType">Type of the node to add.</param>
         /// <param name="name">Optional name of the node if needed to find in IOC container.</param>
-        /// <returns>The current FlowComponent instance.</returns>
+        /// <returns>The current FlowComponentBuilder instance.</returns>
         IFlowComponentBuilder<T> AddChild(Type nodeType, string name = null);
+
+        /// <summary>
+        /// Adds a ShouldExecute to the flowcomponent (to be added to the resultant node).
+        /// </summary>
+        /// <param name="shouldExecuteFunc">Function to add as ShouldExecute to the flowcomponent.</param>
+        /// <returns>The current FlowComponentBuilder instance.</returns>
+        IFlowComponentBuilder<T> SetShouldExecute(Func<ExecutionContext<T>, bool> shouldExecuteFunc);
+
+        /// <summary>
+        /// Adds a ShouldExecuteAsync to the flowcomponent (to be added to the resultant node).
+        /// </summary>
+        /// <param name="shouldExecuteFuncAsync">Function to add as ShouldExecute to the flowcomponent.</param>
+        /// <returns>The current FlowComponentBuilder instance.</returns>
+        IFlowComponentBuilder<T> SetShouldExecuteAsync(Func<ExecutionContext<T>, Task<bool>> shouldExecuteFuncAsync);
 
         /// <summary>
         /// Returns an instance of FlowComponent representing the requested child node.
@@ -75,6 +90,14 @@ namespace Banzai.Factories
         /// <param name="index">Index of the node if multiple matches are found in the parent.  Defaults to first.</param>
         /// <returns>A builder for the located child FlowComponent of this FlowComponent.</returns>
         IFlowComponentBuilder<T> ForChild(Type nodeType, string name = null, int index = 0);
+
+        /// <summary>
+        /// Returns an instance of FlowComponentBuilder representing the requested child flow.
+        /// </summary>
+        /// <param name="name">Optional name of the node in IOC registration.</param>
+        /// <param name="index">Index of the node if multiple matches are found in the parent.  Defaults to first.</param>
+        /// <returns>A child FlowComponentBuilder of this FlowComponentBuilder.</returns>
+        IFlowComponentBuilder<T> ForChildFlow(string name = null, int index = 0);
     }
 
 
@@ -100,7 +123,7 @@ namespace Banzai.Factories
         /// Adds a previously registered flow by name as a child of this node.
         /// </summary>
         /// <param name="name">The name of the flow to add.</param>
-        /// <returns>The current FlowComponent instance.</returns>
+        /// <returns>The current FlowComponentBuilder instance.</returns>
         public IFlowComponentBuilder<T> AddFlow(string name)
         {
             Guard.AgainstNullOrEmptyArgument("name", name);
@@ -117,7 +140,7 @@ namespace Banzai.Factories
         /// </summary>
         /// <typeparam name="TNode">Type of the node to add.</typeparam>
         /// <param name="name">Optional name of the node if needed to find in IOC container.</param>
-        /// <returns>The current FlowComponent instance.</returns>
+        /// <returns>The current FlowComponentBuilder instance.</returns>
         public IFlowComponentBuilder<T> AddRoot<TNode>(string name = null) where TNode : INode<T>
         {
             return AddRoot(typeof(TNode), name);
@@ -128,7 +151,7 @@ namespace Banzai.Factories
         /// </summary>
         /// <param name="nodeType">Type of the node to add.</param>
         /// <param name="name">Optional name of the node if needed to find in IOC container.</param>
-        /// <returns>The current FlowComponent instance.</returns>
+        /// <returns>The current FlowComponentBuilder instance.</returns>
         public IFlowComponentBuilder<T> AddRoot(Type nodeType, string name = null)
         {
             if (!_component.IsFlow)
@@ -146,7 +169,7 @@ namespace Banzai.Factories
         /// </summary>
         /// <typeparam name="TNode">Type of the node to add.</typeparam>
         /// <param name="name">Optional name of the node if needed to find in IOC container.</param>
-        /// <returns>The current FlowComponent instance.</returns>
+        /// <returns>The current FlowComponentBuilder instance.</returns>
         public IFlowComponentBuilder<T> AddChild<TNode>(string name = null) where TNode : INode<T>
         {
             return AddChild(typeof(TNode), name);
@@ -157,7 +180,7 @@ namespace Banzai.Factories
         /// </summary>
         /// <param name="nodeType">Type of the node to add.</param>
         /// <param name="name">Optional name of the node if needed to find in IOC container.</param>
-        /// <returns>The current FlowComponent instance.</returns>
+        /// <returns>The current FlowComponentBuilder instance.</returns>
         public IFlowComponentBuilder<T> AddChild(Type nodeType, string name = null)
         {
             if (!typeof(INode<T>).IsAssignableFrom(nodeType))
@@ -171,24 +194,46 @@ namespace Banzai.Factories
         }
 
         /// <summary>
-        /// Returns an instance of FlowComponent representing the requested child node.
+        /// Adds a ShouldExecute to the FlowComponent (to be added to the resultant node).
+        /// </summary>
+        /// <param name="shouldExecuteFunc">Function to add as ShouldExecute to the flowcomponent.</param>
+        /// <returns>The current FlowComponentBuilder instance.</returns>
+        public IFlowComponentBuilder<T> SetShouldExecute(Func<ExecutionContext<T>, bool> shouldExecuteFunc)
+        {
+            _component.SetShouldExecute(shouldExecuteFunc);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a ShouldExecuteAsync to the FlowComponent (to be added to the resultant node).
+        /// </summary>
+        /// <param name="shouldExecuteAsyncFunc">Function to add as ShouldExecute to the flowcomponent.</param>
+        /// <returns>The current FlowComponentBuilder instance.</returns>
+        public IFlowComponentBuilder<T> SetShouldExecuteAsync(Func<ExecutionContext<T>, Task<bool>> shouldExecuteAsyncFunc)
+        {
+            _component.SetShouldExecuteAsync(shouldExecuteAsyncFunc);
+            return this;
+        }
+
+        /// <summary>
+        /// Returns an instance of FlowComponentBuilder representing the requested child node.
         /// </summary>
         /// <typeparam name="TNode">Type of the node.</typeparam>
         /// <param name="name">Optional name of the node in IOC registration.</param>
         /// <param name="index">Index of the node if multiple matches are found in the parent.  Defaults to first.</param>
-        /// <returns>A child FlowComponent of this FlowComponent.</returns>
+        /// <returns>A child FlowComponentBuilder of this FlowComponentBuilder.</returns>
         public IFlowComponentBuilder<T> ForChild<TNode>(string name = null, int index = 0) where TNode : INode<T>
         {
             return ForChild(typeof(TNode), name, index);
         }
 
         /// <summary>
-        /// Returns an instance of FlowComponent representing the requested child node.
+        /// Returns an instance of FlowComponentBuilder representing the requested child node.
         /// </summary>
         /// <param name="nodeType">Type of the node.</param>
         /// <param name="name">Optional name of the node in IOC registration.</param>
         /// <param name="index">Index of the node if multiple matches are found in the parent.  Defaults to first.</param>
-        /// <returns>A child FlowComponent of this FlowComponent.</returns>
+        /// <returns>A child FlowComponentBuilder of this FlowComponentBuilder.</returns>
         public IFlowComponentBuilder<T> ForChild(Type nodeType, string name = null, int index = 0)
         {
             if (!typeof(INode<T>).IsAssignableFrom(nodeType))
@@ -207,5 +252,28 @@ namespace Banzai.Factories
 
             return new FlowComponentBuilder<T>(child);
         }
+
+        /// <summary>
+        /// Returns an instance of FlowComponentBuilder representing the requested child flow.
+        /// </summary>
+        /// <param name="name">Optional name of the node in IOC registration.</param>
+        /// <param name="index">Index of the node if multiple matches are found in the parent.  Defaults to first.</param>
+        /// <returns>A child FlowComponentBuilder of this FlowComponentBuilder.</returns>
+        public IFlowComponentBuilder<T> ForChildFlow(string name = null, int index = 0)
+        {
+            var items = _component.Children.Where(x => x.IsFlow);
+            if (name != null)
+                items = items.Where(x => x.Name == name);
+
+            IList<FlowComponent<T>> results = items.ToList();
+
+            if (index + 1 > results.Count)
+                throw new IndexOutOfRangeException("The requested child could not be found.");
+
+            var child = results[index];
+
+            return new FlowComponentBuilder<T>(child);
+        }
+
     }
 }
