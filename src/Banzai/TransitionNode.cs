@@ -59,26 +59,30 @@ namespace Banzai
         {
             if (ChildNode == null)
             {
+                LogWriter.Warn("Child node of TransitionNode doesn't exist, node will be skipped.");
                 return NodeResultStatus.NotRun;
             }
 
-            LogWriter.Debug("Transition");
+            LogWriter.Debug("Creating the TransitionNode destination subject.");
             TDestination destSubject = await TransitionSourceAsync(context).ConfigureAwait(false);
 
             var destContext = new ExecutionContext<TDestination>(destSubject, context.GlobalOptions);
 
+            LogWriter.Debug("Preparing to execute TransitionNode child.");
             NodeResult<TDestination> destResult = await ChildNode.ExecuteAsync(destContext).ConfigureAwait(false);
 
             var exceptions = destResult.GetFailExceptions().ToList();
             if (exceptions.Count > 0)
             {
+                LogWriter.Info("TransitionNode child returned {0} exceptions.", exceptions.Count);
                 context.ParentResult.Exception = exceptions.Count == 1 ? exceptions[0] : new AggregateException(exceptions);
             }
-
+            LogWriter.Debug("Creating the TransitionNode destination result.");
             var resultSubject = await TransitionResultAsync(context, destResult).ConfigureAwait(false);
             
             if (!context.Subject.Equals(resultSubject))
             {
+                LogWriter.Debug("Source subject has changed, calling ChangeSubject.");
                 context.ChangeSubject(resultSubject);
             }
 

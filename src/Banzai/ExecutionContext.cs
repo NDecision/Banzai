@@ -1,4 +1,5 @@
-﻿using Banzai.Utility;
+﻿using Banzai.Logging;
+using Banzai.Utility;
 
 namespace Banzai
 {

@@ -65,6 +65,7 @@ namespace Banzai
         /// <param name="child">Child node to add.</param>
         public void AddChild(INode<T> child)
         {
+            LogWriter.Debug("Added child node.");
             _children.Add(child);
         }
 
@@ -74,6 +75,7 @@ namespace Banzai
         /// <param name="children">Children to add.</param>
         public void AddChildren(IEnumerable<INode<T>> children)
         {
+            LogWriter.Debug("Added children.");
             _children.AddRange(children);
         }
 
@@ -83,6 +85,7 @@ namespace Banzai
         /// <param name="child">Child node to remove.</param>
         public void RemoveChild(INode<T> child)
         {
+            LogWriter.Debug("Removed child node.");
             _children.Remove(child);
         }
 
@@ -110,7 +113,10 @@ namespace Banzai
                 return NodeResultStatus.NotRun;
             }
 
-            return await ExecuteChildrenAsync(context).ConfigureAwait(false);
+            LogWriter.Debug("Preparing to run child nodes.");
+            NodeResultStatus status = await ExecuteChildrenAsync(context).ConfigureAwait(false);
+            LogWriter.Debug("Completed running child nodes.");
+            return status;
         }
 
         /// <summary>
@@ -121,12 +127,16 @@ namespace Banzai
         /// <returns>The execution context to be used in node execution.</returns>
         protected override sealed ExecutionContext<T> PrepareExecutionContext(ExecutionContext<T> context, NodeResult<T> currentResult)
         {
+            LogWriter.Debug("Preparing execution context.");
             var derivedContext = new ExecutionContext<T>(context, currentResult);
 
             context.AddResult(currentResult);
 
             if (LocalOptions != null)
+            {
+                LogWriter.Debug("Local options existed, overwriting effective options.");
                 derivedContext.EffectiveOptions = LocalOptions;
+            }
 
             return derivedContext;
         }

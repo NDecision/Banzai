@@ -25,7 +25,8 @@ namespace Banzai
         protected override async Task<NodeResultStatus> ExecuteChildrenAsync(ExecutionContext<T> context)
         {
             NodeResult<T> result = null;
-            
+
+            LogWriter.Debug("Running first matching child node.");
             foreach (var childNode in Children)
             {
                 result = await childNode.ExecuteAsync(context).ConfigureAwait(false);

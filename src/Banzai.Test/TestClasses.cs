@@ -156,6 +156,26 @@ namespace Banzai.Test
         }
     }
 
+    public class FaultingTestNodeB : Node<TestObjectB>
+    {
+        protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<TestObjectB> context)
+        {
+            context.Subject.TestValueBool = false;
+
+            throw new Exception("Test Exception");
+        }
+    }
+
+    public class FailingTestNodeB : Node<TestObjectB>
+    {
+        protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<TestObjectB> context)
+        {
+            context.Subject.TestValueBool = false;
+
+            return Task.FromResult(NodeResultStatus.Failed);
+        }
+    }
+
     public class TestObjectA
     {
         public string TestValueString { get; set; }

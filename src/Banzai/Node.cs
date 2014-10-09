@@ -190,7 +190,7 @@ namespace Banzai
 
             if (! await ShouldExecuteInternal(context).ConfigureAwait(false))
             {
-                LogWriter.Info("ShouldExecute returned a false, skipping execution");
+                LogWriter.Info("ShouldExecute returned false, skipping execution");
                 return result;
             }
 
@@ -269,6 +269,7 @@ namespace Banzai
         /// </summary>
         public virtual void Reset()
         {
+            LogWriter.Debug("Resetting the node.");
             Status = NodeRunStatus.NotRun;
         }
 

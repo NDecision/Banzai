@@ -28,8 +28,10 @@ namespace Banzai
         {
             var results = new List<NodeResult<T>>();
 
+            LogWriter.Debug("Running each child node in the pipeline sequentially.");
             foreach (var childNode in Children)
             {
+                LogWriter.Debug("Running child node.");
                 var result = await childNode.ExecuteAsync(context).ConfigureAwait(false);
 
                 results.Add(result);

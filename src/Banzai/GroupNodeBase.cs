@@ -30,6 +30,7 @@ namespace Banzai
 
             try
             {
+                LogWriter.Debug("Running all child nodes asynchronously.");
                 results = await aggregateTask.ConfigureAwait(false);
             }
             catch
