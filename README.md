@@ -116,7 +116,7 @@ of the corresponding concrete multi-nodes (the concrete multi-nodes directly inh
 In some cases, you need to transition during pipeline execution from one subject type to another.  To accomplish this, use the TransitionNode or TransitionFuncNode.  
 These nodes take a source type and a destination type and allow you to perform any necessary transitioning from source to destination before execution, 
 and allow the original source to be updated after execution. Transition nodes take a child node to execute after transition occurs.  
-If the source reference has been changed during the result transition, a [ChangeSubject](changing-the-subject) call is automatically made to set the correct subject on the ExecutionContext. 
+If the source reference has been changed during the result transition, a [ChangeSubject](#changing-the-subject) call is automatically made to set the correct subject on the ExecutionContext. 
 The aggregate result and any exceptions are passed back to the source node that called the transition node.
 
 ![Transition Node](/img/TransitionNode.png?raw=true "Transition Node")
