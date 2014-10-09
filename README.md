@@ -350,4 +350,6 @@ current node to recieve the new subject.  This can be accomplished by calling th
 
 ####Lots of examples present in the unit tests...
 
+####See the [Wiki for release notes](https://github.com/eswann/Banzai/wiki).
+
 
