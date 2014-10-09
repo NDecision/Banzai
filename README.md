@@ -107,8 +107,42 @@ of the corresponding concrete multi-nodes (the concrete multi-nodes directly inh
 <b>FirstMatchNodeBase/IFirstMatchNodeBase</b> - Base for concrete first match nodes.
 
 ###Transition Nodes
-In some cases, you need to transition during your node from one type to another.  To accomplish this, use the TransitionNode or TranstionFuncNode.
+In some cases, you need to transition during pipeline execution from one subject type to another.  To accomplish this, use the TransitionNode or TransitionFuncNode.  
+These nodes take a source type and a destination type and allow you to perform any necessary transitioning from source to destination before execution, 
+and allow the original source to be updated after execution. Transition nodes take a child node to execute after transition occurs.  
+If the source reference has been changed during the result transition, a ChangeSource call is automatically made to set the correct subject on the ExecutionContext. 
+The aggregate result and any exceptions are passed back to the source node that called the transition node.
 
+<b>ChildNode</b> - Assigns a child node that is executed after the transition to the destination type occurs.
+
+<b>TransitionSource/TransitionSourceAsync</b> - Transitions the source to the destination type.
+<b>TransitionResult/TransitionResultAsync</b> - Transitions the source after node execution based on the destination node results.
+
+<b>TransitionSourceFunc/TransitionSourceFuncAsync</b> - In TransitionFuncNode, allows assignment of source to destination transition function.
+<b>TransitionResultFunc/TransitionResultFuncAsync</b> - In TransitionFuncNode, allows assignment of post-run source transition function.
+
+    public class SimpleTransitionNode : TransitionNode<TestObjectA, TestObjectB>
+    {
+        protected override TestObjectB TransitionSource(ExecutionContext<TestObjectA> sourceContext)
+        {
+            return new TestObjectB();
+        }
+
+        protected override TestObjectA TransitionResult(ExecutionContext<TestObjectA> sourceContext, NodeResult<TestObjectB> result)
+        {
+            return sourceContext.Subject;
+        }
+    } 
+
+Or
+
+    var pipelineNode = new PipelineNode<TestObjectA>();
+
+    pipelineNode.AddChild(new TransitionFuncNode<TestObjectA, TestObjectB>
+    {
+        ChildNode = new SimpleTestNodeB1(),
+        TransitionSourceFunc = ctxt => new TestObjectB()
+    });
 
 
 ###ExecutionContext
@@ -314,6 +348,6 @@ In some cases, you may want to switch the subject reference during part of the f
 service within a node and it returns a different subject reference back to you.  In this case, you want to nodes following the 
 current node to recieve the new subject.  This can be accomplished by calling the ExecutionContext.ChangeSubject() method.
 
-####More documentation to follow shortly...
+####Lots of examples present in the unit tests...
 
 

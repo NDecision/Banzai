@@ -61,6 +61,11 @@ namespace Banzai.Test
             {
                 return new TestObjectB();
             }
+
+            protected override TestObjectA TransitionResult(ExecutionContext<TestObjectA> sourceContext, NodeResult<TestObjectB> result)
+            {
+                return sourceContext.Subject;
+            }
         }
 
     }

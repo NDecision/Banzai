@@ -14,7 +14,11 @@ namespace Banzai.Test
             var pipelineNode = new PipelineNode<TestObjectA>();
 
             pipelineNode.AddChild(new SimpleTestNodeA1());
-            pipelineNode.AddChild(new TransitionFuncNode<TestObjectA,TestObjectB> {ChildNode = new SimpleTestNodeB1(), TransitionSourceFunc = ctxt => new TestObjectB()});
+            pipelineNode.AddChild(new TransitionFuncNode<TestObjectA, TestObjectB>
+            {
+                ChildNode = new SimpleTestNodeB1(),
+                TransitionSourceFunc = ctxt => new TestObjectB()
+            });
             pipelineNode.AddChild(new SimpleTestNodeA2());
 
             var testObject = new TestObjectA();
@@ -71,7 +75,11 @@ namespace Banzai.Test
             var pipelineNode = new PipelineNode<TestObjectA>();
 
             pipelineNode.AddChild(new SimpleTestNodeA1());
-            pipelineNode.AddChild(new TransitionFuncNode<TestObjectA, TestObjectB> { ChildNode = new SimpleTestNodeB1(), TransitionSourceFuncAsync = ctxt => Task.FromResult(new TestObjectB()) });
+            pipelineNode.AddChild(new TransitionFuncNode<TestObjectA, TestObjectB>
+            {
+                ChildNode = new SimpleTestNodeB1(),
+                TransitionSourceFuncAsync = ctxt => Task.FromResult(new TestObjectB())
+            });
             pipelineNode.AddChild(new SimpleTestNodeA2());
 
             var testObject = new TestObjectA();
