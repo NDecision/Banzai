@@ -56,6 +56,9 @@
     <Compile Include="WhenRequestingNodeResultErrors.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="WhenRunningAgainstMultipleSubjects.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="WhenRunningFirstMatchNode.cs" />
     <Compile Include="WhenRunningFuncNode.cs" />
     <Compile Include="WhenRunningGroupNode.cs" />

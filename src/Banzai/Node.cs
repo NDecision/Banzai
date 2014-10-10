@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Banzai.Logging;
 using Banzai.Utility;
@@ -65,6 +67,21 @@ namespace Banzai
         /// <returns>A NodeResult</returns>
         Task<NodeResult<T>> ExecuteAsync(ExecutionContext<T> sourceContext);
 
+        /// <summary>
+        /// Used to kick off execution of a node with a default execution context for all subjects using Async WhenAll semantics internally .
+        /// </summary>
+        /// <param name="subjects">Subject to be moved through the node.</param>
+        /// <param name="options">Execution options to apply to running this enumerable of subjects.</param>
+        /// <returns>An aggregated NodeResult.</returns>
+        Task<NodeResult<T>> ExecuteManyAsync(IEnumerable<T> subjects, ExecutionOptions options = null);
+
+        /// <summary>
+        /// Used to kick off execution of a node with a default execution context for all subjects in a serial manner.
+        /// </summary>
+        /// <param name="subjects">Subject to be moved through the node.</param>
+        /// <param name="options">Execution options to apply to running this enumerable of subjects.</param>
+        /// <returns>An aggregated NodeResult.</returns>
+        Task<NodeResult<T>> ExecuteManySeriallyAsync(IEnumerable<T> subjects, ExecutionOptions options = null);
 
         /// <summary>
         /// Used to reset the node to a prerun state
@@ -108,6 +125,15 @@ namespace Banzai
         /// LogWriter used to write to the log from this node.
         /// </summary>
         public ILogWriter LogWriter { get { return Logging.LogWriter.GetLogger(this); } }
+
+        /// <summary>
+        /// Resets the current node to unrun state.
+        /// </summary>
+        public virtual void Reset()
+        {
+            LogWriter.Debug("Resetting the node.");
+            Status = NodeRunStatus.NotRun;
+        }
 
         /// <summary>
         /// Synchronous function to determine if node ShouldExecute.  Takes precedence above overridden ShouldExecute method.
@@ -163,6 +189,99 @@ namespace Banzai
         public async Task<NodeResult<T>> ExecuteAsync(T subject)
         {
             return await ExecuteAsync(new ExecutionContext<T>(subject));
+        }
+
+        /// <summary>
+        /// Used to kick off execution of a node with a default execution context for all subjects in a serial manner.
+        /// </summary>
+        /// <param name="subjects">Subject to be moved through the node.</param>
+        /// <param name="options">Execution options to apply to running this enumerable of subjects.</param>
+        /// <returns>An aggregated NodeResult.</returns>
+        public async Task<NodeResult<T>> ExecuteManySeriallyAsync(IEnumerable<T> subjects, ExecutionOptions options = null)
+        {
+            Guard.AgainstNullArgument("subjects", subjects);
+
+            var subjectList = subjects.ToList();
+
+            var aggregateResult = new NodeResult<T>(default(T));
+
+            if (subjectList.Count == 0)
+                return aggregateResult;
+
+            if (options == null)
+                options = new ExecutionOptions();
+
+            foreach (var subject in subjectList)
+            {
+                try
+                {
+                    LogWriter.Debug("Running all subjects asynchronously.");
+                    NodeResult<T> result = await ExecuteAsync(new ExecutionContext<T>(subject, options));
+
+                    aggregateResult.AddChildResult(result);
+                }
+                catch(Exception)
+                {
+                    if (options.ThrowOnError)
+                    {
+                        throw;
+                    }
+                    if (!options.ContinueOnFailure)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            ProcessExecuteManyResults(options, aggregateResult);
+
+            return aggregateResult;
+        }
+
+        /// <summary>
+        /// Used to kick off execution of a node with a default execution context for all subjects using Async WhenAll semantics internally .
+        /// </summary>
+        /// <param name="subjects">Subject to be moved through the node.</param>
+        /// <param name="options">Execution options to apply to running this enumerable of subjects.</param>
+        /// <returns>An aggregated NodeResult.</returns>
+        public async Task<NodeResult<T>> ExecuteManyAsync(IEnumerable<T> subjects, ExecutionOptions options = null)
+        {
+            Guard.AgainstNullArgument("subjects", subjects);
+
+            var subjectList = subjects.ToList();
+
+            var aggregateResult = new NodeResult<T>(default(T));
+
+            if (subjectList.Count == 0)
+                return aggregateResult;
+
+            if(options == null)
+                options = new ExecutionOptions();
+
+            Task<NodeResult<T>[]> aggregateTask = null;
+
+            try
+            {
+                LogWriter.Debug("Running all subjects asynchronously.");
+                aggregateTask = Task.WhenAll(subjectList.Select(x => ExecuteAsync(new ExecutionContext<T>(x, options))));
+                NodeResult<T>[] results = await aggregateTask.ConfigureAwait(false);
+
+                aggregateResult.AddChildResults(results);
+            }
+            catch
+            {
+                if (options.ThrowOnError)
+                {
+                    if (aggregateTask.Exception != null)
+                        throw aggregateTask.Exception;
+
+                    throw;
+                }
+            }
+
+            ProcessExecuteManyResults(options, aggregateResult);
+
+            return aggregateResult;
         }
 
         /// <summary>
@@ -265,15 +384,6 @@ namespace Banzai
         }
 
         /// <summary>
-        /// Resets the current node to unrun state.
-        /// </summary>
-        public virtual void Reset()
-        {
-            LogWriter.Debug("Resetting the node.");
-            Status = NodeRunStatus.NotRun;
-        }
-
-        /// <summary>
         /// Called before the node is executed. Override to add functionality.
         /// </summary>
         /// <param name="context">Effective context for execution.</param>
@@ -287,6 +397,19 @@ namespace Banzai
         /// <param name="context">Effective context for execution.</param>
         protected virtual void OnAfterExecute(ExecutionContext<T> context)
         {
+        }
+
+        private void ProcessExecuteManyResults(ExecutionOptions options, NodeResult<T> aggregateResult)
+        {
+            aggregateResult.Status = aggregateResult.ChildResults.AggregateNodeResults(options);
+
+            var exceptions = aggregateResult.GetFailExceptions().ToList();
+            if (exceptions.Count > 0)
+            {
+                LogWriter.Info("Child executions returned {0} exceptions.", exceptions.Count);
+                aggregateResult.Exception = exceptions.Count == 1 ? exceptions[0] : new AggregateException(exceptions);
+            }
+
         }
 
      }

@@ -72,6 +72,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\SolutionVersion.cs" />
+    <Compile Include="ResultExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TransitionFuncNode.cs">
       <SubType>Code</SubType>
     </Compile>

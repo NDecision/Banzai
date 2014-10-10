@@ -80,10 +80,22 @@ namespace Banzai
         /// <summary>
         /// Adds a child result to the current result.
         /// </summary>
-        /// <param name="result"></param>
+        /// <param name="result">Result to add to child results.</param>
         internal void AddChildResult(NodeResult<T> result)
         {
             _childResults.Enqueue(result);
+        }
+
+        /// <summary>
+        /// Adds a child result to the current result.
+        /// </summary>
+        /// <param name="results">Results to add to child results.</param>
+        internal void AddChildResults(IEnumerable<NodeResult<T>> results)
+        {
+            foreach (var result in results)
+            {
+                _childResults.Enqueue(result);
+            }
         }
 
     }
