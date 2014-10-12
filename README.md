@@ -168,9 +168,12 @@ Or
 
 ##Running Nodes
 In order to run a node, you can call one of the following methods, which exist on all nodes:
+
 <b>ExecuteAsync</b> - Executes the node given either a subject (the object your are sending through the flow) or an [ExecutionContext](#executioncontext) that contains the subject.
+
 <b>ExecuteManyAsync</b> - Just like ExecuteAsync, but accepts an enumerable of subjects. Executes the tasks asynchrounously, so several could run simultaneously.
 The results are aggregated and returnd via a single [NodeResult](#noderesult)
+
 <b>ExecuteManySeriallyAsync</b> - Executes many, but awaits each subject so that they are guaranteed to execute serially.
 
 ###ExecutionContext
