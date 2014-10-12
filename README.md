@@ -153,6 +153,12 @@ Or
     });
 
 
+##Running Nodes
+In order to run a node, you can call one of the following methods, which exist on all nodes:
+<b>ExecuteAsync</b> - Executes the node given either a subject or an ExecutionContext that contains the subject.
+<b>ExecuteManyAsync</b> - Just like ExecuteAsync, but accepts an enumerable of subjects. Executes the tasks asynchrounously, so several could run simultaneously.
+<b>ExecuteManySeriallyAsync</b> - Executes many, but awaits each subject so that they are guaranteed to execute serially.
+
 ###ExecutionContext
 The execution context flows through all nodes in the flow.  The execution context contains options for running the flow as well as the
 instance of the subject that the flow is executed on.  
