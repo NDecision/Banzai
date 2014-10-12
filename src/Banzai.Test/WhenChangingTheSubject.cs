@@ -20,7 +20,7 @@ namespace Banzai.Test
 
             result.Subject.ShouldBeSameAs(context.Subject);
             result.Subject.ShouldNotBeSameAs(testObject);
-            ((TestObjectA)result.Subject).TestValueString.ShouldEqual("New Instance");
+            result.GetSubjectAs<TestObjectA>().TestValueString.ShouldEqual("New Instance");
         }
 
         [Test]

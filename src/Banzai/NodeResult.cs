@@ -7,7 +7,6 @@ namespace Banzai
     /// <summary>
     /// The results of a node execution.
     /// </summary>
-    /// <typeparam name="T">Type the node operated on.</typeparam>
     public sealed class NodeResult
     {
         private readonly ConcurrentQueue<NodeResult> _childResults = new ConcurrentQueue<NodeResult>();
@@ -25,6 +24,16 @@ namespace Banzai
         /// Subject operated on by the node.
         /// </summary>
         public object Subject { get; internal set; }
+
+        /// <summary>
+        /// Convenience method to allow the subject to be retrieved and casted at teh same time.
+        /// </summary>
+        /// <typeparam name="T">Type to cast the subject to.</typeparam>
+        /// <returns>Typed subject.</returns>
+        public T GetSubjectAs<T>()
+        {
+            return (T) Subject;
+        }
 
         /// <summary>
         /// Success status of the node operation.

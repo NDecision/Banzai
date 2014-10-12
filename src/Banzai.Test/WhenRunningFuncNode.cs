@@ -20,7 +20,7 @@ namespace Banzai.Test
 
             node.Status.ShouldEqual(NodeRunStatus.Completed);
             result.Status.ShouldEqual(NodeResultStatus.Succeeded);
-            ((TestObjectA)result.Subject).TestValueString.ShouldEqual("Completed");
+            result.GetSubjectAs<TestObjectA>().TestValueString.ShouldEqual("Completed");
         }
 
         [Test]
@@ -36,7 +36,7 @@ namespace Banzai.Test
 
             node.Status.ShouldEqual(NodeRunStatus.NotRun);
             result.Status.ShouldEqual(NodeResultStatus.NotRun);
-            ((TestObjectA)result.Subject).TestValueString.ShouldBeNull();
+            result.GetSubjectAs<TestObjectA>().TestValueString.ShouldBeNull();
         }
 
         [Test]
@@ -52,7 +52,7 @@ namespace Banzai.Test
 
             node.Status.ShouldEqual(NodeRunStatus.Completed);
             result.Status.ShouldEqual(NodeResultStatus.Succeeded);
-            ((TestObjectA)result.Subject).TestValueString.ShouldEqual("Completed");
+            result.GetSubjectAs<TestObjectA>().TestValueString.ShouldEqual("Completed");
         }
 
         [Test]
@@ -68,7 +68,7 @@ namespace Banzai.Test
 
             node.Status.ShouldEqual(NodeRunStatus.NotRun);
             result.Status.ShouldEqual(NodeResultStatus.NotRun);
-            ((TestObjectA)result.Subject).TestValueString.ShouldBeNull();
+            result.GetSubjectAs<TestObjectA>().TestValueString.ShouldBeNull();
         } 
     }
 }
