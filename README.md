@@ -7,12 +7,13 @@
 Banzai is an easy .Net pipeline solution that contains composable nodes for constructing simple and complex pipelines.  
 Yes, there is TPL Dataflow and it's really cool, but I was looking for something easy that solved the 80% case of simple
 asynchronous pipelines in my business applications.
+ 
 
-
-##Basic Construction 
-Flows are composed from nodes, of which there are a few types.  All flows accept a Subject Type (T).  
-This the type of the subject that is acted upon by the workflow.  All methods that are either overridden 
-or provided via a function accept an ExecutionContext.  All node executions return a [NodeResult](#noderesult).
+##Basic Concept 
+Flows are composed from nodes, of which there are a few types explained below.  Nodes are [composed into simple or complex flows](#building-flows) and then 
+[executed on the flow subject](#running-nodes).  All flows accept a Subject Type (T). This the type of the subject that is acted upon by the flow.  
+All methods that are either overridden or provided via a function accept an ExecutionContext.  
+All node executions return a [NodeResult](#noderesult).
 
 ###Basic Nodes
 These are the nodes that contain functionality that runs against the subject of the pipeline.  Basically, this is where most of your code goes.
@@ -155,8 +156,9 @@ Or
 
 ##Running Nodes
 In order to run a node, you can call one of the following methods, which exist on all nodes:
-<b>ExecuteAsync</b> - Executes the node given either a subject or an ExecutionContext that contains the subject.
+<b>ExecuteAsync</b> - Executes the node given either a subject (the object your are sending through the flow) or an [ExecutionContext](#executioncontext) that contains the subject.
 <b>ExecuteManyAsync</b> - Just like ExecuteAsync, but accepts an enumerable of subjects. Executes the tasks asynchrounously, so several could run simultaneously.
+The results are aggregated and returnd via a single [NodeResult](#noderesult)
 <b>ExecuteManySeriallyAsync</b> - Executes many, but awaits each subject so that they are guaranteed to execute serially.
 
 ###ExecutionContext
