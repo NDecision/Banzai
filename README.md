@@ -10,10 +10,22 @@ asynchronous pipelines in my business applications.
  
 
 ##Basic Concept 
-Flows are composed from nodes, of which there are a few types explained below.  Nodes are [composed into simple or complex flows](#building-flows) and then 
+Flows are composed from nodes of which there are a few types explained below.  Nodes are [composed into simple or complex flows](#building-flows) and then 
 [executed on the flow subject](#running-nodes).  All flows accept a Subject Type (T). This the type of the subject that is acted upon by the flow.  
-All methods that are either overridden or provided via a function accept an ExecutionContext.  
+All Node methods that are either overridden or provided via a function accept an [ExecutionContext](#executioncontext).  
 All node executions return a [NodeResult](#noderesult).
+
+    //Create a pipeline node
+    var pipelineNode = new PipelineNode<TestObjectA>();
+
+    //Add a couple of child nodes to the pipeline that do things
+    pipelineNode.AddChild(new SimpleTestNodeA1());
+    pipelineNode.AddChild(new SimpleTestNodeA2()); 
+
+    //Create the subject and execute the pipeline on it.
+    var subject = new TestObjectA();
+    NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(subject);
+
 
 ###Basic Nodes
 These are the nodes that contain functionality that runs against the subject of the pipeline.  Basically, this is where most of your code goes.
