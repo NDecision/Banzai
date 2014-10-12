@@ -106,7 +106,7 @@ namespace Banzai
         /// </summary>
         /// <param name="context">Current ExecutionContext.</param>
         /// <returns>NodeResultStatus representing the current node result.</returns>
-        protected override sealed async Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<T> context)
+        protected override sealed async Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<T> context)
         {
             if (Children == null || Children.Count == 0)
             {
@@ -125,20 +125,14 @@ namespace Banzai
         /// <param name="context">Source context for preparation.</param>
         /// <param name="currentResult">A referene to the result of the current node.</param>
         /// <returns>The execution context to be used in node execution.</returns>
-        protected override sealed ExecutionContext<T> PrepareExecutionContext(ExecutionContext<T> context, NodeResult<T> currentResult)
+        protected override sealed IExecutionContext<T> PrepareExecutionContext(IExecutionContext<T> context, NodeResult currentResult)
         {
             LogWriter.Debug("Preparing execution context.");
-            var derivedContext = new ExecutionContext<T>(context, currentResult);
+            var resultContext = new ExecutionContext<T>(context, currentResult);
 
             context.AddResult(currentResult);
 
-            if (LocalOptions != null)
-            {
-                LogWriter.Debug("Local options existed, overwriting effective options.");
-                derivedContext.EffectiveOptions = LocalOptions;
-            }
-
-            return derivedContext;
+            return resultContext;
         }
 
         /// <summary>
@@ -146,7 +140,7 @@ namespace Banzai
         /// </summary>
         /// <param name="context">Current ExecutionContext.</param>
         /// <returns>NodeResultStatus representing the current node result.</returns>
-        protected abstract Task<NodeResultStatus> ExecuteChildrenAsync(ExecutionContext<T> context);
+        protected abstract Task<NodeResultStatus> ExecuteChildrenAsync(IExecutionContext<T> context);
 
     }
 }

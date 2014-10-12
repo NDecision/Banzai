@@ -16,7 +16,7 @@ namespace Banzai.Test
             pipelineNode.AddChild(new SimpleTestNodeA2());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
             result.Status.ShouldEqual(NodeResultStatus.Succeeded);
             pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
@@ -32,7 +32,7 @@ namespace Banzai.Test
             pipelineNode.AddChild(new SimpleTestNodeA2());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
             result.Status.ShouldEqual(NodeResultStatus.Failed);
             pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
@@ -48,7 +48,7 @@ namespace Banzai.Test
             pipelineNode.AddChild(new SimpleTestNodeA2());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
             result.Status.ShouldEqual(NodeResultStatus.Failed);
             pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
@@ -57,12 +57,12 @@ namespace Banzai.Test
 
         public class SimpleTransitionNode : TransitionNode<TestObjectA, TestObjectB>
         {
-            protected override TestObjectB TransitionSource(ExecutionContext<TestObjectA> sourceContext)
+            protected override TestObjectB TransitionSource(IExecutionContext<TestObjectA> sourceContext)
             {
                 return new TestObjectB();
             }
 
-            protected override TestObjectA TransitionResult(ExecutionContext<TestObjectA> sourceContext, NodeResult<TestObjectB> result)
+            protected override TestObjectA TransitionResult(IExecutionContext<TestObjectA> sourceContext, NodeResult result)
             {
                 return sourceContext.Subject;
             }

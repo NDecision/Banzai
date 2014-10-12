@@ -8,15 +8,15 @@ namespace Banzai
     /// The results of a node execution.
     /// </summary>
     /// <typeparam name="T">Type the node operated on.</typeparam>
-    public sealed class NodeResult<T>
+    public sealed class NodeResult
     {
-        private readonly ConcurrentQueue<NodeResult<T>> _childResults = new ConcurrentQueue<NodeResult<T>>();
+        private readonly ConcurrentQueue<NodeResult> _childResults = new ConcurrentQueue<NodeResult>();
 
         /// <summary>
         /// Constructs a new NodeResult.
         /// </summary>
         /// <param name="subject">Subject operated on by the node.</param>
-        public NodeResult(T subject)
+        public NodeResult(object subject)
         {
             Subject = subject;
         }
@@ -24,7 +24,7 @@ namespace Banzai
         /// <summary>
         /// Subject operated on by the node.
         /// </summary>
-        public T Subject { get; internal set; }
+        public object Subject { get; internal set; }
 
         /// <summary>
         /// Success status of the node operation.
@@ -39,7 +39,7 @@ namespace Banzai
         /// <summary>
         /// Child results if the node contained child nodes.
         /// </summary>
-        public IEnumerable<NodeResult<T>> ChildResults { get { return _childResults; } }
+        public IEnumerable<NodeResult> ChildResults { get { return _childResults; } }
 
         /// <summary>
         /// If the node was a failure, aggregates execptions along the failure path.
@@ -81,7 +81,7 @@ namespace Banzai
         /// Adds a child result to the current result.
         /// </summary>
         /// <param name="result">Result to add to child results.</param>
-        internal void AddChildResult(NodeResult<T> result)
+        internal void AddChildResult(NodeResult result)
         {
             _childResults.Enqueue(result);
         }
@@ -90,7 +90,7 @@ namespace Banzai
         /// Adds a child result to the current result.
         /// </summary>
         /// <param name="results">Results to add to child results.</param>
-        internal void AddChildResults(IEnumerable<NodeResult<T>> results)
+        internal void AddChildResults(IEnumerable<NodeResult> results)
         {
             foreach (var result in results)
             {

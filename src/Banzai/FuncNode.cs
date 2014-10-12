@@ -12,12 +12,12 @@ namespace Banzai
         /// <summary>
         /// Function to be performed when the node is executed.
         /// </summary>
-        Func<ExecutionContext<T>, NodeResultStatus> ExecutedFunc { get; set; }
+        Func<IExecutionContext<T>, NodeResultStatus> ExecutedFunc { get; set; }
 
         /// <summary>
         /// Method that defines the async function to execute on the subject for this node.
         /// </summary>
-        Func<ExecutionContext<T>, Task<NodeResultStatus>> ExecutedFuncAsync { get; set; }
+        Func<IExecutionContext<T>, Task<NodeResultStatus>> ExecutedFuncAsync { get; set; }
     }
 
 
@@ -30,19 +30,19 @@ namespace Banzai
         /// <summary>
         /// Synchronous function that provides functionality for the node.  Takes precedence above overridden PerformExecute method.
         /// </summary>
-        public Func<ExecutionContext<T>, NodeResultStatus> ExecutedFunc { get; set; }
+        public Func<IExecutionContext<T>, NodeResultStatus> ExecutedFunc { get; set; }
 
         /// <summary>
         /// Function executed when the node executes. Takes precedence over overridden PerformExecute method.
         /// </summary>
-        public Func<ExecutionContext<T>, Task<NodeResultStatus>> ExecutedFuncAsync { get; set; }
+        public Func<IExecutionContext<T>, Task<NodeResultStatus>> ExecutedFuncAsync { get; set; }
 
         /// <summary>
         /// Sealed method used to call the provided ExecutedFunc.
         /// </summary>
         /// <param name="context">Current execution context.</param>
         /// <returns>Final result execution status of the node.</returns>
-        protected async override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<T> context)
+        protected async override Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<T> context)
         {
             if (ExecutedFuncAsync != null)
             {
@@ -58,7 +58,7 @@ namespace Banzai
         /// </summary>
         /// <param name="context">Current execution context.</param>
         /// <returns>Final result execution status of the node.</returns>
-        protected override NodeResultStatus PerformExecute(ExecutionContext<T> context)
+        protected override NodeResultStatus PerformExecute(IExecutionContext<T> context)
         {
             if (ExecutedFunc != null)
             {

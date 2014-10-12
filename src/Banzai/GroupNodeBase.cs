@@ -23,10 +23,10 @@ namespace Banzai
         /// </summary>
         /// <param name="context">Current ExecutionContext.</param>
         /// <returns>NodeResultStatus representing the current node result.</returns>
-        protected override async Task<NodeResultStatus> ExecuteChildrenAsync(ExecutionContext<T> context)
+        protected override async Task<NodeResultStatus> ExecuteChildrenAsync(IExecutionContext<T> context)
         {
-            Task<NodeResult<T>[]> aggregateTask = Task.WhenAll(Children.Select(x => x.ExecuteAsync(context)));
-            NodeResult<T>[] results;
+            Task<NodeResult[]> aggregateTask = Task.WhenAll(Children.Select(x => x.ExecuteAsync(context)));
+            NodeResult[] results;
 
             try
             {
@@ -41,7 +41,7 @@ namespace Banzai
                 throw;
             }
 
-            return results.AggregateNodeResults(context.EffectiveOptions);
+            return results.AggregateNodeResults(GetEffectiveOptions(context.GlobalOptions));
         }
 
     }

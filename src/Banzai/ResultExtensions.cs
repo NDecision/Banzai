@@ -13,7 +13,7 @@ namespace Banzai
         /// <param name="results">Results to aggregate.</param>
         /// <param name="options">Execution options to consider during aggregation.</param>
         /// <returns>Summary NodeResultStatus.</returns>
-        public static NodeResultStatus AggregateNodeResults<T>(this IEnumerable<NodeResult<T>> results, ExecutionOptions options)
+        public static NodeResultStatus AggregateNodeResults(this IEnumerable<NodeResult> results, ExecutionOptions options)
         {
             bool hasFailure = false;
             bool hasSuccess = false;

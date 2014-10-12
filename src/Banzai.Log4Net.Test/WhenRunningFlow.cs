@@ -24,7 +24,7 @@ namespace Banzai.Log4Net.Test
             pipelineNode.AddChild(new SimpleTestNodeA2());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
             pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
         }

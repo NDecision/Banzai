@@ -6,7 +6,7 @@ namespace Banzai.Autofac.Test
 
     public class TestNode : Node<object>, ITestNode<object>
     {
-        protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<object> context)
+        protected override Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<object> context)
         {
             return Task.FromResult(NodeResultStatus.Succeeded);
         }
@@ -16,7 +16,7 @@ namespace Banzai.Autofac.Test
 
     public class TestNode2 : Node<object>, ITestNode2
     {
-        protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<object> context)
+        protected override Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<object> context)
         {
             return Task.FromResult(NodeResultStatus.Succeeded);
         }
@@ -26,7 +26,7 @@ namespace Banzai.Autofac.Test
 
     public class TestNode3 : Node<object>, ITestNode3
     {
-        protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<object> context)
+        protected override Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<object> context)
         {
             return Task.FromResult(NodeResultStatus.Succeeded);
         }
@@ -36,7 +36,7 @@ namespace Banzai.Autofac.Test
 
     public class TestNode4 : Node<object>, ITestNode4
     {
-        protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<object> context)
+        protected override Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<object> context)
         {
             return Task.FromResult(NodeResultStatus.Succeeded);
         }
@@ -46,7 +46,7 @@ namespace Banzai.Autofac.Test
 
     public class TestPipelineNode1 : PipelineNodeBase<object>, ITestPipelineNode1
     {
-        protected override void OnBeforeExecute(ExecutionContext<object> context)
+        protected override void OnBeforeExecute(IExecutionContext<object> context)
         {
             AddChild(NodeFactory.GetNode<ITestNode2>());
             AddChild(NodeFactory.GetNode<ITestNode3>());

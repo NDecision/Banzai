@@ -1,16 +1,52 @@
-﻿using Banzai.Logging;
-using Banzai.Utility;
+﻿using Banzai.Utility;
 
 namespace Banzai
 {
+
+    public interface IExecutionContext<out T>
+    {
+        /// <summary>
+        /// The subject that the workflow operates on.
+        /// </summary>
+        T Subject { get; }
+
+        /// <summary>
+        /// A dynamic object of additional state that must be passed through the workflow.
+        /// </summary>
+        dynamic State { get; }
+
+        /// <summary>
+        /// The global options that this node is using for execution
+        /// </summary>
+        /// <remarks>This uses the global options if no node-specific options are specified.</remarks>
+        ExecutionOptions GlobalOptions { get; }
+
+        /// <summary>
+        /// Rollup of this result and all results under this result
+        /// </summary>
+        NodeResult ParentResult { get; }
+
+        /// <summary>
+        /// Adds a result to the execution context.
+        /// </summary>
+        /// <param name="result">The result to add</param>
+        void AddResult(NodeResult result);
+
+        /// <summary>
+        /// Changes the current subject to the instance provided.
+        /// </summary>
+        /// <param name="subject">The new subject.</param>
+        void ChangeSubject(object subject);
+
+    }
+
     /// <summary>
     /// This execution context is passed down the chain during execution so that child nodes can base decisions on 
     /// context created globally or mutated by previous nodes.
     /// </summary>
     /// <typeparam name="T">Type of the subject that the nodes operate on.</typeparam>
-    public sealed class ExecutionContext<T>
+    public sealed class ExecutionContext<T> : IExecutionContext<T>
     {
-        private ExecutionOptions _effectiveOptions;
 
         /// <summary>
         /// Creates a new execution context.
@@ -18,7 +54,7 @@ namespace Banzai
         /// <param name="subject">Subject of the current flow.</param>
         /// <param name="globalOptions">Global options of the current flow.</param>
         /// <param name="rootResult">Root result if one has already been established.</param>
-        public ExecutionContext(T subject, ExecutionOptions globalOptions = null, NodeResult<T> rootResult = null)
+        public ExecutionContext(T subject, ExecutionOptions globalOptions = null, NodeResult rootResult = null)
         {
             State = new DynamicDictionary();
             Subject = subject;
@@ -32,7 +68,7 @@ namespace Banzai
         /// </summary>
         /// <param name="parentContext">Parent of this context.</param>
         /// <param name="parentResult">Parent result to set on the new context, if any.</param>
-        internal ExecutionContext(ExecutionContext<T> parentContext, NodeResult<T> parentResult = null) 
+        internal ExecutionContext(IExecutionContext<T> parentContext, NodeResult parentResult = null) 
         {
             Guard.AgainstNullArgument("parentContext", parentContext);
             Guard.AgainstNullArgumentProperty("parentContext", "Subject", parentContext.Subject);
@@ -61,40 +97,24 @@ namespace Banzai
         public ExecutionOptions GlobalOptions { get; private set; }
 
         /// <summary>
-        /// The effective options that this node is using for execution
-        /// </summary>
-        /// <remarks>Overrides global options with local node options if applicable</remarks>
-        public ExecutionOptions EffectiveOptions
-        {
-            get
-            {
-                if (_effectiveOptions == null)
-                    return GlobalOptions;
-
-                return _effectiveOptions;
-            }
-            internal set { _effectiveOptions = value; }
-        }
-
-        /// <summary>
         /// Rollup of this result and all results under this result
         /// </summary>
-        public NodeResult<T> ParentResult { get; private set; }
+        public NodeResult ParentResult { get; private set; }
 
         /// <summary>
         /// Changes the current subject to the instance provided.
         /// </summary>
         /// <param name="subject">The new subject.</param>
-        public void ChangeSubject(T subject)
+        public void ChangeSubject(object subject)
         {
-            Subject = subject;
+            Subject = (T) subject;
         }
 
         /// <summary>
         /// Adds a result to the execution context.
         /// </summary>
         /// <param name="result">The result to add</param>
-        internal void AddResult(NodeResult<T> result)
+        public void AddResult(NodeResult result)
         {
             if (ParentResult == null)
             {

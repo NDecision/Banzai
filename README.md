@@ -24,7 +24,7 @@ All node executions return a [NodeResult](#noderesult).
 
     //Create the subject and execute the pipeline on it.
     var subject = new TestObjectA();
-    NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(subject);
+    NodeResult result = await pipelineNode.ExecuteAsync(subject);
 
 
 ###Basic Nodes
@@ -81,7 +81,7 @@ If you wish to create a custom MultiNode, reference [Abstract Multi Nodes](#abst
     pipelineNode.AddChild(new SimpleTestNodeA2());
 
     var testObject = new TestObjectA();
-    NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+    NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
 <b>GroupNode/IGroupNode</b> - An aggregation of nodes that are run on a subject using the asyncrhonous Task.WhenAll pattern.
 
@@ -93,7 +93,7 @@ If you wish to create a custom MultiNode, reference [Abstract Multi Nodes](#abst
     groupNode.AddChild(new SimpleTestNodeA2());
 
     var testObject = new TestObjectA();
-    NodeResult<TestObjectA> result =  await groupNode.ExecuteAsync(testObject);
+    NodeResult result =  await groupNode.ExecuteAsync(testObject);
 
 <b>FirstMatchNode/IFirstMatchNode</b> - An aggregation of nodes of which the first matching its ShouldExecute condition is run on the subject.
 
@@ -112,7 +112,7 @@ If you wish to create a custom MultiNode, reference [Abstract Multi Nodes](#abst
     matchNode.AddChild(secondNode);
 
     var testObject = new TestObjectA();
-    NodeResult<TestObjectA> result = await matchNode.ExecuteAsync(testObject);
+    NodeResult result = await matchNode.ExecuteAsync(testObject);
 
 ###Abstract Multi Nodes
 These nodes are synonymous with the above nodes, but are abstract and intended to serve as a base class for custom implementations.
@@ -149,7 +149,7 @@ The aggregate result and any exceptions are passed back to the source node that 
             return new TestObjectB();
         }
 
-        protected override TestObjectA TransitionResult(ExecutionContext<TestObjectA> sourceContext, NodeResult<TestObjectB> result)
+        protected override TestObjectA TransitionResult(ExecutionContext<TestObjectA> sourceContext, NodeResult result)
         {
             return sourceContext.Subject;
         }

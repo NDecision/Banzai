@@ -18,7 +18,7 @@ namespace Banzai.Test
             matchNode.AddChild(secondNode);
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await matchNode.ExecuteAsync(testObject);
+            NodeResult result = await matchNode.ExecuteAsync(testObject);
 
             matchNode.Status.ShouldEqual(NodeRunStatus.Completed);
             firstNode.Status.ShouldEqual(NodeRunStatus.Completed);
@@ -41,7 +41,7 @@ namespace Banzai.Test
             matchNode.AddChild(secondNode);
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await matchNode.ExecuteAsync(testObject);
+            NodeResult result = await matchNode.ExecuteAsync(testObject);
 
             matchNode.Status.ShouldEqual(NodeRunStatus.Completed);
             firstNode.Status.ShouldEqual(NodeRunStatus.NotRun);
@@ -64,7 +64,7 @@ namespace Banzai.Test
             matchNode.AddChild(secondNode);
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await matchNode.ExecuteAsync(testObject);
+            NodeResult result = await matchNode.ExecuteAsync(testObject);
 
             matchNode.Status.ShouldEqual(NodeRunStatus.Completed);
             firstNode.Status.ShouldEqual(NodeRunStatus.Completed);
@@ -87,7 +87,7 @@ namespace Banzai.Test
             matchNode.AddChild(secondNode);
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await matchNode.ExecuteAsync(testObject);
+            NodeResult result = await matchNode.ExecuteAsync(testObject);
 
             matchNode.Status.ShouldEqual(NodeRunStatus.Completed);
             firstNode.Status.ShouldEqual(NodeRunStatus.Faulted);

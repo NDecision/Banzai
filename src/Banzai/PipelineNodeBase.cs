@@ -24,9 +24,11 @@ namespace Banzai
         /// </summary>
         /// <param name="context">Current ExecutionContext.</param>
         /// <returns>NodeResultStatus representing the current node result.</returns>
-        protected override async Task<NodeResultStatus> ExecuteChildrenAsync(ExecutionContext<T> context)
+        protected override async Task<NodeResultStatus> ExecuteChildrenAsync(IExecutionContext<T> context)
         {
-            var results = new List<NodeResult<T>>();
+            var results = new List<NodeResult>();
+
+            var effectiveOptions = GetEffectiveOptions(context.GlobalOptions);
 
             LogWriter.Debug("Running each child node in the pipeline sequentially.");
             foreach (var childNode in Children)
@@ -36,13 +38,13 @@ namespace Banzai
 
                 results.Add(result);
 
-                if (result.Status == NodeResultStatus.Failed && !context.EffectiveOptions.ContinueOnFailure)
+                if (result.Status == NodeResultStatus.Failed && !effectiveOptions.ContinueOnFailure)
                 {
                     break;
                 }
             }
 
-            return results.AggregateNodeResults(context.EffectiveOptions);
+            return results.AggregateNodeResults(effectiveOptions);
         }
     }
 }

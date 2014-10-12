@@ -116,9 +116,7 @@ namespace Banzai.Test
 
             testNode.LocalOptions = new ExecutionOptions {ThrowOnError = true};
 
-            var result = await testNode.ExecuteAsync(context);
-
-            context.EffectiveOptions.ThrowOnError.ShouldEqual(true);
+            testNode.GetEffectiveOptions(context.GlobalOptions).ThrowOnError.ShouldEqual(true);
         }
 
         [Test]
@@ -132,7 +130,7 @@ namespace Banzai.Test
 
             var result = await testNode.ExecuteAsync(context);
 
-            context.EffectiveOptions.ThrowOnError.ShouldEqual(true);
+            testNode.GetEffectiveOptions(context.GlobalOptions).ThrowOnError.ShouldEqual(true);
         }
 
 

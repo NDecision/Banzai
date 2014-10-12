@@ -22,9 +22,9 @@ namespace Banzai
         /// </summary>
         /// <param name="context">Current ExecutionContext.</param>
         /// <returns>NodeResultStatus representing the current node result.</returns>
-        protected override async Task<NodeResultStatus> ExecuteChildrenAsync(ExecutionContext<T> context)
+        protected override async Task<NodeResultStatus> ExecuteChildrenAsync(IExecutionContext<T> context)
         {
-            NodeResult<T> result = null;
+            NodeResult result = null;
 
             LogWriter.Debug("Running first matching child node.");
             foreach (var childNode in Children)

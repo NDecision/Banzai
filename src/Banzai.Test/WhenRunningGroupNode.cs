@@ -15,7 +15,7 @@ namespace Banzai.Test
             groupNode.AddChild(new SimpleTestNodeA2());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result =  await groupNode.ExecuteAsync(testObject);
+            NodeResult result =  await groupNode.ExecuteAsync(testObject);
 
             groupNode.Status.ShouldEqual(NodeRunStatus.Completed);
         }
@@ -29,7 +29,7 @@ namespace Banzai.Test
             groupNode.AddChild(new FailingTestNodeA());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await groupNode.ExecuteAsync(testObject);
+            NodeResult result = await groupNode.ExecuteAsync(testObject);
 
             result.Status.ShouldEqual(NodeResultStatus.Failed);
             groupNode.Status.ShouldEqual(NodeRunStatus.Completed);
@@ -44,7 +44,7 @@ namespace Banzai.Test
             groupNode.AddChild(new FailingTestNodeA());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await groupNode.ExecuteAsync(testObject);
+            NodeResult result = await groupNode.ExecuteAsync(testObject);
 
             result.Status.ShouldEqual(NodeResultStatus.SucceededWithErrors);
             groupNode.Status.ShouldEqual(NodeRunStatus.Completed);
@@ -59,7 +59,7 @@ namespace Banzai.Test
             groupNode.AddChild(new FaultingTestNodeA());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await groupNode.ExecuteAsync(testObject);
+            NodeResult result = await groupNode.ExecuteAsync(testObject);
 
             result.Status.ShouldEqual(NodeResultStatus.Failed);
             groupNode.Status.ShouldEqual(NodeRunStatus.Completed);
@@ -74,7 +74,7 @@ namespace Banzai.Test
             groupNode.AddChild(new FaultingTestNodeA());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await groupNode.ExecuteAsync(testObject);
+            NodeResult result = await groupNode.ExecuteAsync(testObject);
 
             result.Status.ShouldEqual(NodeResultStatus.SucceededWithErrors);
             groupNode.Status.ShouldEqual(NodeRunStatus.Completed);
@@ -89,7 +89,7 @@ namespace Banzai.Test
             groupNode.AddChild(new FailingTestNodeA());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await groupNode.ExecuteAsync(testObject);
+            NodeResult result = await groupNode.ExecuteAsync(testObject);
 
             result.Status.ShouldEqual(NodeResultStatus.Failed);
             groupNode.Status.ShouldEqual(NodeRunStatus.Completed);
@@ -104,7 +104,7 @@ namespace Banzai.Test
             groupNode.AddChild(new FaultingTestNodeA());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await groupNode.ExecuteAsync(testObject);
+            NodeResult result = await groupNode.ExecuteAsync(testObject);
 
             result.Status.ShouldEqual(NodeResultStatus.Failed);
             groupNode.Status.ShouldEqual(NodeRunStatus.Completed);
@@ -119,7 +119,7 @@ namespace Banzai.Test
             groupNode.AddChild(new SimpleTestNodeA2());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await groupNode.ExecuteAsync(testObject);
+            NodeResult result = await groupNode.ExecuteAsync(testObject);
 
             result.Status.ShouldEqual(NodeResultStatus.Succeeded);
             testObject.TestValueString.ShouldEqual("Completed");

@@ -16,12 +16,12 @@ namespace Banzai.Test
             _shouldExecute = shouldExecute;
         }
 
-        public override Task<bool> ShouldExecuteAsync(ExecutionContext<TestObjectA> context)
+        public override Task<bool> ShouldExecuteAsync(IExecutionContext<TestObjectA> context)
         {
             return Task.FromResult(_shouldExecute);
         }
 
-        protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<TestObjectA> context)
+        protected override Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<TestObjectA> context)
         {
             context.Subject.TestValueString = "Completed";
 
@@ -42,12 +42,12 @@ namespace Banzai.Test
             _shouldExecute = shouldExecute;
         }
 
-        public override Task<bool> ShouldExecuteAsync(ExecutionContext<TestObjectA> context)
+        public override Task<bool> ShouldExecuteAsync(IExecutionContext<TestObjectA> context)
         {
             return Task.FromResult(_shouldExecute);
         }
 
-        protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<TestObjectA> context)
+        protected override Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<TestObjectA> context)
         {
             context.Subject.TestValueInt = 100;
 
@@ -68,12 +68,12 @@ namespace Banzai.Test
             _shouldExecute = shouldExecute;
         }
 
-        public override Task<bool> ShouldExecuteAsync(ExecutionContext<TestObjectA> context)
+        public override Task<bool> ShouldExecuteAsync(IExecutionContext<TestObjectA> context)
         {
             return Task.FromResult(_shouldExecute);
         }
 
-        protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<TestObjectA> context)
+        protected override Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<TestObjectA> context)
         {
             context.ChangeSubject(new TestObjectA()
             {
@@ -86,7 +86,7 @@ namespace Banzai.Test
 
     public class FaultingTestNodeA : Node<TestObjectA>
     {
-        protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<TestObjectA> context)
+        protected override Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<TestObjectA> context)
         {
             context.Subject.TestValueString = "Faulted";
 
@@ -96,7 +96,7 @@ namespace Banzai.Test
 
     public class FailingTestNodeA : Node<TestObjectA>
     {
-        protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<TestObjectA> context)
+        protected override Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<TestObjectA> context)
         {
             context.Subject.TestValueString = "Failed";
 
@@ -117,12 +117,12 @@ namespace Banzai.Test
             _shouldExecute = shouldExecute;
         }
 
-        public override Task<bool> ShouldExecuteAsync(ExecutionContext<TestObjectB> context)
+        public override Task<bool> ShouldExecuteAsync(IExecutionContext<TestObjectB> context)
         {
             return Task.FromResult(_shouldExecute);
         }
 
-        protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<TestObjectB> context)
+        protected override Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<TestObjectB> context)
         {
             context.Subject.TestValueBool = true;
 
@@ -143,12 +143,12 @@ namespace Banzai.Test
             _shouldExecute = shouldExecute;
         }
 
-        public override Task<bool> ShouldExecuteAsync(ExecutionContext<TestObjectB> context)
+        public override Task<bool> ShouldExecuteAsync(IExecutionContext<TestObjectB> context)
         {
             return Task.FromResult(_shouldExecute);
         }
 
-        protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<TestObjectB> context)
+        protected override Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<TestObjectB> context)
         {
             context.Subject.TestValueBool = false;
 
@@ -158,7 +158,7 @@ namespace Banzai.Test
 
     public class FaultingTestNodeB : Node<TestObjectB>
     {
-        protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<TestObjectB> context)
+        protected override Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<TestObjectB> context)
         {
             context.Subject.TestValueBool = false;
 
@@ -168,7 +168,7 @@ namespace Banzai.Test
 
     public class FailingTestNodeB : Node<TestObjectB>
     {
-        protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<TestObjectB> context)
+        protected override Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<TestObjectB> context)
         {
             context.Subject.TestValueBool = false;
 
@@ -181,6 +181,11 @@ namespace Banzai.Test
         public string TestValueString { get; set; }
 
         public int TestValueInt { get; set; }
+    }
+
+    public class TestObjectASub : TestObjectA
+    {
+        public decimal TestValueDecimal;
     }
 
     public class TestObjectB

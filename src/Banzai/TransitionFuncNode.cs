@@ -13,22 +13,22 @@ namespace Banzai
         /// <summary>
         /// Asynchronous function to transition the source to the destination.
         /// </summary>
-        Func<ExecutionContext<TSource>, Task<TDestination>> TransitionSourceFuncAsync { get; set; }
+        Func<IExecutionContext<TSource>, Task<TDestination>> TransitionSourceFuncAsync { get; set; }
 
         /// <summary>
         /// Synchronous function to transition the source to the destination.
         /// </summary>
-        Func<ExecutionContext<TSource>, TDestination> TransitionSourceFunc { get; set; }
+        Func<IExecutionContext<TSource>, TDestination> TransitionSourceFunc { get; set; }
 
         /// <summary>
         /// Asynchronous function to transition the destination result back to the source.
         /// </summary>
-        Func<ExecutionContext<TSource>, NodeResult<TDestination>, Task<TSource>> TransitionResultFuncAsync { get; set; }
+        Func<IExecutionContext<TSource>, NodeResult, Task<TSource>> TransitionResultFuncAsync { get; set; }
 
         /// <summary>
         /// Asynchronous function to transition the destination result back to the source.
         /// </summary>
-        Func<ExecutionContext<TSource>, NodeResult<TDestination>, TSource> TransitionResultFunc { get; set; }
+        Func<IExecutionContext<TSource>, NodeResult, TSource> TransitionResultFunc { get; set; }
     }
 
     /// <summary>
@@ -41,22 +41,22 @@ namespace Banzai
         /// <summary>
         /// Asynchronous function to transition the source to the destination.
         /// </summary>
-        public Func<ExecutionContext<TSource>, Task<TDestination>> TransitionSourceFuncAsync { get; set; }
+        public Func<IExecutionContext<TSource>, Task<TDestination>> TransitionSourceFuncAsync { get; set; }
 
         /// <summary>
         /// Synchronous function to transition the source to the destination.
         /// </summary>
-        public Func<ExecutionContext<TSource>, TDestination> TransitionSourceFunc { get; set; }
+        public Func<IExecutionContext<TSource>, TDestination> TransitionSourceFunc { get; set; }
 
         /// <summary>
         /// Asynchronous function to transition the destination result back to the source.
         /// </summary>
-        public Func<ExecutionContext<TSource>, NodeResult<TDestination>, Task<TSource>> TransitionResultFuncAsync { get; set; }
+        public Func<IExecutionContext<TSource>, NodeResult, Task<TSource>> TransitionResultFuncAsync { get; set; }
 
         /// <summary>
         /// Asynchronous function to transition the destination result back to the source.
         /// </summary>
-        public Func<ExecutionContext<TSource>, NodeResult<TDestination>, TSource> TransitionResultFunc { get; set; }
+        public Func<IExecutionContext<TSource>, NodeResult, TSource> TransitionResultFunc { get; set; }
 
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Banzai
         /// </summary>
         /// <param name="sourceContext">The source execution context, including the subject.</param>
         /// <returns></returns>
-        protected async override sealed Task<TDestination> TransitionSourceAsync(ExecutionContext<TSource> sourceContext)
+        protected async override sealed Task<TDestination> TransitionSourceAsync(IExecutionContext<TSource> sourceContext)
         {
             if (TransitionSourceFuncAsync != null)
             {
@@ -80,7 +80,7 @@ namespace Banzai
         /// </summary>
         /// <param name="sourceContext">The source execution context, including the subject.</param>
         /// <returns></returns>
-        protected override sealed TDestination TransitionSource(ExecutionContext<TSource> sourceContext)
+        protected override sealed TDestination TransitionSource(IExecutionContext<TSource> sourceContext)
         {
             if (TransitionSourceFunc != null)
             {
@@ -97,7 +97,7 @@ namespace Banzai
         /// <param name="sourceContext">Context including the source subject.</param>
         /// <param name="result">The result of the destination node.</param>
         /// <returns>The transitioned subject.</returns>
-        protected async override sealed Task<TSource> TransitionResultAsync(ExecutionContext<TSource> sourceContext, NodeResult<TDestination> result)
+        protected async override sealed Task<TSource> TransitionResultAsync(IExecutionContext<TSource> sourceContext, NodeResult result)
         {
             if (TransitionResultFuncAsync != null)
             {
@@ -114,7 +114,7 @@ namespace Banzai
         /// <param name="sourceContext">Context including the source subject.</param>
         /// <param name="result">The result of the destination node.</param>
         /// <returns>The transitioned subject.</returns>
-        protected override sealed TSource TransitionResult(ExecutionContext<TSource> sourceContext, NodeResult<TDestination> result)
+        protected override sealed TSource TransitionResult(IExecutionContext<TSource> sourceContext, NodeResult result)
         {
             if (TransitionResultFunc != null)
             {

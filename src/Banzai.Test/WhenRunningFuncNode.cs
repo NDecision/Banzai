@@ -16,11 +16,11 @@ namespace Banzai.Test
             node.ExecutedFuncAsync = context => { context.Subject.TestValueString = "Completed"; return Task.FromResult(NodeResultStatus.Succeeded); };
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await node.ExecuteAsync(testObject);
+            NodeResult result = await node.ExecuteAsync(testObject);
 
             node.Status.ShouldEqual(NodeRunStatus.Completed);
             result.Status.ShouldEqual(NodeResultStatus.Succeeded);
-            result.Subject.TestValueString.ShouldEqual("Completed");
+            ((TestObjectA)result.Subject).TestValueString.ShouldEqual("Completed");
         }
 
         [Test]
@@ -32,11 +32,11 @@ namespace Banzai.Test
             node.ExecutedFuncAsync = context => { context.Subject.TestValueString = "Completed"; return Task.FromResult(NodeResultStatus.Succeeded); };
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await node.ExecuteAsync(testObject);
+            NodeResult result = await node.ExecuteAsync(testObject);
 
             node.Status.ShouldEqual(NodeRunStatus.NotRun);
             result.Status.ShouldEqual(NodeResultStatus.NotRun);
-            result.Subject.TestValueString.ShouldBeNull();
+            ((TestObjectA)result.Subject).TestValueString.ShouldBeNull();
         }
 
         [Test]
@@ -48,11 +48,11 @@ namespace Banzai.Test
             node.ExecutedFunc = context => { context.Subject.TestValueString = "Completed"; return NodeResultStatus.Succeeded; };
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await node.ExecuteAsync(testObject);
+            NodeResult result = await node.ExecuteAsync(testObject);
 
             node.Status.ShouldEqual(NodeRunStatus.Completed);
             result.Status.ShouldEqual(NodeResultStatus.Succeeded);
-            result.Subject.TestValueString.ShouldEqual("Completed");
+            ((TestObjectA)result.Subject).TestValueString.ShouldEqual("Completed");
         }
 
         [Test]
@@ -64,11 +64,11 @@ namespace Banzai.Test
             node.ExecutedFunc = context => { context.Subject.TestValueString = "Completed"; return NodeResultStatus.Succeeded; };
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await node.ExecuteAsync(testObject);
+            NodeResult result = await node.ExecuteAsync(testObject);
 
             node.Status.ShouldEqual(NodeRunStatus.NotRun);
             result.Status.ShouldEqual(NodeResultStatus.NotRun);
-            result.Subject.TestValueString.ShouldBeNull();
+            ((TestObjectA)result.Subject).TestValueString.ShouldBeNull();
         } 
     }
 }

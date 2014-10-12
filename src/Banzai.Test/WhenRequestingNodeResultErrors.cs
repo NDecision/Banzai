@@ -18,7 +18,7 @@ namespace Banzai.Test
             pipelineNode.AddChild(new SimpleTestNodeA1());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
             IEnumerable<Exception> exceptions = result.GetFailExceptions();
 
@@ -38,7 +38,7 @@ namespace Banzai.Test
             pipelineNode.AddChild(new SimpleTestNodeA1());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
             IEnumerable<Exception> exceptions = result.GetFailExceptions();
 
@@ -58,7 +58,7 @@ namespace Banzai.Test
             pipelineNode.AddChild(new FaultingTestNodeA());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
             IEnumerable<Exception> exceptions = result.GetFailExceptions();
 
@@ -78,7 +78,7 @@ namespace Banzai.Test
             pipelineNode2.AddChild(new FaultingTestNodeA());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
             IEnumerable<Exception> exceptions = result.GetFailExceptions();
 
@@ -98,7 +98,7 @@ namespace Banzai.Test
             pipelineNode.AddChild(faultNode2);
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
             IEnumerable<Exception> exceptions = result.GetFailExceptions();
 

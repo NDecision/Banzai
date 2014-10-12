@@ -16,12 +16,12 @@ namespace Banzai.Log4Net.Test
             _shouldExecute = shouldExecute;
         }
 
-        public override Task<bool> ShouldExecuteAsync(ExecutionContext<TestObjectA> context)
+        public override Task<bool> ShouldExecuteAsync(IExecutionContext<TestObjectA> context)
         {
             return Task.FromResult(_shouldExecute);
         }
 
-        protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<TestObjectA> context)
+        protected override Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<TestObjectA> context)
         {
             context.Subject.TestValueString = "Completed";
 
@@ -42,12 +42,12 @@ namespace Banzai.Log4Net.Test
             _shouldExecute = shouldExecute;
         }
 
-        public override Task<bool> ShouldExecuteAsync(ExecutionContext<TestObjectA> context)
+        public override Task<bool> ShouldExecuteAsync(IExecutionContext<TestObjectA> context)
         {
             return Task.FromResult(_shouldExecute);
         }
 
-        protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<TestObjectA> context)
+        protected override Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<TestObjectA> context)
         {
             context.Subject.TestValueInt = 100;
 
@@ -68,12 +68,12 @@ namespace Banzai.Log4Net.Test
             _shouldExecute = shouldExecute;
         }
 
-        public override Task<bool> ShouldExecuteAsync(ExecutionContext<TestObjectA> context)
+        public override Task<bool> ShouldExecuteAsync(IExecutionContext<TestObjectA> context)
         {
             return Task.FromResult(_shouldExecute);
         }
 
-        protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<TestObjectA> context)
+        protected override Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<TestObjectA> context)
         {
             context.ChangeSubject(new TestObjectA()
             {
@@ -86,7 +86,7 @@ namespace Banzai.Log4Net.Test
 
     public class FaultingTestNode : Node<TestObjectA>
     {
-        protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<TestObjectA> context)
+        protected override Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<TestObjectA> context)
         {
             context.Subject.TestValueString = "Faulted";
 
@@ -96,7 +96,7 @@ namespace Banzai.Log4Net.Test
 
     public class FailingTestNode : Node<TestObjectA>
     {
-        protected override Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<TestObjectA> context)
+        protected override Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<TestObjectA> context)
         {
             context.Subject.TestValueString = "Failed";
 

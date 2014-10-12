@@ -64,14 +64,14 @@ namespace Banzai.Factories
         /// </summary>
         /// <param name="shouldExecuteFunc">Function to add as ShouldExecute to the flowcomponent.</param>
         /// <returns>The current FlowComponentBuilder instance.</returns>
-        IFlowComponentBuilder<T> SetShouldExecute(Func<ExecutionContext<T>, bool> shouldExecuteFunc);
+        IFlowComponentBuilder<T> SetShouldExecute(Func<IExecutionContext<T>, bool> shouldExecuteFunc);
 
         /// <summary>
         /// Adds a ShouldExecuteAsync to the flowcomponent (to be added to the resultant node).
         /// </summary>
         /// <param name="shouldExecuteFuncAsync">Function to add as ShouldExecute to the flowcomponent.</param>
         /// <returns>The current FlowComponentBuilder instance.</returns>
-        IFlowComponentBuilder<T> SetShouldExecuteAsync(Func<ExecutionContext<T>, Task<bool>> shouldExecuteFuncAsync);
+        IFlowComponentBuilder<T> SetShouldExecuteAsync(Func<IExecutionContext<T>, Task<bool>> shouldExecuteFuncAsync);
 
         /// <summary>
         /// Returns an instance of FlowComponent representing the requested child node.
@@ -198,7 +198,7 @@ namespace Banzai.Factories
         /// </summary>
         /// <param name="shouldExecuteFunc">Function to add as ShouldExecute to the flowcomponent.</param>
         /// <returns>The current FlowComponentBuilder instance.</returns>
-        public IFlowComponentBuilder<T> SetShouldExecute(Func<ExecutionContext<T>, bool> shouldExecuteFunc)
+        public IFlowComponentBuilder<T> SetShouldExecute(Func<IExecutionContext<T>, bool> shouldExecuteFunc)
         {
             _component.SetShouldExecute(shouldExecuteFunc);
             return this;
@@ -209,7 +209,7 @@ namespace Banzai.Factories
         /// </summary>
         /// <param name="shouldExecuteAsyncFunc">Function to add as ShouldExecute to the flowcomponent.</param>
         /// <returns>The current FlowComponentBuilder instance.</returns>
-        public IFlowComponentBuilder<T> SetShouldExecuteAsync(Func<ExecutionContext<T>, Task<bool>> shouldExecuteAsyncFunc)
+        public IFlowComponentBuilder<T> SetShouldExecuteAsync(Func<IExecutionContext<T>, Task<bool>> shouldExecuteAsyncFunc)
         {
             _component.SetShouldExecuteAsync(shouldExecuteAsyncFunc);
             return this;

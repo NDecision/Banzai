@@ -16,7 +16,7 @@ namespace Banzai.Test
             pipelineNode.AddChild(new FuncNode<TestObjectA> { ExecutedFunc = ctxt => (ctxt.State.Foo == "Bar") ? NodeResultStatus.Succeeded : NodeResultStatus.Failed });
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
             result.Status.ShouldEqual(NodeResultStatus.Succeeded);
         }
 
@@ -30,7 +30,7 @@ namespace Banzai.Test
 
             var testObject = new TestObjectA();
             var context = new ExecutionContext<TestObjectA>(testObject);
-            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(context);
+            NodeResult result = await pipelineNode.ExecuteAsync(context);
             result.Status.ShouldEqual(NodeResultStatus.Succeeded);
 
             Assert.AreEqual("Bar", context.State.Foo);

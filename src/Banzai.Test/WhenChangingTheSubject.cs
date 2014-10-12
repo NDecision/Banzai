@@ -20,7 +20,7 @@ namespace Banzai.Test
 
             result.Subject.ShouldBeSameAs(context.Subject);
             result.Subject.ShouldNotBeSameAs(testObject);
-            result.Subject.TestValueString.ShouldEqual("New Instance");
+            ((TestObjectA)result.Subject).TestValueString.ShouldEqual("New Instance");
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace Banzai.Test
             pipelineNode.AddChild(node3);
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
             pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
 
@@ -63,7 +63,7 @@ namespace Banzai.Test
             pipelineNode.AddChild(node3);
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
             pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
 
@@ -89,7 +89,7 @@ namespace Banzai.Test
             pipelineNode.AddChild(node4);
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
             pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
 
@@ -116,7 +116,7 @@ namespace Banzai.Test
             groupNode.AddChild(node3);
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await groupNode.ExecuteAsync(testObject);
+            NodeResult result = await groupNode.ExecuteAsync(testObject);
 
             groupNode.Status.ShouldEqual(NodeRunStatus.Completed);
 
@@ -142,7 +142,7 @@ namespace Banzai.Test
             groupNode.AddChild(node4);
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await groupNode.ExecuteAsync(testObject);
+            NodeResult result = await groupNode.ExecuteAsync(testObject);
 
             groupNode.Status.ShouldEqual(NodeRunStatus.Completed);
 

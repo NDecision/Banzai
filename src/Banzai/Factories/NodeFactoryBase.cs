@@ -77,7 +77,7 @@ namespace Banzai.Factories
         /// <param name="shouldExecuteFuncAsync">Allows a ShouldExecuteAsyncFunc to be specified from the parent.</param>
         /// <returns>A constructed INode.</returns>
         protected INode<T> BuildNode(FlowComponent<T> component,
-            Func<ExecutionContext<T>, Task<bool>> shouldExecuteFuncAsync = null, Func<ExecutionContext<T>, bool> shouldExecuteFunc = null)
+            Func<IExecutionContext<T>, Task<bool>> shouldExecuteFuncAsync = null, Func<IExecutionContext<T>, bool> shouldExecuteFunc = null)
         {
             INode<T> node;
             //Get the node or flow from the flowComponent

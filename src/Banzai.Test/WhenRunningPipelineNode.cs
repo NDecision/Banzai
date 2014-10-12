@@ -17,7 +17,7 @@ namespace Banzai.Test
             pipelineNode.AddChild(new SimpleTestNodeA2());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
             pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
         }
@@ -31,7 +31,7 @@ namespace Banzai.Test
             pipelineNode.AddChild(new SimpleTestNodeA2());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
             pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
             result.Subject.ShouldBeSameAs(testObject);
@@ -46,7 +46,7 @@ namespace Banzai.Test
             pipelineNode.AddChild(new SimpleTestNodeA2());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
             pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
             result.ChildResults.Count().ShouldEqual(2);
@@ -61,7 +61,7 @@ namespace Banzai.Test
             pipelineNode.AddChild(new SimpleTestNodeA1());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
             result.Status.ShouldEqual(NodeResultStatus.Failed);
             pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
@@ -76,7 +76,7 @@ namespace Banzai.Test
             pipelineNode.AddChild(new FailingTestNodeA());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
             result.Status.ShouldEqual(NodeResultStatus.Failed);
             pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
@@ -92,7 +92,7 @@ namespace Banzai.Test
             pipelineNode.AddChild(new SimpleTestNodeA1());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
             result.Status.ShouldEqual(NodeResultStatus.SucceededWithErrors);
             pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
@@ -107,7 +107,7 @@ namespace Banzai.Test
             pipelineNode.AddChild(new FailingTestNodeA());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
             result.Status.ShouldEqual(NodeResultStatus.SucceededWithErrors);
             pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
@@ -122,7 +122,7 @@ namespace Banzai.Test
             pipelineNode.AddChild(new SimpleTestNodeA1());
             
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
             result.Status.ShouldEqual(NodeResultStatus.Failed);
             pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
@@ -137,7 +137,7 @@ namespace Banzai.Test
             pipelineNode.AddChild(new FaultingTestNodeA());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
             result.Status.ShouldEqual(NodeResultStatus.Failed);
             pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
@@ -152,7 +152,7 @@ namespace Banzai.Test
             pipelineNode.AddChild(new SimpleTestNodeA1());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
             result.Status.ShouldEqual(NodeResultStatus.SucceededWithErrors);
             pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
@@ -167,7 +167,7 @@ namespace Banzai.Test
             pipelineNode.AddChild(new FaultingTestNodeA());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
             result.Status.ShouldEqual(NodeResultStatus.SucceededWithErrors);
             pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
@@ -182,7 +182,7 @@ namespace Banzai.Test
             pipelineNode.AddChild(new FailingTestNodeA());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
             result.Status.ShouldEqual(NodeResultStatus.Failed);
             pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
@@ -197,7 +197,7 @@ namespace Banzai.Test
             pipelineNode.AddChild(new FaultingTestNodeA());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
             result.Status.ShouldEqual(NodeResultStatus.Failed);
             pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
@@ -212,7 +212,7 @@ namespace Banzai.Test
             pipelineNode.AddChild(new SimpleTestNodeA2());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
             result.Status.ShouldEqual(NodeResultStatus.Succeeded);
             testObject.TestValueString.ShouldEqual("Completed");
@@ -230,7 +230,7 @@ namespace Banzai.Test
             pipelineNode2.AddChild(new SimpleTestNodeA2());
 
             var testObject = new TestObjectA();
-            NodeResult<TestObjectA> result = await pipelineNode.ExecuteAsync(testObject);
+            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
             result.ChildResults.Count().ShouldEqual(1);
             result.ChildResults.First().ChildResults.Count().ShouldEqual(2);

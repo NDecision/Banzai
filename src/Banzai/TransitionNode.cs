@@ -55,7 +55,7 @@ namespace Banzai
         /// </summary>
         /// <param name="context">Current ExecutionContext.</param>
         /// <returns>NodeResultStatus representing the current node result.</returns>
-        protected override sealed async Task<NodeResultStatus> PerformExecuteAsync(ExecutionContext<TSource> context)
+        protected override sealed async Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<TSource> context)
         {
             if (ChildNode == null)
             {
@@ -69,7 +69,7 @@ namespace Banzai
             var destContext = new ExecutionContext<TDestination>(destSubject, context.GlobalOptions);
 
             LogWriter.Debug("Preparing to execute TransitionNode child.");
-            NodeResult<TDestination> destResult = await ChildNode.ExecuteAsync(destContext).ConfigureAwait(false);
+            NodeResult destResult = await ChildNode.ExecuteAsync(destContext).ConfigureAwait(false);
 
             var exceptions = destResult.GetFailExceptions().ToList();
             if (exceptions.Count > 0)
@@ -94,7 +94,7 @@ namespace Banzai
         /// </summary>
         /// <param name="sourceContext">The source execution context, including the subject.</param>
         /// <returns></returns>
-        protected virtual Task<TDestination> TransitionSourceAsync(ExecutionContext<TSource> sourceContext)
+        protected virtual Task<TDestination> TransitionSourceAsync(IExecutionContext<TSource> sourceContext)
         {
             return Task.FromResult(TransitionSource(sourceContext));
         }
@@ -104,7 +104,7 @@ namespace Banzai
         /// </summary>
         /// <param name="sourceContext">The source execution context, including the subject.</param>
         /// <returns></returns>
-        protected virtual TDestination TransitionSource(ExecutionContext<TSource> sourceContext)
+        protected virtual TDestination TransitionSource(IExecutionContext<TSource> sourceContext)
         {
             return default(TDestination);
         }
@@ -115,7 +115,7 @@ namespace Banzai
         /// <param name="sourceContext">Context including the source subject.</param>
         /// <param name="result">The result of the destination node.</param>
         /// <returns>The transitioned subject.</returns>
-        protected virtual Task<TSource> TransitionResultAsync(ExecutionContext<TSource> sourceContext, NodeResult<TDestination> result)
+        protected virtual Task<TSource> TransitionResultAsync(IExecutionContext<TSource> sourceContext, NodeResult result)
         {
             return Task.FromResult(TransitionResult(sourceContext, result));
         }
@@ -126,7 +126,7 @@ namespace Banzai
         /// <param name="sourceContext">Context including the source subject.</param>
         /// <param name="result">The result of the destination node.</param>
         /// <returns>The transitioned subject.</returns>
-        protected virtual TSource TransitionResult(ExecutionContext<TSource> sourceContext, NodeResult<TDestination> result)
+        protected virtual TSource TransitionResult(IExecutionContext<TSource> sourceContext, NodeResult result)
         {
             return sourceContext.Subject;
         }
