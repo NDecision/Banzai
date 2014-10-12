@@ -178,7 +178,8 @@ The results are aggregated and returnd via a single [NodeResult](#noderesult)
 
 ###ExecutionContext
 The execution context flows through all nodes in the flow.  The execution context contains options for running the flow as well as the
-instance of the subject that the flow is executed on.  
+instance of the subject that the flow is executed on.  The type of the ExecutionContext is covariant, so it will allow ExecutionContexts based on 
+inherited types to utilize a flow designed for a base type.
 
 <b>Subject</b> - This is the main subject instance that all nodes in the flow operate on.  If it is necessary to change the subject reference, use the ChangeSubject() method of the 
 ExecutionContext to do so.
@@ -190,9 +191,6 @@ flow any random state needed for the workflow.  Any node in the flow can update 
     context.State.Foo = "Bar";
 
 <b>GlobalOptions</b> - ExecutionOptions that are set in the context and applied to every node.
-
-<b>EffectiveOptions</b> - Overrides the GlobalOptions with any ExecutionOptions that are set on the specific node being executed.  
-These are the options evaluated when executing a node.
 
 <b>ParentResult</b> - The root result of this node execution and all of its children.
 
@@ -209,7 +207,9 @@ When a node executes, it returns a NodeResult.  The NodeResult will contain:
 
 <b>NodeResultStatus</b> - Represents the status of this node.  If this is a parent node, it represents a rollup status of all child nodes.
 
-<b>Subject</b> - A reference to the subject.
+<b>Subject</b> - A reference to the subject, stored as an object.
+
+<b>GetSubjectAs</b> - Allows a strongly typed subject to be returned.
 
 <b>ChildResults</b> - A collection of child result nodes corresponding to the current node's children.
 
