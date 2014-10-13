@@ -74,7 +74,7 @@ namespace Banzai.Test
         {
             var testNode = new FuncNode<TestObjectA>();
 
-            testNode.AddShouldExecuteAsync(context => Task.FromResult(context.Subject.TestValueInt == 0));
+            testNode.AddShouldExecute(context => Task.FromResult(context.Subject.TestValueInt == 0));
             testNode.ExecutedFuncAsync = context => { context.Subject.TestValueString = "Completed"; return Task.FromResult(NodeResultStatus.Succeeded); };
 
             var testObject = new TestObjectASub();

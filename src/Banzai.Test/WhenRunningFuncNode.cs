@@ -12,7 +12,7 @@ namespace Banzai.Test
         {
             var node = new FuncNode<TestObjectA>();
 
-            node.AddShouldExecuteAsync(context => Task.FromResult(context.Subject.TestValueInt == 0));
+            node.AddShouldExecute(context => Task.FromResult(context.Subject.TestValueInt == 0));
             node.ExecutedFuncAsync = context => { context.Subject.TestValueString = "Completed"; return Task.FromResult(NodeResultStatus.Succeeded); };
 
             var testObject = new TestObjectA();
@@ -28,7 +28,7 @@ namespace Banzai.Test
         {
             var node = new FuncNode<TestObjectA>();
 
-            node.AddShouldExecuteAsync(context => Task.FromResult(context.Subject.TestValueInt == 5));
+            node.AddShouldExecute(context => Task.FromResult(context.Subject.TestValueInt == 5));
             node.ExecutedFuncAsync = context => { context.Subject.TestValueString = "Completed"; return Task.FromResult(NodeResultStatus.Succeeded); };
 
             var testObject = new TestObjectA();
@@ -44,7 +44,7 @@ namespace Banzai.Test
         {
             var node = new FuncNode<TestObjectA>();
 
-            node.AddShouldExecuteAsync(context => Task.FromResult(context.Subject.TestValueInt == 0));
+            node.AddShouldExecute(context => Task.FromResult(context.Subject.TestValueInt == 0));
             node.ExecutedFunc = context => { context.Subject.TestValueString = "Completed"; return NodeResultStatus.Succeeded; };
 
             var testObject = new TestObjectA();
@@ -60,7 +60,7 @@ namespace Banzai.Test
         {
             var node = new FuncNode<TestObjectA>();
 
-            node.AddShouldExecuteAsync(context => Task.FromResult(context.Subject.TestValueInt == 5));
+            node.AddShouldExecute(context => Task.FromResult(context.Subject.TestValueInt == 5));
             node.ExecutedFunc = context => { context.Subject.TestValueString = "Completed"; return NodeResultStatus.Succeeded; };
 
             var testObject = new TestObjectA();
@@ -76,7 +76,7 @@ namespace Banzai.Test
         {
             var node = new FuncNode<TestObjectA>();
 
-            node.AddShouldExecuteAsync(context => Task.FromResult(context.Subject.TestValueInt == 0));
+            node.AddShouldExecute(context => Task.FromResult(context.Subject.TestValueInt == 0));
             node.ExecutedFuncAsync = context => { context.Subject.TestValueString = "Completed"; return Task.FromResult(NodeResultStatus.Succeeded); };
 
             var testObject = new TestObjectASub();
