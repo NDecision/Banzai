@@ -38,6 +38,11 @@ namespace Banzai
         /// <param name="subject">The new subject.</param>
         void ChangeSubject(object subject);
 
+        /// <summary>
+        /// Cancels further processing of the flow.
+        /// </summary>
+        bool CancelProcessing { get; set; }
+
     }
 
     /// <summary>
@@ -47,7 +52,6 @@ namespace Banzai
     /// <typeparam name="T">Type of the subject that the nodes operate on.</typeparam>
     public sealed class ExecutionContext<T> : IExecutionContext<T>
     {
-
         /// <summary>
         /// Creates a new execution context.
         /// </summary>
@@ -78,6 +82,7 @@ namespace Banzai
             State = parentContext.State;
             GlobalOptions = parentContext.GlobalOptions;
             ParentResult = parentResult;
+            CancelProcessing = parentContext.CancelProcessing;
         }
 
         /// <summary>
@@ -109,6 +114,11 @@ namespace Banzai
         {
             Subject = (T) subject;
         }
+
+        /// <summary>
+        /// Cancels further processing of the flow.
+        /// </summary>
+        public bool CancelProcessing { get; set; }
 
         /// <summary>
         /// Adds a result to the execution context.

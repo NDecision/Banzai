@@ -38,7 +38,7 @@ namespace Banzai
 
                 results.Add(result);
 
-                if (result.Status == NodeResultStatus.Failed && !effectiveOptions.ContinueOnFailure)
+                if ((result.Status == NodeResultStatus.Failed && !effectiveOptions.ContinueOnFailure) || context.CancelProcessing)
                 {
                     break;
                 }

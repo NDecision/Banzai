@@ -200,6 +200,8 @@ flow any random state needed for the workflow.  Any node in the flow can update 
 
 <b>ParentResult</b> - The root result of this node execution and all of its children.
 
+<b>CancelProcessing</b> - Cancels any further processing of the flow.  This only cancels the current subject iteration of an ExecuteMany.
+
 ####ExecutionOptions
 The execution options impact the behavior of node execution. 
  

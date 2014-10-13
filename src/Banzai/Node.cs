@@ -205,8 +205,9 @@ namespace Banzai
                 try
                 {
                     LogWriter.Debug("Running all subjects asynchronously.");
+                    
                     NodeResult result = await ExecuteAsync(new ExecutionContext<T>(subject, options)).ConfigureAwait(false);
-
+                    
                     aggregateResult.AddChildResult(result);
                 }
                 catch (Exception)
@@ -294,42 +295,48 @@ namespace Banzai
 
             IExecutionContext<T> context = PrepareExecutionContext(sourceContext, result);
 
-            var effectiveOptions = GetEffectiveOptions(context.GlobalOptions);
-
             OnBeforeExecute(context);
 
-            if (! await ShouldExecuteInternalAsync(context).ConfigureAwait(false))
+            if (!context.CancelProcessing)
             {
-                LogWriter.Info("ShouldExecute returned false, skipping execution");
-                return result;
-            }
 
-            Status = NodeRunStatus.Running;
-            LogWriter.Debug("Executing the node");
+                var effectiveOptions = GetEffectiveOptions(context.GlobalOptions);
 
-            try
-            {
-                result.Status = await PerformExecuteAsync(context).ConfigureAwait(false);
-                //Reset the subject in case it was changed.
-                result.Subject = context.Subject;
-                Status = NodeRunStatus.Completed;
-                LogWriter.Info("Node completed execution, status is {0}", result.Status);
-            }
-            catch (Exception ex)
-            {
-                LogWriter.Error("Node erred during execution, status is Failed", ex);
-                Status = NodeRunStatus.Faulted;
-                result.Subject = context.Subject;
-                result.Status = NodeResultStatus.Failed;
-                result.Exception = ex;
-
-                if (effectiveOptions.ThrowOnError)
+                if (! await ShouldExecuteInternalAsync(context).ConfigureAwait(false))
                 {
-                    throw;
+                    LogWriter.Info("ShouldExecute returned false, skipping execution");
+                    return result;
                 }
+
+                Status = NodeRunStatus.Running;
+                LogWriter.Debug("Executing the node");
+
+                try
+                {
+                    result.Status = await PerformExecuteAsync(context).ConfigureAwait(false);
+                    //Reset the subject in case it was changed.
+                    result.Subject = context.Subject;
+                    Status = NodeRunStatus.Completed;
+                    LogWriter.Info("Node completed execution, status is {0}", result.Status);
+                }
+                catch (Exception ex)
+                {
+                    LogWriter.Error("Node erred during execution, status is Failed", ex);
+                    Status = NodeRunStatus.Faulted;
+                    result.Subject = context.Subject;
+                    result.Status = NodeResultStatus.Failed;
+                    result.Exception = ex;
+                    
+                    if (effectiveOptions.ThrowOnError)
+                    {
+                        throw;
+                    }
+                }
+
+                OnAfterExecute(context);
             }
 
-            OnAfterExecute(context);
+            sourceContext.CancelProcessing = context.CancelProcessing;
 
             return result;
         }

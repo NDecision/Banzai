@@ -31,7 +31,7 @@ namespace Banzai
             {
                 result = await childNode.ExecuteAsync(context).ConfigureAwait(false);
 
-                if (result.Status != NodeResultStatus.NotRun)
+                if (result.Status != NodeResultStatus.NotRun || context.CancelProcessing)
                     break;
             }
 

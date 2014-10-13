@@ -6,18 +6,25 @@ namespace Banzai.Test
     public class SimpleTestNodeA1 : Node<TestObjectA>
     {
         private readonly bool _shouldExecute = true;
+        private readonly bool _cancelProcessing;
+        private readonly bool _shouldExecuteCancelProcessing;
 
         public SimpleTestNodeA1()
         {
         }
 
-        public SimpleTestNodeA1(bool shouldExecute)
+        public SimpleTestNodeA1(bool shouldExecute, bool shouldExecuteCancelProcessing = false, bool cancelProcessing = false)
         {
             _shouldExecute = shouldExecute;
+            _shouldExecuteCancelProcessing = shouldExecuteCancelProcessing;
+            _cancelProcessing = cancelProcessing;
         }
 
         public override Task<bool> ShouldExecuteAsync(IExecutionContext<TestObjectA> context)
         {
+            if (_shouldExecuteCancelProcessing)
+                context.CancelProcessing = true;
+
             return Task.FromResult(_shouldExecute);
         }
 
@@ -26,6 +33,13 @@ namespace Banzai.Test
             context.Subject.TestValueString = "Completed";
 
             return Task.FromResult(NodeResultStatus.Succeeded);
+        }
+
+        protected override void OnBeforeExecute(IExecutionContext<TestObjectA> context)
+        {
+            base.OnBeforeExecute(context);
+            if (_cancelProcessing)
+                context.CancelProcessing = true;
         }
     }
 
