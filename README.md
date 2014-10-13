@@ -421,6 +421,11 @@ If you have a MultiNode (Pipeline/Group/FirstMatch) that has a subject Type of T
     //Accepts node typed for TestObjectA
     pipeline.AddChild(testNodeASub);
 
+##Recommended Practices
+
+####Subject Envelope
+Create an envelope for your subject and use this as the subject passed to the flow instead of passing the naked subject.  This envelope can contain the subject
+but can also contain other properties or data that is necessary for the workflow.  Favor this over sending information in the State property of the ExecutionContext.
 
 ####Lots of examples present in the unit tests...
 
