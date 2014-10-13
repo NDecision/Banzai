@@ -391,6 +391,37 @@ In some cases, you may want to switch the subject reference during part of the f
 service within a node and it returns a different subject reference back to you.  In this case, you want to nodes following the 
 current node to recieve the new subject.  This can be accomplished by calling the ExecutionContext.ChangeSubject() method.
 
+###Inheritance and Variance
+Changes have been made recently (1.2.0) that allow both ExecutionContexts and Nodes to vary.  In short, subjects can covary with the flow argument type, while
+nodes can contravary with node argument types.  What does this mean?  The examples below clarify this a little, but I believe it works as you would logically
+expect inheritance to work.
+
+####Subject Covariance
+Suppose you have the types TestObjectA and a subclass of TestObjectA called TestObjectASub:  TestObjectASub --> TestObjectA.
+
+If you have a flow that accepts TestObjectA, it will also accept TestObjectSubA.
+
+    var testNode = new SimpleTestNode_For_TestObjectA();
+    var testObjectASub = new TestObjectASub();
+
+    //Add TestObjectASub to test node created for TestObjectA
+    var result = await testNode.ExecuteAsync(testObjectASub);
+
+####Node Contravariance
+Again suppose you have the types TestObjectA and a subclass of TestObjectA called TestObjectASub:  TestObjectASub --> TestObjectA.
+
+If you have a MultiNode (Pipeline/Group/FirstMatch) that has a subject Type of TestObjectSubA, it will allow the addition of Nodes that work on TestObjectA.
+
+    var testNodeA = new Node_Typed_For_TestObjectA();
+    var testNodeASub = new Node_Typed_For_TestObjectASub();
+
+    //Pipeline is created for TestObjectASub
+    var pipeline = new PipelineNode<TestObjectASub>();
+    pipeline.AddChild(testNodeA);
+    //Accepts node typed for TestObjectA
+    pipeline.AddChild(testNodeASub);
+
+
 ####Lots of examples present in the unit tests...
 
 ####See the [Wiki for release notes](https://github.com/eswann/Banzai/wiki).
