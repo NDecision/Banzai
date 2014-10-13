@@ -6,7 +6,9 @@
 
 Banzai is an easy .Net pipeline solution that contains composable nodes for constructing simple and complex pipelines.  
 Yes, there is TPL Dataflow and it's really cool, but I was looking for something easy that solved the 80% case of simple
-asynchronous pipelines in my business applications.
+asynchronous pipelines in my business applications.  It's important to understand that Banzai it about async, not parallel.  
+It's optimal for setting up business pipelines which have operations that benfit from async, such as external web service calls or Database/file I/O operations.
+Of course it can be used to organize code regardless of external I/O, but it's performance advantage is based on async.
  
 
 ##Basic Concept 
