@@ -12,7 +12,7 @@ namespace Banzai.Test
         {
             var node = new FuncNode<TestObjectA>();
 
-            node.ShouldExecuteFuncAsync = context => Task.FromResult(context.Subject.TestValueInt == 0);
+            node.AddShouldExecuteAsync(context => Task.FromResult(context.Subject.TestValueInt == 0));
             node.ExecutedFuncAsync = context => { context.Subject.TestValueString = "Completed"; return Task.FromResult(NodeResultStatus.Succeeded); };
 
             var testObject = new TestObjectA();
@@ -28,7 +28,7 @@ namespace Banzai.Test
         {
             var node = new FuncNode<TestObjectA>();
 
-            node.ShouldExecuteFuncAsync = context => Task.FromResult(context.Subject.TestValueInt == 5);
+            node.AddShouldExecuteAsync(context => Task.FromResult(context.Subject.TestValueInt == 5));
             node.ExecutedFuncAsync = context => { context.Subject.TestValueString = "Completed"; return Task.FromResult(NodeResultStatus.Succeeded); };
 
             var testObject = new TestObjectA();
@@ -44,7 +44,7 @@ namespace Banzai.Test
         {
             var node = new FuncNode<TestObjectA>();
 
-            node.ShouldExecuteFunc = context => context.Subject.TestValueInt == 0;
+            node.AddShouldExecuteAsync(context => Task.FromResult(context.Subject.TestValueInt == 0));
             node.ExecutedFunc = context => { context.Subject.TestValueString = "Completed"; return NodeResultStatus.Succeeded; };
 
             var testObject = new TestObjectA();
@@ -60,7 +60,7 @@ namespace Banzai.Test
         {
             var node = new FuncNode<TestObjectA>();
 
-            node.ShouldExecuteFunc = context => context.Subject.TestValueInt == 5;
+            node.AddShouldExecuteAsync(context => Task.FromResult(context.Subject.TestValueInt == 5));
             node.ExecutedFunc = context => { context.Subject.TestValueString = "Completed"; return NodeResultStatus.Succeeded; };
 
             var testObject = new TestObjectA();
@@ -69,6 +69,24 @@ namespace Banzai.Test
             node.Status.ShouldEqual(NodeRunStatus.NotRun);
             result.Status.ShouldEqual(NodeResultStatus.NotRun);
             result.GetSubjectAs<TestObjectA>().TestValueString.ShouldBeNull();
-        } 
+        }
+
+        [Test]
+        public async void Can_Run_Func_Node_On_Inherited_Type()
+        {
+            var node = new FuncNode<TestObjectA>();
+
+            node.AddShouldExecuteAsync(context => Task.FromResult(context.Subject.TestValueInt == 0));
+            node.ExecutedFuncAsync = context => { context.Subject.TestValueString = "Completed"; return Task.FromResult(NodeResultStatus.Succeeded); };
+
+            var testObject = new TestObjectASub();
+            NodeResult result = await node.ExecuteAsync(testObject);
+
+            node.Status.ShouldEqual(NodeRunStatus.Completed);
+            result.Status.ShouldEqual(NodeResultStatus.Succeeded);
+            result.GetSubjectAs<TestObjectA>().TestValueString.ShouldEqual("Completed");
+        }
+
+
     }
 }

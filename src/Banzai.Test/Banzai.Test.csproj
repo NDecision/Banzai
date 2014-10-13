@@ -49,10 +49,13 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestClasses.cs" />
+    <Compile Include="WhenAddingInheritedSubjectNodes.cs" />
     <Compile Include="WhenChangingTheSubject.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="WhenPassingInheritedSubject.cs" />
+    <Compile Include="WhenPassingInheritedSubject.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="WhenPassingState.cs" />
     <Compile Include="WhenRequestingNodeResultErrors.cs">
       <SubType>Code</SubType>

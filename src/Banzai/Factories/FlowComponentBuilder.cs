@@ -11,7 +11,7 @@ namespace Banzai.Factories
     /// Allows the construction of a root flow.
     /// </summary>
     /// <typeparam name="T">Type of the flow subject.</typeparam>
-    public interface IFlowBuilder<T>
+    public interface IFlowBuilder<out T>
     {
         /// <summary>
         /// Adds a child node to this flow.
@@ -34,7 +34,7 @@ namespace Banzai.Factories
     /// Allows the addition of flow components (nodes or subflows) to a parent flow or component.
     /// </summary>
     /// <typeparam name="T">Type of the flow subject.</typeparam>
-    public interface IFlowComponentBuilder<T>
+    public interface IFlowComponentBuilder<out T>
     {
         /// <summary>
         /// Adds a previously registered flow by name as a child of this node.

@@ -92,19 +92,19 @@ namespace Banzai.Factories
 
             if (component.ShouldExecuteFuncAsync != null)
             {
-                node.ShouldExecuteFuncAsync = component.ShouldExecuteFuncAsync;
+                node.AddShouldExecute(component.ShouldExecuteFuncAsync);
             }
             else if (shouldExecuteFuncAsync != null)
             {
-                node.ShouldExecuteFuncAsync = shouldExecuteFuncAsync;
+                node.AddShouldExecute(shouldExecuteFuncAsync);
             }
             if (component.ShouldExecuteFunc != null)
             {
-                node.ShouldExecuteFunc = component.ShouldExecuteFunc;
+                node.AddShouldExecute(component.ShouldExecuteFunc);
             }
             else if (shouldExecuteFunc != null)
             {
-                node.ShouldExecuteFunc = shouldExecuteFunc;
+                node.AddShouldExecute(shouldExecuteFunc);
             }
 
             if (component.Children != null && component.Children.Count > 0)

@@ -36,9 +36,15 @@ These are the nodes that contain functionality that runs against the subject of 
 
 ####Node/FuncNode Usage
   * Override PerformExecute/PerformExecuteAsync to perform operations on the subject.
+
   * Override ShouldExecute to determine if the node should execute.
-  * PerformExecuteFunc/PerformExecuteFuncAsync - Function property that accepts a function to perform on the subject.
-  * ShouldExecuteFunc/ShouldExecuteFuncAsync - Function property that accepts a function to determine if the node should be executed.
+
+  * <b>PerformExecuteFunc/Async</b> - Property that accepts a function to perform on the subject.
+
+  * <b>ShouldExecuteFunc/Async</b> - Property that accepts a function to determine if the node should be executed.  Not strongly typed.
+
+  * <b>AddShouldExecute</b> - Extension method to set ShouldExecuteFunc or ShouldExecuteFuncAsync in a strongly typed manner. Has to be done this way to enable variance.
+
 
 Example of overriding to provide functionality
 
@@ -60,7 +66,7 @@ Example of providing functionality via functions
 
     var node = new Node<TestObjectA>();
 
-    node.ShouldExecuteFuncAsync = context => Task.FromResult(context.Subject.TestValueInt == 5);
+    node.AddShouldExecute = context => Task.FromResult(context.Subject.TestValueInt == 5);
     node.ExecutedFuncAsync = context => 
         { 
           context.Subject.TestValueString = "Completed"; 
@@ -136,11 +142,11 @@ The aggregate result and any exceptions are passed back to the source node that 
 
 <b>ChildNode</b> - Assigns a child node that is executed after the transition to the destination type occurs.
 
-<b>TransitionSource/TransitionSourceAsync</b> - Transitions the source to the destination type.
-<b>TransitionResult/TransitionResultAsync</b> - Transitions the source after node execution based on the destination node results.
+<b>TransitionSource/Async</b> - Transitions the source to the destination type.
+<b>TransitionResult/Async</b> - Transitions the source after node execution based on the destination node results.
 
-<b>TransitionSourceFunc/TransitionSourceFuncAsync</b> - In TransitionFuncNode, allows assignment of source to destination transition function.
-<b>TransitionResultFunc/TransitionResultFuncAsync</b> - In TransitionFuncNode, allows assignment of post-run source transition function.
+<b>TransitionSourceFunc/Async</b> - In TransitionFuncNode, allows assignment of source to destination transition function.
+<b>TransitionResultFunc/Async</b> - In TransitionFuncNode, allows assignment of post-run source transition function.
 
     public class SimpleTransitionNode : TransitionNode<TestObjectA, TestObjectB>
     {
@@ -328,11 +334,17 @@ adding both nodes and subflows.  Once a flow is registered, it can be accessed f
 
 ####Methods
 <b>CreateFlow</b> - Initiates flow creation and returns a FlowBuilder for the flow.
+
 <b>AddRoot</b> - Adds a root node to a flow.  Returns a reference to a FlowComponentBuilder for the root node.
+
 <b>AddChild</b> - Adds a child to the current node and returns the same FlowComponentBuilder for the current node (not the child).
+
 <b>AddFlow</b> - Allows the addition of one flow as a child of the current node.  Allows for the creation of common flows that can be added to other flows.
+
 <b>ForChild</b> - Changes the FlowComponentBuilder context to the specified child node.
+
 <b>SetShouldExecute/SetShouldExecuteAsync</b> - Allows a ShouldExecute function to be set on the fly when building a flow with flowbuilder.
+
 <b>Register</b> - Must be called to indicate the flow definition as been completed and to register the flow with the container. 
 
     var flowBuilder = new FlowBuilder<object>(new AutofacFlowRegistrar(containerBuilder));

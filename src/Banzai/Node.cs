@@ -7,12 +7,11 @@ using Banzai.Utility;
 
 namespace Banzai
 {
-
     /// <summary>
     /// The basic interface for a node to be run by the pipeline.
     /// </summary>
     /// <typeparam name="T">Type that the pipeline acts upon.</typeparam>
-    public interface INode<T> 
+    public interface INode<in T>
     {
         /// <summary>
         /// Gets the local options associated with this node.  These options will apply only to the current node.
@@ -39,12 +38,12 @@ namespace Banzai
         /// <summary>
         /// Gets or sets the function to define if this node should be executed.
         /// </summary>
-        Func<IExecutionContext<T>, bool> ShouldExecuteFunc { get; set; }
+        Func<IExecutionContext<object>, bool> ShouldExecuteFunc { get; set; }
 
         /// <summary>
         /// Gets or sets the async function to call to determine if this node should be executed.
         /// </summary>
-        Func<IExecutionContext<T>, Task<bool>> ShouldExecuteFuncAsync { get; set; }
+        Func<IExecutionContext<object>, Task<bool>> ShouldExecuteFuncAsync { get; set; }
 
         /// <summary>
         /// Determines if the node should be executed.
@@ -90,6 +89,7 @@ namespace Banzai
 
     }
 
+
     /// <summary>
     /// The basic class for a functional node to be run by the pipeline.
     /// </summary>
@@ -112,7 +112,7 @@ namespace Banzai
         {
             LocalOptions = localOptions;
         }
-        
+
         /// <summary>
         /// Local options which override the global options when this Node is run.  Applies only to the current node.
         /// </summary>
@@ -126,7 +126,10 @@ namespace Banzai
         /// <summary>
         /// LogWriter used to write to the log from this node.
         /// </summary>
-        public ILogWriter LogWriter { get { return Logging.LogWriter.GetLogger(this); } }
+        public ILogWriter LogWriter
+        {
+            get { return Logging.LogWriter.GetLogger(this); }
+        }
 
         /// <summary>
         /// Resets the current node to unrun state.
@@ -140,12 +143,12 @@ namespace Banzai
         /// <summary>
         /// Gets or sets the function to define if this node should be executed.
         /// </summary>
-        public Func<IExecutionContext<T>, bool> ShouldExecuteFunc { get; set; }
+        public Func<IExecutionContext<object>, bool> ShouldExecuteFunc { get; set; }
 
         /// <summary>
         /// Gets or sets the async function to call to determine if this node should be executed.
         /// </summary>
-        public Func<IExecutionContext<T>, Task<bool>> ShouldExecuteFuncAsync { get; set; }
+        public Func<IExecutionContext<object>, Task<bool>> ShouldExecuteFuncAsync { get; set; }
 
         /// <summary>
         /// Determines if the current node should execute with synchronous wrapper.
@@ -168,29 +171,13 @@ namespace Banzai
         }
 
         /// <summary>
-        /// Internal method that combines all of the ShouldExecute functions and methods.
-        /// </summary>
-        /// <param name="context">Current ExecutionContext</param>
-        /// <returns>Bool indicating if the task should run.</returns>
-        private async Task<bool> ShouldExecuteInternal(IExecutionContext<T> context)
-        {
-            if (ShouldExecuteFuncAsync != null)
-                return await ShouldExecuteFuncAsync(context).ConfigureAwait(false);
-
-            if (ShouldExecuteFunc != null)
-                return ShouldExecuteFunc(context);
-
-            return await ShouldExecuteAsync(context).ConfigureAwait(false);
-        }
-
-        /// <summary>
         /// Used to kick off execution of a node with a default execution context.
         /// </summary>
         /// <param name="subject">Subject to be moved through the node.</param>
         /// <returns>A NodeResult</returns>
         public async Task<NodeResult> ExecuteAsync(T subject)
         {
-            return await ExecuteAsync(new ExecutionContext<T>(subject));
+            return await ExecuteAsync(new ExecutionContext<T>(subject)).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -218,11 +205,11 @@ namespace Banzai
                 try
                 {
                     LogWriter.Debug("Running all subjects asynchronously.");
-                    NodeResult result = await ExecuteAsync(new ExecutionContext<T>(subject, options));
+                    NodeResult result = await ExecuteAsync(new ExecutionContext<T>(subject, options)).ConfigureAwait(false);
 
                     aggregateResult.AddChildResult(result);
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     if (options.ThrowOnError)
                     {
@@ -257,7 +244,7 @@ namespace Banzai
             if (subjectList.Count == 0)
                 return aggregateResult;
 
-            if(options == null)
+            if (options == null)
                 options = new ExecutionOptions();
 
             Task<NodeResult[]> aggregateTask = null;
@@ -311,7 +298,7 @@ namespace Banzai
 
             OnBeforeExecute(context);
 
-            if (! await ShouldExecuteInternal(context).ConfigureAwait(false))
+            if (! await ShouldExecuteInternalAsync(context).ConfigureAwait(false))
             {
                 LogWriter.Info("ShouldExecute returned false, skipping execution");
                 return result;
@@ -356,12 +343,14 @@ namespace Banzai
         {
             if (LocalOptions != null)
             {
-                LogWriter.Debug("Local options detected, merging with global settings. Local Options - ContinueOnFailure:{0}, ThrowOnError:{1}",
+                LogWriter.Debug(
+                    "Local options detected, merging with global settings. Local Options - ContinueOnFailure:{0}, ThrowOnError:{1}",
                     LocalOptions.ContinueOnFailure, LocalOptions.ThrowOnError);
                 return LocalOptions;
             }
-            LogWriter.Debug("Local options not present, defaulting to global settings. Global Options - ContinueOnFailure:{0}, ThrowOnError:{1}",
-                    globalOptions.ContinueOnFailure, globalOptions.ThrowOnError);
+            LogWriter.Debug(
+                "Local options not present, defaulting to global settings. Global Options - ContinueOnFailure:{0}, ThrowOnError:{1}",
+                globalOptions.ContinueOnFailure, globalOptions.ThrowOnError);
 
             return globalOptions;
         }
@@ -392,7 +381,8 @@ namespace Banzai
         /// <param name="context">Source context for preparation.</param>
         /// <param name="currentResult">A referene to the result of the current node.</param>
         /// <returns>The execution context to be used in node execution.</returns>
-        protected virtual IExecutionContext<T> PrepareExecutionContext(IExecutionContext<T> context, NodeResult currentResult)
+        protected virtual IExecutionContext<T> PrepareExecutionContext(IExecutionContext<T> context,
+            NodeResult currentResult)
         {
             LogWriter.Debug("Preparing the execution context for execution.");
             context.AddResult(currentResult);
@@ -416,6 +406,18 @@ namespace Banzai
         {
         }
 
+
+        private async Task<bool> ShouldExecuteInternalAsync(IExecutionContext<T> context)
+        {
+            if (ShouldExecuteFuncAsync != null)
+                return await ShouldExecuteFuncAsync((IExecutionContext<object>)context).ConfigureAwait(false);
+
+            if (ShouldExecuteFunc != null)
+                return ShouldExecuteFunc((IExecutionContext<object>)context);
+
+            return await ShouldExecuteAsync(context).ConfigureAwait(false);
+        }
+
         private void ProcessExecuteManyResults(ExecutionOptions options, NodeResult aggregateResult)
         {
             aggregateResult.Status = aggregateResult.ChildResults.AggregateNodeResults(options);
@@ -429,5 +431,41 @@ namespace Banzai
 
         }
 
-     }
+    }
+
+
+    /// <summary>
+    /// Extensions to make adding should execute functions to an INode type safe.
+    /// </summary>
+    public static class NodeExtensions
+    {
+        /// <summary>
+        /// Adds a ShouldExecuteFunc to the INode.
+        /// </summary>
+        /// <typeparam name="T">Type of the subject the node acts upon.</typeparam>
+        /// <param name="node">Node to add ShouldExecute to.</param>
+        /// <param name="shouldExecuteFunc">Strongly typed ShouldExecuteFunc.</param>
+        /// <returns>The INode with the function added.</returns>
+        public static INode<T> AddShouldExecute<T>(this INode<T> node,
+            Func<IExecutionContext<T>, bool> shouldExecuteFunc)
+        {
+            node.ShouldExecuteFunc = context => shouldExecuteFunc((IExecutionContext<T>) context);
+            return node;
+        }
+
+        /// <summary>
+        /// Adds a ShouldExecuteFuncAsync to the INode.
+        /// </summary>
+        /// <typeparam name="T">Type of the subject the node acts upon.</typeparam>
+        /// <param name="node">Node to add ShouldExecute to.</param>
+        /// <param name="shouldExecuteFuncAsync">Strongly typed ShouldExecuteFuncAsync.</param>
+        /// <returns>The INode with the function added.</returns>
+        public static INode<T> AddShouldExecute<T>(this INode<T> node,
+            Func<IExecutionContext<T>, Task<bool>> shouldExecuteFuncAsync)
+        {
+            node.ShouldExecuteFuncAsync = context => shouldExecuteFuncAsync((IExecutionContext<T>) context);
+            return node;
+        }
+    }
+
 }

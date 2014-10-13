@@ -104,6 +104,17 @@ namespace Banzai.Test
         }
     }
 
+    public class SimpleTestNodeASub1 : Node<TestObjectASub>
+    {
+
+        protected override Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<TestObjectASub> context)
+        {
+            context.Subject.TestValueString = "Completed";
+
+            return Task.FromResult(NodeResultStatus.Succeeded);
+        }
+    }
+
     public class SimpleTestNodeB1 : Node<TestObjectB>
     {
         private readonly bool _shouldExecute = true;
