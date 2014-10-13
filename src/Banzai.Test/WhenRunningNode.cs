@@ -106,7 +106,7 @@ namespace Banzai.Test
         }
 
         [Test]
-        public async void Node_Specific_Options_Override_Global_Options()
+        public void Node_Specific_Options_Override_Global_Options()
         {
             var testNode = new SimpleTestNodeA1();
 
