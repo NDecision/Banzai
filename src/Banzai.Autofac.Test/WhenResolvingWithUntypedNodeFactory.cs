@@ -66,6 +66,19 @@ namespace Banzai.Autofac.Test
             Assert.Throws<ComponentNotRegisteredException>(() => nodeFactory.GetNode<ITestNode<object>>("TestName2"));
         }
 
+        [Test]
+        public void Resolution_Of_Transition_Node_Succeeds()
+        {
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+
+            var container = containerBuilder.Build();
+            var nodeFactory = container.Resolve<INodeFactory>();
+            var node = nodeFactory.GetNode<ITestTransitionNode1>();
+
+            node.ShouldNotBeNull();
+        }
+
 
     }
 
