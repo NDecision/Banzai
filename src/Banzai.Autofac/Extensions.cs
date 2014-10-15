@@ -48,7 +48,6 @@ namespace Banzai.Autofac
         {
             if (assembly != null)
             {
-
                 var types = assembly.GetTypes().Where(t => t.IsClass && t.IsClosedTypeOf(typeof (INode<>)));
 
                 foreach (var type in types)
@@ -60,7 +59,7 @@ namespace Banzai.Autofac
                             .AsImplementedInterfaces()
                             .InstancePerDependency();
 
-                        if (type.IsClosedTypeOf(typeof (IMultiNode<>)))
+                        if (type.IsClosedTypeOf(typeof (IMultiNode<>)) || type.IsClosedTypeOf(typeof(ITransitionNode<,>)))
                         {
                             registrationBuilder.WithProperty(
                                 new ResolvedParameter(
@@ -75,7 +74,7 @@ namespace Banzai.Autofac
                             .AsImplementedInterfaces()
                             .InstancePerDependency();
 
-                        if (type.IsClosedTypeOf(typeof (IMultiNode<>)))
+                        if (type.IsClosedTypeOf(typeof (IMultiNode<>)) || type.IsClosedTypeOf(typeof(ITransitionNode<,>)))
                         {
                             registrationBuilder.WithProperty(
                                 new ResolvedParameter(
@@ -142,14 +141,6 @@ namespace Banzai.Autofac
                     (pi, c) => c.Resolve(pi.ParameterType)));
 
             builder.RegisterGeneric(typeof (FirstMatchNode<>))
-                .AsImplementedInterfaces()
-                .AsSelf()
-                .InstancePerDependency()
-                .WithProperty(new ResolvedParameter(
-                    (pi, c) => pi.IsNodeFactory(),
-                    (pi, c) => c.Resolve(pi.ParameterType)));
-
-            builder.RegisterGeneric(typeof(TransitionNode<,>))
                 .AsImplementedInterfaces()
                 .AsSelf()
                 .InstancePerDependency()

@@ -28,7 +28,7 @@ namespace Banzai
     /// </summary>
     /// <typeparam name="TSource">Original node type.</typeparam>
     /// <typeparam name="TDestination">Resultant node type.</typeparam>
-    public class TransitionNode<TSource, TDestination> : Node<TSource>, ITransitionNode<TSource, TDestination>
+    public abstract class TransitionNode<TSource, TDestination> : Node<TSource>, ITransitionNode<TSource, TDestination>
     {
         /// <summary>
         /// Gets or sets an injected NodeFactory to use when constructing this node.

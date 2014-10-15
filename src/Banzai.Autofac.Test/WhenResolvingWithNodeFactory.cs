@@ -108,6 +108,50 @@ namespace Banzai.Autofac.Test
         }
 
 
+        [Test]
+        public void Resolution_Of_Transition_Node_Succeeds()
+        {
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+
+            var container = containerBuilder.Build();
+            var nodeFactory = container.Resolve<INodeFactory<TestObjectA>>();
+            var node = nodeFactory.GetNode<ITestTransitionNode1>();
+
+            node.ShouldNotBeNull();
+        }
+
+        [Test]
+        public void Resolution_Of_Transition_Node_Succeeds_From_Pipeline()
+        {
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+
+            var container = containerBuilder.Build();
+            var nodeFactory = container.Resolve<INodeFactory<TestObjectA>>();
+            var node = nodeFactory.GetNode<ITestPipelineNode2>();
+
+            var childNode = node.NodeFactory.GetNode<ITestTransitionNode1>();
+
+            childNode.ShouldNotBeNull();
+        }
+
+        [Test]
+        public void Resolved_Transition_Node_Has_NodeFactory()
+        {
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+
+            var container = containerBuilder.Build();
+            var nodeFactory = container.Resolve<INodeFactory<TestObjectA>>();
+            var node = nodeFactory.GetNode<ITestPipelineNode2>();
+
+            var childNode = node.NodeFactory.GetNode<ITestTransitionNode1>();
+
+            childNode.NodeFactory.ShouldNotBeNull();
+        }
+
+
     }
 
 }

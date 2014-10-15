@@ -2,7 +2,9 @@
 
 namespace Banzai.Autofac.Test
 {
-    public interface ITestNode<T> : INode<T> { }
+    public interface ITestNode<T> : INode<T>
+    {
+    }
 
     public class TestNode : Node<object>, ITestNode<object>
     {
@@ -12,7 +14,9 @@ namespace Banzai.Autofac.Test
         }
     }
 
-    public interface ITestNode2 : INode<object> { }
+    public interface ITestNode2 : INode<object>
+    {
+    }
 
     public class TestNode2 : Node<object>, ITestNode2
     {
@@ -22,7 +26,9 @@ namespace Banzai.Autofac.Test
         }
     }
 
-    public interface ITestNode3 : INode<object> { }
+    public interface ITestNode3 : INode<object>
+    {
+    }
 
     public class TestNode3 : Node<object>, ITestNode3
     {
@@ -32,7 +38,9 @@ namespace Banzai.Autofac.Test
         }
     }
 
-    public interface ITestNode4 : INode<object> { }
+    public interface ITestNode4 : INode<object>
+    {
+    }
 
     public class TestNode4 : Node<object>, ITestNode4
     {
@@ -42,7 +50,9 @@ namespace Banzai.Autofac.Test
         }
     }
 
-    public interface ITestPipelineNode1 : IPipelineNode<object> { }
+    public interface ITestPipelineNode1 : IPipelineNode<object>
+    {
+    }
 
     public class TestPipelineNode1 : PipelineNodeBase<object>, ITestPipelineNode1
     {
@@ -52,5 +62,44 @@ namespace Banzai.Autofac.Test
             AddChild(NodeFactory.GetNode<ITestNode3>());
             AddChild(NodeFactory.GetNode<ITestNode4>());
         }
+    }
+
+    public interface ITestPipelineNode2 : IPipelineNode<TestObjectA>
+    {
+    }
+
+    public class TestPipelineNode2 : PipelineNodeBase<TestObjectA>, ITestPipelineNode2
+    {
+        protected override void OnBeforeExecute(IExecutionContext<TestObjectA> context)
+        {
+            AddChild(NodeFactory.GetNode<ITestTransitionNode1>());
+        }
+    }
+
+    public interface ITestTransitionNode1 : ITransitionNode<TestObjectA, TestObjectB>
+    {
+    }
+
+    public class TestTransitionNode1 : TransitionNode<TestObjectA, TestObjectB>, ITestTransitionNode1
+    {
+    }
+
+
+    public class TestObjectA
+    {
+        public string TestValueString { get; set; }
+
+        public int TestValueInt { get; set; }
+    }
+
+    public class TestObjectASub : TestObjectA
+    {
+        public decimal TestValueDecimal;
+    }
+
+    public class TestObjectB
+    {
+        public bool TestValueBool { get; set; }
+
     }
 }
