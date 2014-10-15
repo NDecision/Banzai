@@ -114,6 +114,11 @@ namespace Banzai.Autofac
         /// <returns>Builder including added nodes.</returns>
         public static ContainerBuilder RegisterBanzaiNodes(this ContainerBuilder builder)
         {
+            builder.RegisterType(typeof(AutofacNodeFactory))
+                .AsImplementedInterfaces()
+                .AsSelf()
+                .InstancePerLifetimeScope();
+
             builder.RegisterGeneric(typeof (AutofacNodeFactory<>))
                 .AsImplementedInterfaces()
                 .AsSelf()

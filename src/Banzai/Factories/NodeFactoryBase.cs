@@ -5,6 +5,122 @@ using Banzai.Utility;
 
 namespace Banzai.Factories
 {
+
+    /// <summary>
+    /// Base class for untyped node factories
+    /// </summary>
+    public abstract class NodeFactoryBase : INodeFactory
+    {
+        /// <summary>
+        /// Gets a node by the specified type.
+        /// </summary>
+        /// <typeparam name="TNode">Type of the node to return.</typeparam>
+        /// <returns>The first node matching the TNode type.</returns>
+        public abstract TNode GetNode<TNode>();
+
+        /// <summary>
+        /// Gets a node by the specified type and registered name.
+        /// </summary>
+        /// <param name="name">Name of the node to return (as registered).</param>
+        /// <typeparam name="TNode">Type of the node to return.</typeparam>
+        /// <returns>The first node matching the TNode type.</returns>
+        public abstract TNode GetNode<TNode>(string name);
+
+        /// <summary>
+        /// Gets all nodes matching the requested type.
+        /// </summary>
+        /// <typeparam name="TNode">Type of the nodes to return.</typeparam>
+        /// <returns>Enumerable of nodes matching the requested type.</returns>
+        public abstract IEnumerable<TNode> GetAllNodes<TNode>();
+
+        /// <summary>
+        /// Gets a flow matching the specified name and subject type.
+        /// </summary>
+        /// <param name="name">Name of flow to return.</param>
+        /// <returns>Flow matching the requested criteria.</returns>
+        public INode<T> GetFlow<T>(string name)
+        {
+            Guard.AgainstNullOrEmptyArgument("name", name);
+
+            var flowRoot = GetFlowRoot<T>(name);
+
+            return BuildNode(flowRoot.Children[0], flowRoot.ShouldExecuteFuncAsync, flowRoot.ShouldExecuteFunc);
+        }
+
+        /// <summary>
+        /// Gets a node by the specified type.
+        /// </summary>
+        /// <param name="type">Type of the node to return.</param>
+        /// <returns>The first node matching the TNode type.</returns>
+        public abstract INode<T> GetNode<T>(Type type);
+
+        /// <summary>
+        /// Gets a node by the specified type and registered name.
+        /// </summary>
+        /// <param name="name">Name of the node to return (as registered).</param>
+        /// <param name="type">Type of the node to return.</param>
+        /// <returns>The first node matching the TNode type.</returns>
+        public abstract INode<T> GetNode<T>(Type type, string name);
+
+        /// <summary>
+        /// Method overridden to provide a root FlowComponent based on a name.
+        /// </summary>
+        /// <param name="name">Name of the flow root.</param>
+        /// <returns>FlowComponent corresponding to the named root.</returns>
+        protected abstract FlowComponent<T> GetFlowRoot<T>(string name);
+
+        /// <summary>
+        /// Builds a node from the provided FlowComponent.
+        /// </summary>
+        /// <param name="component">Flowcomponent providing the node definition.</param>
+        /// <param name="shouldExecuteFunc">Allows a ShouldExecuteFunc to be specified from the parent.</param>
+        /// <param name="shouldExecuteFuncAsync">Allows a ShouldExecuteAsyncFunc to be specified from the parent.</param>
+        /// <returns>A constructed INode.</returns>
+        protected INode<T> BuildNode<T>(FlowComponent<T> component,
+            Func<IExecutionContext<T>, Task<bool>> shouldExecuteFuncAsync = null, Func<IExecutionContext<T>, bool> shouldExecuteFunc = null)
+        {
+            INode<T> node;
+            //Get the node or flow from the flowComponent
+            if (component.IsFlow)
+            {
+                node = GetFlow<T>(component.Name);
+            }
+            else
+            {
+                node = string.IsNullOrEmpty(component.Name) ? GetNode<T>(component.Type) : GetNode<T>(component.Type, component.Name);
+            }
+
+            if (component.ShouldExecuteFuncAsync != null)
+            {
+                node.AddShouldExecute(component.ShouldExecuteFuncAsync);
+            }
+            else if (shouldExecuteFuncAsync != null)
+            {
+                node.AddShouldExecute(shouldExecuteFuncAsync);
+            }
+            if (component.ShouldExecuteFunc != null)
+            {
+                node.AddShouldExecute(component.ShouldExecuteFunc);
+            }
+            else if (shouldExecuteFunc != null)
+            {
+                node.AddShouldExecute(shouldExecuteFunc);
+            }
+
+            if (component.Children != null && component.Children.Count > 0)
+            {
+                var multiNode = (IMultiNode<T>)node;
+                foreach (var childComponent in component.Children)
+                {
+                    multiNode.AddChild(BuildNode(childComponent));
+                }
+            }
+
+            return node;
+        }
+
+    }
+
     /// <summary>
     /// Base class for node factories.
     /// </summary>
@@ -70,6 +186,13 @@ namespace Banzai.Factories
         }
 
         /// <summary>
+        /// Method overridden to provide a root FlowComponent based on a name.
+        /// </summary>
+        /// <param name="name">Name of the flow root.</param>
+        /// <returns>FlowComponent corresponding to the named root.</returns>
+        protected abstract FlowComponent<T> GetFlowRoot(string name);
+
+        /// <summary>
         /// Builds a node from the provided FlowComponent.
         /// </summary>
         /// <param name="component">Flowcomponent providing the node definition.</param>
@@ -109,7 +232,7 @@ namespace Banzai.Factories
 
             if (component.Children != null && component.Children.Count > 0)
             {
-                var multiNode = (IMultiNode<T>) node;
+                var multiNode = (IMultiNode<T>)node;
                 foreach (var childComponent in component.Children)
                 {
                     multiNode.AddChild(BuildNode(childComponent));
@@ -119,13 +242,6 @@ namespace Banzai.Factories
             return node;
         }
 
-        /// <summary>
-        /// Method overridden to provide a root FlowComponent based on a name.
-        /// </summary>
-        /// <param name="name">Name of the flow root.</param>
-        /// <returns>FlowComponent corresponding to the named root.</returns>
-        protected abstract FlowComponent<T> GetFlowRoot(string name);
-
-
     }
+
 }

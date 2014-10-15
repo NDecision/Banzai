@@ -54,6 +54,7 @@
     <Compile Include="WhenBuildingFlows.cs" />
     <Compile Include="WhenFlowAddsShouldExecute.cs" />
     <Compile Include="WhenResolvingWithNodeFactory.cs" />
+    <Compile Include="WhenResolvingWithUntypedNodeFactory.cs" />
     <Compile Include="WhenScanningAssemblies.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -4,11 +4,43 @@ using System.Collections.Generic;
 namespace Banzai.Factories
 {
 
+    public interface INodeFactory
+    {
+        /// <summary>
+        /// Gets a node by the specified type.
+        /// </summary>
+        /// <typeparam name="TNode">Type of the node to return.</typeparam>
+        /// <returns>The first node matching the TNode type.</returns>
+        TNode GetNode<TNode>();
+
+        /// <summary>
+        /// Gets a node by the specified type and registered name.
+        /// </summary>
+        /// <param name="name">Name of the node to return (as registered).</param>
+        /// <typeparam name="TNode">Type of the node to return.</typeparam>
+        /// <returns>The first node matching the TNode type.</returns>
+        TNode GetNode<TNode>(string name);
+
+        /// <summary>
+        /// Gets all nodes matching the requested type.
+        /// </summary>
+        /// <typeparam name="TNode">Type of the nodes to return.</typeparam>
+        /// <returns>Enumerable of nodes matching the requested type.</returns>
+        IEnumerable<TNode> GetAllNodes<TNode>();
+
+        /// <summary>
+        /// Gets a flow matching the specified name and subject type.
+        /// </summary>
+        /// <param name="name">Name of flow to return.</param>
+        /// <returns>Flow matching the requested criteria.</returns>
+        INode<T> GetFlow<T>(string name);
+    }
+
     /// <summary>
     /// Interface for the node factory.  Used to create child nodes.
     /// </summary>
     /// <typeparam name="T">Type of the underlying node subject.</typeparam>
-    public interface INodeFactory<T> 
+    public interface INodeFactory<T>
     {
         /// <summary>
         /// Gets a node by the specified type.

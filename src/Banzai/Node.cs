@@ -29,13 +29,6 @@ namespace Banzai
         ILogWriter LogWriter { get; }
 
         /// <summary>
-        /// Determines if the node should be executed.
-        /// </summary>
-        /// <param name="context">The current execution context.</param>
-        /// <returns>Bool indicating if the current node should be run.</returns>
-        bool ShouldExecute(IExecutionContext<T> context);
-
-        /// <summary>
         /// Gets or sets the function to define if this node should be executed.
         /// </summary>
         Func<IExecutionContext<object>, bool> ShouldExecuteFunc { get; set; }
@@ -44,6 +37,13 @@ namespace Banzai
         /// Gets or sets the async function to call to determine if this node should be executed.
         /// </summary>
         Func<IExecutionContext<object>, Task<bool>> ShouldExecuteFuncAsync { get; set; }
+
+        /// <summary>
+        /// Determines if the node should be executed.
+        /// </summary>
+        /// <param name="context">The current execution context.</param>
+        /// <returns>Bool indicating if the current node should be run.</returns>
+        bool ShouldExecute(IExecutionContext<T> context);
 
         /// <summary>
         /// Determines if the node should be executed.
