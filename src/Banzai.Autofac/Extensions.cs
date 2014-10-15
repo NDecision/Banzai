@@ -149,6 +149,22 @@ namespace Banzai.Autofac
                     (pi, c) => pi.IsNodeFactory(),
                     (pi, c) => c.Resolve(pi.ParameterType)));
 
+            builder.RegisterGeneric(typeof(TransitionNode<,>))
+                .AsImplementedInterfaces()
+                .AsSelf()
+                .InstancePerDependency()
+                .WithProperty(new ResolvedParameter(
+                    (pi, c) => pi.IsNodeFactory(),
+                    (pi, c) => c.Resolve(pi.ParameterType)));
+
+            builder.RegisterGeneric(typeof(TransitionFuncNode<,>))
+                .AsImplementedInterfaces()
+                .AsSelf()
+                .InstancePerDependency()
+                .WithProperty(new ResolvedParameter(
+                    (pi, c) => pi.IsNodeFactory(),
+                    (pi, c) => c.Resolve(pi.ParameterType)));
+
             return builder;
         }
 
