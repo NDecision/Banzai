@@ -331,6 +331,16 @@ or
         }
     }
 
+In addition, an untyped INodeFactory can be injected so that nodes of any subject type may be retrieved.  This is primarily present for 
+injection into services.
+
+    public class MyService
+    {
+        public MyComplexNode(INodeFactory nodeFactory)
+        {
+            var node = nodeFactory.GetNode<ITestNode<object>>();
+        }
+    }
 
 ###Using FlowBuilder
 FlowBuilder allows you to build complex workflows with a simple fluent interface.  Complex flows can be constructed by 
