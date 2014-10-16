@@ -6,10 +6,11 @@
 
 Banzai is an easy .Net pipeline solution that contains composable nodes for constructing simple and complex pipelines.  
 Yes, there is TPL Dataflow and it's really cool, but I was looking for something easy that solved the 80% case of simple
-asynchronous pipelines in my business applications.  It's important to understand that Banzai it about async, not parallel.  
-It's optimal for setting up business pipelines which have operations that benfit from async, such as external web service calls or Database/file I/O operations.
-Of course it can be used to organize code regardless of external I/O, but it's performance advantage is based on async.
- 
+asynchronous pipelines in my business applications.  It's important to understand that Banzai is primarily about async, not parallel. Although it does take
+a DegreeOfParallelism when executing against an enumerable of subjects.  
+Banzai is optimal for setting up business pipelines which have operations that benfit from async, such as external web service calls or Database/file I/O operations.
+Of course it can be used to organize code regardless of external I/O, but it's performance advantage is primarily based on async and the pipeline pattern is a good way 
+to force some organizational constraints on processing pipelines, such as applying rules or transformations to a subject.
 
 ##Basic Concept 
 Flows are composed from nodes of which there are a few types explained below.  Nodes are [composed into simple or complex flows](#building-flows) and then 
@@ -211,6 +212,8 @@ The execution options impact the behavior of node execution.
 
 <b>ThrowOnException</b> - Should a node execution exception throw or register as a failure and store the exception in the NodeResults exception property.
 Defaults to false.
+
+<b>DegreeOfParallelism</b> - The maximum number of parallel operations that are used to process the subjects when calling [ExecuteManyAsync](#running-nodes).
 
 ###NodeResult
 When a node executes, it returns a NodeResult.  The NodeResult will contain:
