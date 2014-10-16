@@ -89,6 +89,7 @@
     <Compile Include="NodeResultStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\NodeTimer.cs" />
+    <Compile Include="Utility\ParallelExtensions.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

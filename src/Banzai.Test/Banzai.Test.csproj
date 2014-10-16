@@ -75,6 +75,7 @@
     <Compile Include="WhenRunningTransitionNode.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="WhenRunningWithDegreeOfParallelism.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Banzai\Banzai.csproj">

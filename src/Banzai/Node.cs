@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -97,8 +98,6 @@ namespace Banzai
     /// <typeparam name="T">Type that the pipeline acts upon.</typeparam>
     public abstract class Node<T> : INode<T>
     {
-        private readonly NodeTimer _nodeTimer = new NodeTimer();
-        
         /// <summary>
         /// Creates a new Node.
         /// </summary>
@@ -192,9 +191,11 @@ namespace Banzai
         {
             Guard.AgainstNullArgument("subjects", subjects);
 
+            var nodeTimer = new NodeTimer();
+
             try
             {
-                _nodeTimer.LogStart(LogWriter, this, "ExecuteManySeriallyAsync");
+                nodeTimer.LogStart(LogWriter, this, "ExecuteManySeriallyAsync");
                 var subjectList = subjects.ToList();
 
                 var aggregateResult = new NodeResult(default(T));
@@ -235,7 +236,7 @@ namespace Banzai
             }
             finally
             {
-                _nodeTimer.LogStop(LogWriter, this, "ExecuteAsync");
+                nodeTimer.LogStop(LogWriter, this, "ExecuteAsync");
             }
         }
 
@@ -249,12 +250,14 @@ namespace Banzai
         {
             Guard.AgainstNullArgument("subjects", subjects);
 
+            var nodeTimer = new NodeTimer();
+
             try
             {
-                _nodeTimer.LogStart(LogWriter, this, "ExecuteManyAsync");
-                var subjectList = subjects.ToList();
-
+                nodeTimer.LogStart(LogWriter, this, "ExecuteManyAsync");
                 var aggregateResult = new NodeResult(default(T));
+
+                var subjectList = subjects.ToList();
 
                 if (subjectList.Count == 0)
                     return aggregateResult;
@@ -262,15 +265,18 @@ namespace Banzai
                 if (options == null)
                     options = new ExecutionOptions();
 
-                Task<NodeResult[]> aggregateTask = null;
+                LogWriter.Debug("Running all subjects asynchronously.");
 
+                Task aggregateTask = null;
                 try
                 {
-                    LogWriter.Debug("Running all subjects asynchronously.");
-                    aggregateTask = Task.WhenAll(subjectList.Select(x => ExecuteAsync(new ExecutionContext<T>(x, options))));
-                    NodeResult[] results = await aggregateTask.ConfigureAwait(false);
+                    var resultsQueue = new ConcurrentQueue<NodeResult>();
+                    aggregateTask = subjectList.ForEachAsync(options.DegreeOfParallelism,
+                            async x => resultsQueue.Enqueue(await ExecuteAsync(new ExecutionContext<T>(x, options))));
 
-                    aggregateResult.AddChildResults(results);
+                    await aggregateTask;
+
+                    aggregateResult.AddChildResults(resultsQueue);
                 }
                 catch
                 {
@@ -284,13 +290,14 @@ namespace Banzai
                 }
 
                 ProcessExecuteManyResults(options, aggregateResult);
-
                 return aggregateResult;
+
             }
             finally
             {
-                _nodeTimer.LogStop(LogWriter, this, "ExecuteAsync");
+                nodeTimer.LogStop(LogWriter, this, "ExecuteAsync");
             }
+
         }
 
         /// <summary>
@@ -303,9 +310,11 @@ namespace Banzai
             Guard.AgainstNullArgument("context", sourceContext);
             Guard.AgainstNullArgumentProperty("context", "Subject", sourceContext.Subject);
 
+            var nodeTimer = new NodeTimer();
+
             try
             {
-                _nodeTimer.LogStart(LogWriter, this, "ExecuteAsync");
+                nodeTimer.LogStart(LogWriter, this, "ExecuteAsync");
 
                 if (Status != NodeRunStatus.NotRun)
                 {
@@ -365,7 +374,7 @@ namespace Banzai
             }
             finally
             {
-                _nodeTimer.LogStop(LogWriter, this, "ExecuteAsync");
+                nodeTimer.LogStop(LogWriter, this, "ExecuteAsync");
             }
         }
 

@@ -17,5 +17,10 @@
         /// This applies to the execution of the node only.  An error will always be thrown if ShouldExecute errs.
         /// </remarks>
         public bool ThrowOnError { get; set; }
+
+        /// <summary>
+        /// Sets the degree of parallelism when executing many asynchronously.
+        /// </summary>
+        public int DegreeOfParallelism { get; set; }
     }
 }
