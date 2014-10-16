@@ -16,7 +16,7 @@
         <tags>Banzai Pipeline Dataflow Workflow NLog</tags>
         <dependencies>
           <dependency id="Banzai" version="$version$" />
-          <dependency id="NLog" version="3.1.0.0" />
+          <dependency id="NLog" version="3.1.0" />
         </dependencies>
     </metadata>
   <files>
