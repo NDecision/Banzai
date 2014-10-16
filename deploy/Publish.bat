@@ -13,4 +13,7 @@ powershell -NoProfile -ExecutionPolicy unrestricted -Command "& {.\publish.ps1 -
 powershell -NoProfile -ExecutionPolicy unrestricted -Command "& {.\publish.ps1 -PackageName 'Banzai.Log4Net'; exit $error.Count}"
 
 
+powershell -NoProfile -ExecutionPolicy unrestricted -Command "& {.\publish.ps1 -PackageName 'Banzai.NLog'; exit $error.Count}"
+
+
 pause
