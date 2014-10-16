@@ -21,6 +21,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banzai.Log4Net", "Banzai.Lo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banzai.Log4Net.Test", "Banzai.Log4Net.Test\Banzai.Log4Net.Test.csproj", "{A7E3F1F7-44D0-4A5A-B9F9-7C99BF0C4453}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banzai.NLog", "Banzai.NLog\Banzai.NLog.csproj", "{5FB6296C-7FF6-4EFE-9664-4B668A746BC7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banzai.NLog.Test", "Banzai.NLog.Test\Banzai.NLog.Test.csproj", "{9FB70BAB-2756-4EC6-B8E6-F1C5454C8300}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,14 @@ Global
 		{A7E3F1F7-44D0-4A5A-B9F9-7C99BF0C4453}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7E3F1F7-44D0-4A5A-B9F9-7C99BF0C4453}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7E3F1F7-44D0-4A5A-B9F9-7C99BF0C4453}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FB6296C-7FF6-4EFE-9664-4B668A746BC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FB6296C-7FF6-4EFE-9664-4B668A746BC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FB6296C-7FF6-4EFE-9664-4B668A746BC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FB6296C-7FF6-4EFE-9664-4B668A746BC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FB70BAB-2756-4EC6-B8E6-F1C5454C8300}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FB70BAB-2756-4EC6-B8E6-F1C5454C8300}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FB70BAB-2756-4EC6-B8E6-F1C5454C8300}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FB70BAB-2756-4EC6-B8E6-F1C5454C8300}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
