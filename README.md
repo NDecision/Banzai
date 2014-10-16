@@ -387,11 +387,16 @@ Or via the nodefactory:
 
 
 ##Logging
-By default, Banzai will log to the Debug console in debug mode and will not log in release mode.  The [Banzai.Log4Net package](https://www.nuget.org/packages/Banzai.Log4Net/) will
-allow you to log to Log4Net.  Obviously, you must configure Log4Net as you normally would.
+By default, Banzai will log to the Debug console in debug mode and will not log in release mode.  
+
+The [Banzai.Log4Net package](https://www.nuget.org/packages/Banzai.Log4Net/) will allow you to log to Log4Net.  
+
+The [Banzai.NLog package](https://www.nuget.org/packages/Banzai.NLog/) will allow you to log to NLog. 
+
+Obviously, you must configure Log4Net or NLog as you normally would.
 
 Banzai will log a number of Error/Info/Debug operations to the log by default.  From any INode (v1.0.7 or greater), a LogWriter
-will be exposed for your own custom logging.
+will be exposed for your own custom logging.  At the DEBUG logging level, node stopwatch timings for every node run will also be logged.
 
 Setting up Log4Net (after installing the package)
 
