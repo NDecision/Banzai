@@ -88,6 +88,7 @@
     <Compile Include="NodeRunStatus.cs" />
     <Compile Include="NodeResultStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\NodeTimer.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

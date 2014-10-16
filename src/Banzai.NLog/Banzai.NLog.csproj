@@ -42,8 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Log4NetWriter.cs" />
-    <Compile Include="Log4NetWriterFactory.cs" />
+    <Compile Include="NLogWriter.cs" />
+    <Compile Include="NLogWriterFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

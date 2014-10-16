@@ -21,6 +21,7 @@ namespace Banzai.Logging
             Guard.AgainstNullArgument("factory", factory);
 
             _factory = factory;
+            _writerCache.Clear();
         }
 
         /// <summary>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Banzai.Logging;
@@ -96,7 +97,8 @@ namespace Banzai
     /// <typeparam name="T">Type that the pipeline acts upon.</typeparam>
     public abstract class Node<T> : INode<T>
     {
-
+        private readonly NodeTimer _nodeTimer = new NodeTimer();
+        
         /// <summary>
         /// Creates a new Node.
         /// </summary>
@@ -190,42 +192,51 @@ namespace Banzai
         {
             Guard.AgainstNullArgument("subjects", subjects);
 
-            var subjectList = subjects.ToList();
-
-            var aggregateResult = new NodeResult(default(T));
-
-            if (subjectList.Count == 0)
-                return aggregateResult;
-
-            if (options == null)
-                options = new ExecutionOptions();
-
-            foreach (var subject in subjectList)
+            try
             {
-                try
+                _nodeTimer.LogStart(LogWriter, this, "ExecuteManySeriallyAsync");
+                var subjectList = subjects.ToList();
+
+                var aggregateResult = new NodeResult(default(T));
+
+                if (subjectList.Count == 0)
+                    return aggregateResult;
+
+                if (options == null)
+                    options = new ExecutionOptions();
+
+                foreach (var subject in subjectList)
                 {
-                    LogWriter.Debug("Running all subjects asynchronously.");
-                    
-                    NodeResult result = await ExecuteAsync(new ExecutionContext<T>(subject, options)).ConfigureAwait(false);
-                    
-                    aggregateResult.AddChildResult(result);
-                }
-                catch (Exception)
-                {
-                    if (options.ThrowOnError)
+                    try
                     {
-                        throw;
+                        LogWriter.Debug("Running all subjects asynchronously in a serial manner.");
+
+                        NodeResult result =
+                            await ExecuteAsync(new ExecutionContext<T>(subject, options)).ConfigureAwait(false);
+
+                        aggregateResult.AddChildResult(result);
                     }
-                    if (!options.ContinueOnFailure)
+                    catch (Exception)
                     {
-                        break;
+                        if (options.ThrowOnError)
+                        {
+                            throw;
+                        }
+                        if (!options.ContinueOnFailure)
+                        {
+                            break;
+                        }
                     }
                 }
+
+                ProcessExecuteManyResults(options, aggregateResult);
+
+                return aggregateResult;
             }
-
-            ProcessExecuteManyResults(options, aggregateResult);
-
-            return aggregateResult;
+            finally
+            {
+                _nodeTimer.LogStop(LogWriter, this, "ExecuteAsync");
+            }
         }
 
         /// <summary>
@@ -238,40 +249,48 @@ namespace Banzai
         {
             Guard.AgainstNullArgument("subjects", subjects);
 
-            var subjectList = subjects.ToList();
-
-            var aggregateResult = new NodeResult(default(T));
-
-            if (subjectList.Count == 0)
-                return aggregateResult;
-
-            if (options == null)
-                options = new ExecutionOptions();
-
-            Task<NodeResult[]> aggregateTask = null;
-
             try
             {
-                LogWriter.Debug("Running all subjects asynchronously.");
-                aggregateTask = Task.WhenAll(subjectList.Select(x => ExecuteAsync(new ExecutionContext<T>(x, options))));
-                NodeResult[] results = await aggregateTask.ConfigureAwait(false);
+                _nodeTimer.LogStart(LogWriter, this, "ExecuteManyAsync");
+                var subjectList = subjects.ToList();
 
-                aggregateResult.AddChildResults(results);
-            }
-            catch
-            {
-                if (options.ThrowOnError)
+                var aggregateResult = new NodeResult(default(T));
+
+                if (subjectList.Count == 0)
+                    return aggregateResult;
+
+                if (options == null)
+                    options = new ExecutionOptions();
+
+                Task<NodeResult[]> aggregateTask = null;
+
+                try
                 {
-                    if (aggregateTask.Exception != null)
-                        throw aggregateTask.Exception;
+                    LogWriter.Debug("Running all subjects asynchronously.");
+                    aggregateTask = Task.WhenAll(subjectList.Select(x => ExecuteAsync(new ExecutionContext<T>(x, options))));
+                    NodeResult[] results = await aggregateTask.ConfigureAwait(false);
 
-                    throw;
+                    aggregateResult.AddChildResults(results);
                 }
+                catch
+                {
+                    if (options.ThrowOnError)
+                    {
+                        if (aggregateTask != null && aggregateTask.Exception != null)
+                            throw aggregateTask.Exception;
+
+                        throw;
+                    }
+                }
+
+                ProcessExecuteManyResults(options, aggregateResult);
+
+                return aggregateResult;
             }
-
-            ProcessExecuteManyResults(options, aggregateResult);
-
-            return aggregateResult;
+            finally
+            {
+                _nodeTimer.LogStop(LogWriter, this, "ExecuteAsync");
+            }
         }
 
         /// <summary>
@@ -284,61 +303,70 @@ namespace Banzai
             Guard.AgainstNullArgument("context", sourceContext);
             Guard.AgainstNullArgumentProperty("context", "Subject", sourceContext.Subject);
 
-            if (Status != NodeRunStatus.NotRun)
+            try
             {
-                LogWriter.Debug("Status does not equal 'NotRun', resetting the node before execution");
-                Reset();
-            }
+                _nodeTimer.LogStart(LogWriter, this, "ExecuteAsync");
 
-            var subject = sourceContext.Subject;
-            var result = new NodeResult(subject);
-
-            IExecutionContext<T> context = PrepareExecutionContext(sourceContext, result);
-
-            OnBeforeExecute(context);
-
-            if (!context.CancelProcessing)
-            {
-
-                var effectiveOptions = GetEffectiveOptions(context.GlobalOptions);
-
-                if (! await ShouldExecuteInternalAsync(context).ConfigureAwait(false))
+                if (Status != NodeRunStatus.NotRun)
                 {
-                    LogWriter.Info("ShouldExecute returned false, skipping execution");
-                    return result;
+                    LogWriter.Debug("Status does not equal 'NotRun', resetting the node before execution");
+                    Reset();
                 }
 
-                Status = NodeRunStatus.Running;
-                LogWriter.Debug("Executing the node");
+                var subject = sourceContext.Subject;
+                var result = new NodeResult(subject);
 
-                try
+                IExecutionContext<T> context = PrepareExecutionContext(sourceContext, result);
+
+                OnBeforeExecute(context);
+
+                if (!context.CancelProcessing)
                 {
-                    result.Status = await PerformExecuteAsync(context).ConfigureAwait(false);
-                    //Reset the subject in case it was changed.
-                    result.Subject = context.Subject;
-                    Status = NodeRunStatus.Completed;
-                    LogWriter.Info("Node completed execution, status is {0}", result.Status);
-                }
-                catch (Exception ex)
-                {
-                    LogWriter.Error("Node erred during execution, status is Failed", ex);
-                    Status = NodeRunStatus.Faulted;
-                    result.Subject = context.Subject;
-                    result.Status = NodeResultStatus.Failed;
-                    result.Exception = ex;
-                    
-                    if (effectiveOptions.ThrowOnError)
+
+                    var effectiveOptions = GetEffectiveOptions(context.GlobalOptions);
+
+                    if (! await ShouldExecuteInternalAsync(context).ConfigureAwait(false))
                     {
-                        throw;
+                        LogWriter.Info("ShouldExecute returned false, skipping execution");
+                        return result;
                     }
+
+                    Status = NodeRunStatus.Running;
+                    LogWriter.Debug("Executing the node");
+
+                    try
+                    {
+                        result.Status = await PerformExecuteAsync(context).ConfigureAwait(false);
+                        //Reset the subject in case it was changed.
+                        result.Subject = context.Subject;
+                        Status = NodeRunStatus.Completed;
+                        LogWriter.Info("Node completed execution, status is {0}", result.Status);
+                    }
+                    catch (Exception ex)
+                    {
+                        LogWriter.Error("Node erred during execution, status is Failed", ex);
+                        Status = NodeRunStatus.Faulted;
+                        result.Subject = context.Subject;
+                        result.Status = NodeResultStatus.Failed;
+                        result.Exception = ex;
+
+                        if (effectiveOptions.ThrowOnError)
+                        {
+                            throw;
+                        }
+                    }
+
+                    OnAfterExecute(context);
                 }
 
-                OnAfterExecute(context);
+                sourceContext.CancelProcessing = context.CancelProcessing;
+
+                return result;
             }
-
-            sourceContext.CancelProcessing = context.CancelProcessing;
-
-            return result;
+            finally
+            {
+                _nodeTimer.LogStop(LogWriter, this, "ExecuteAsync");
+            }
         }
 
         /// <summary>
