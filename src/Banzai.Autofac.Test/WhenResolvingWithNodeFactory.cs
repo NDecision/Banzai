@@ -121,7 +121,7 @@ namespace Banzai.Autofac.Test
             node.ShouldNotBeNull();
         }
 
-        [Test, Ignore("Appears due to bug in Autofac")]
+        [Test]
         public void Resolution_Of_Transition_Func_Node_Succeeds()
         {
             var containerBuilder = new ContainerBuilder();
@@ -134,7 +134,7 @@ namespace Banzai.Autofac.Test
             node.ShouldNotBeNull();
         }
 
-        [Test, Ignore("Appears due to bug in Autofac")]
+        [Test]
         public void Resolution_Of_Transition_Func_Node_As_Self_Succeeds()
         {
             var containerBuilder = new ContainerBuilder();

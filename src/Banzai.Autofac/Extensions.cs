@@ -123,6 +123,11 @@ namespace Banzai.Autofac
                 .AsSelf()
                 .InstancePerLifetimeScope();
 
+            builder.RegisterType<AutofacFlowRegistrar>()
+                .AsImplementedInterfaces()
+                .AsSelf()
+                .InstancePerLifetimeScope();
+
             builder.RegisterGeneric(typeof (GroupNode<>))
                 .AsImplementedInterfaces()
                 .AsSelf()
@@ -132,7 +137,6 @@ namespace Banzai.Autofac
                     (pi, c) => c.Resolve(pi.ParameterType)));
 
             builder.RegisterGeneric(typeof (PipelineNode<>))
-
                 .AsImplementedInterfaces()
                 .AsSelf()
                 .InstancePerDependency()
@@ -149,7 +153,7 @@ namespace Banzai.Autofac
                     (pi, c) => c.Resolve(pi.ParameterType)));
 
             builder.RegisterGeneric(typeof(TransitionFuncNode<,>))
-                .AsImplementedInterfaces()
+                .As(typeof(ITransitionFuncNode<,>))
                 .AsSelf()
                 .InstancePerDependency()
                 .WithProperty(new ResolvedParameter(
