@@ -28,6 +28,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Banzai.Ninject.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ninject">
@@ -45,6 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Banzai\Properties\SolutionVersion.cs">
+      <Link>Properties\SolutionVersion.cs</Link>
+    </Compile>
     <Compile Include="CustomPropertyInjector.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="NinjectFlowRegistrar.cs" />
@@ -53,6 +57,7 @@
     <Compile Include="Utility\RegistrationExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Banzai.Ninject.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
