@@ -25,6 +25,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banzai.NLog", "Banzai.NLog\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banzai.NLog.Test", "Banzai.NLog.Test\Banzai.NLog.Test.csproj", "{9FB70BAB-2756-4EC6-B8E6-F1C5454C8300}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banzai.Ninject", "Banzai.Ninject\Banzai.Ninject.csproj", "{871967DF-24EE-449D-ABE8-1952C3280D29}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banzai.Ninject.Test", "Banzai.Ninject.Test\Banzai.Ninject.Test.csproj", "{79E8D9BD-8C97-4C84-B2B9-6204F3CB16E3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +67,14 @@ Global
 		{9FB70BAB-2756-4EC6-B8E6-F1C5454C8300}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FB70BAB-2756-4EC6-B8E6-F1C5454C8300}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FB70BAB-2756-4EC6-B8E6-F1C5454C8300}.Release|Any CPU.Build.0 = Release|Any CPU
+		{871967DF-24EE-449D-ABE8-1952C3280D29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{871967DF-24EE-449D-ABE8-1952C3280D29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{871967DF-24EE-449D-ABE8-1952C3280D29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{871967DF-24EE-449D-ABE8-1952C3280D29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79E8D9BD-8C97-4C84-B2B9-6204F3CB16E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79E8D9BD-8C97-4C84-B2B9-6204F3CB16E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79E8D9BD-8C97-4C84-B2B9-6204F3CB16E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79E8D9BD-8C97-4C84-B2B9-6204F3CB16E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
