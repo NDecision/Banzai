@@ -164,7 +164,7 @@ namespace Banzai.Ninject
         /// <returns>Enumerable of nodes matching the requested type.</returns>
         public override IEnumerable<TNode> GetAllNodes<TNode>() 
         {
-            return _resolver.Get<IEnumerable<TNode>>();
+            return _resolver.GetAll<TNode>();
         }
 
         /// <summary>

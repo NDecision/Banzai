@@ -114,6 +114,42 @@ namespace Banzai.Ninject.Test
         }
 
         [Test]
+        public void Resolution_Of_Transition_As_Self_Node_Succeeds()
+        {
+            var kernel = new StandardKernel();
+            kernel.RegisterBanzaiNodes(GetType().Assembly, true);
+
+            var nodeFactory = kernel.Get<INodeFactory<TestObjectA>>();
+            var node = nodeFactory.GetNode<TestTransitionNode1>();
+
+            node.ShouldNotBeNull();
+        }
+
+        [Test]
+        public void Resolution_Of_Transition_Func_Node_Succeeds()
+        {
+            var kernel = new StandardKernel();
+            kernel.RegisterBanzaiNodes(GetType().Assembly, true);
+
+            var nodeFactory = kernel.Get<INodeFactory<TestObjectA>>();
+            var node = nodeFactory.GetNode<ITransitionFuncNode<TestObjectA, TestObjectA>>();
+
+            node.ShouldNotBeNull();
+        }
+
+        [Test]
+        public void Resolution_Of_Transition_Func_Node_As_Self_Succeeds()
+        {
+            var kernel = new StandardKernel();
+            kernel.RegisterBanzaiNodes(GetType().Assembly, true);
+
+            var nodeFactory = kernel.Get<INodeFactory<TestObjectA>>();
+            var node = nodeFactory.GetNode<TransitionFuncNode<TestObjectA, TestObjectA>>();
+
+            node.ShouldNotBeNull();
+        }
+
+        [Test]
         public void Resolution_Of_Transition_Node_Succeeds_From_Pipeline()
         {
             var kernel = new StandardKernel();

@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomPropertyInjector.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="NinjectFlowRegistrar.cs" />
     <Compile Include="NinjectNodeFactory.cs" />

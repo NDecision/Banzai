@@ -5,7 +5,7 @@ namespace Banzai.Ninject.Utility
 {
     /// <summary>
     /// Extends <see cref="System.Type"/> with methods that are useful in
-    /// building scanning rules for <see cref="RegistrationExtensions.RegisterAssemblyTypes"/>.
+    /// building scanning rules for registering assembly types/>.
     /// </summary>
     public static class TypeExtensions
     {

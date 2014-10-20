@@ -121,6 +121,32 @@ namespace Banzai.Autofac.Test
             node.ShouldNotBeNull();
         }
 
+        [Test, Ignore("Appears due to bug in Autofac")]
+        public void Resolution_Of_Transition_Func_Node_Succeeds()
+        {
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+
+            var container = containerBuilder.Build();
+            var nodeFactory = container.Resolve<INodeFactory<TestObjectA>>();
+            var node = nodeFactory.GetNode<ITransitionFuncNode<TestObjectA, TestObjectB>>();
+
+            node.ShouldNotBeNull();
+        }
+
+        [Test, Ignore("Appears due to bug in Autofac")]
+        public void Resolution_Of_Transition_Func_Node_As_Self_Succeeds()
+        {
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+
+            var container = containerBuilder.Build();
+            var nodeFactory = container.Resolve<INodeFactory<TestObjectA>>();
+            var node = nodeFactory.GetNode<TransitionFuncNode<TestObjectA, TestObjectB>>();
+
+            node.ShouldNotBeNull();
+        }
+
         [Test]
         public void Resolution_Of_Transition_Node_Succeeds_From_Pipeline()
         {

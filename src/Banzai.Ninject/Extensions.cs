@@ -1,8 +1,10 @@
-﻿using System.Reflection;
+﻿using System.Linq;
+using System.Reflection;
 using Banzai.Ninject.Utility;
 using Ninject;
 using Ninject.Extensions.Conventions;
 using Banzai.Factories;
+using Ninject.Selection.Heuristics;
 
 namespace Banzai.Ninject
 {
@@ -56,31 +58,14 @@ namespace Banzai.Ninject
                 builder.Bind(k =>
                 {
                     k.From(assembly)
-                        .SelectAllClasses().Where(t => t.IsAssignableFrom(typeof(INode<>)) 
-                            && !t.IsAssignableFrom(typeof(IMultiNode<>)) && !t.InheritsOrImplements(typeof(ITransitionNode<,>)))
+                        .SelectAllClasses().Where(t => t.InheritsOrImplements(typeof(INode<>)))
                         .BindAllInterfaces()
-                        .Configure(c => c.InSingletonScope());
+                        .Configure(c => c.InTransientScope());
                     k.FromThisAssembly()
-                        .SelectAllClasses().Where(t => t.IsAssignableFrom(typeof(INode<>))
-                            && !t.IsAssignableFrom(typeof(IMultiNode<>)) && !t.InheritsOrImplements(typeof(ITransitionNode<,>)))
+                        .SelectAllClasses().Where(t => t.InheritsOrImplements(typeof(INode<>)))
                         .BindToSelf()
-                        .Configure(c => c.InSingletonScope());
+                        .Configure(c => c.InTransientScope());
                 });
-
-                builder.Bind(k =>
-                {
-                    k.From(assembly)
-                        .SelectAllClasses().Where(t => t.IsAssignableFrom(typeof(IMultiNode<>)) || t.InheritsOrImplements(typeof(ITransitionNode<,>)))
-                        .BindAllInterfaces()
-                        .Configure(c => c.InSingletonScope()
-                        .WithPropertyValue("NodeFactory", ctxt => ctxt.Kernel.Get(typeof(INodeFactory<>))));
-                    k.FromThisAssembly()
-                        .SelectAllClasses().Where(t => t.IsAssignableFrom(typeof(IMultiNode<>)) || t.InheritsOrImplements(typeof(ITransitionNode<,>)))
-                        .BindToSelf()
-                        .Configure(c => c.InSingletonScope()
-                        .WithPropertyValue("NodeFactory", ctxt => ctxt.Kernel.Get(typeof(INodeFactory<>))));
-                });
-
             }
 
             return builder;
@@ -106,74 +91,31 @@ namespace Banzai.Ninject
         /// <returns>Builder including added nodes.</returns>
         public static IKernel RegisterBanzaiNodes(this IKernel builder)
         {
+            builder.Bind(typeof (INodeFactory<>)).To(typeof(NinjectNodeFactory<>)).InSingletonScope();
+            builder.Bind<INodeFactory>().To<NinjectNodeFactory>().InSingletonScope();
+            builder.Bind<IFlowRegistrar>().To<NinjectFlowRegistrar>().InSingletonScope();
 
-            builder.Bind(k =>
-            {
-                k.FromThisAssembly()
-                    .SelectAllClasses()
-                    .BindAllInterfaces()
-                    .Configure(c => c.InSingletonScope());
-                k.FromThisAssembly()
-                    .SelectAllClasses()
-                    .BindToSelf()
-                    .Configure(c => c.InSingletonScope());
-            });
+            builder.Components.Add<IInjectionHeuristic, NodeFactoryInjectionHeuristic>();
 
-            builder.Bind(k =>
-            {
-                k.FromAssemblyContaining<NodeResult>()
-                    .Select(type => type == typeof(GroupNode<>))
-                    .BindAllInterfaces()
-                    .Configure(c => c.InSingletonScope()
-                    .WithPropertyValue("NodeFactory", ctxt => ctxt.Kernel.Get(typeof(INodeFactory<>))));
-                k.FromAssemblyContaining<NodeResult>()
-                    .Select(type => type == typeof(GroupNode<>))
-                    .BindToSelf()
-                    .Configure(c => c.InSingletonScope()
-                    .WithPropertyValue("NodeFactory", ctxt => ctxt.Kernel.Get(typeof(INodeFactory<>))));
-            });
+            builder.Bind(k => k.FromAssemblyContaining<NodeResult>()
+                .Select(type => type == typeof(GroupNode<>))
+                .BindAllInterfaces()
+                .Configure(c => c.InSingletonScope()));
 
-            builder.Bind(k =>
-            {
-                k.FromAssemblyContaining<NodeResult>()
-                    .Select(type => type == typeof(PipelineNode<>))
-                    .BindAllInterfaces()
-                    .Configure(c => c.InTransientScope()
-                    .WithPropertyValue("NodeFactory", ctxt => ctxt.Kernel.Get(typeof(INodeFactory<>))));
-                k.FromAssemblyContaining<NodeResult>()
-                    .Select(type => type == typeof(PipelineNode<>))
-                    .BindToSelf()
-                    .Configure(c => c.InTransientScope()
-                    .WithPropertyValue("NodeFactory", ctxt => ctxt.Kernel.Get(typeof(INodeFactory<>))));
-            });
+            builder.Bind(k => k.FromAssemblyContaining<NodeResult>()
+                .Select(type => type == typeof(PipelineNode<>))
+                .BindAllInterfaces()
+                .Configure(c => c.InTransientScope()));
 
-            builder.Bind(k =>
-            {
-                k.FromAssemblyContaining<NodeResult>()
-                    .Select(type => type == typeof(FirstMatchNode<>))
-                    .BindAllInterfaces()
-                    .Configure(c => c.InTransientScope()
-                    .WithPropertyValue("NodeFactory", ctxt => ctxt.Kernel.Get(typeof(INodeFactory<>))));
-                k.FromAssemblyContaining<NodeResult>()
-                    .Select(type => type == typeof(FirstMatchNode<>))
-                    .BindToSelf()
-                    .Configure(c => c.InTransientScope()
-                    .WithPropertyValue("NodeFactory", ctxt => ctxt.Kernel.Get(typeof(INodeFactory<>))));
-            });
+            builder.Bind(k => k.FromAssemblyContaining<NodeResult>()
+                .Select(type => type == typeof(FirstMatchNode<>))
+                .BindAllInterfaces()
+                .Configure(c => c.InTransientScope()));
 
-            builder.Bind(k =>
-            {
-                k.FromAssemblyContaining<NodeResult>()
-                    .Select(type => type == typeof(TransitionFuncNode<,>))
-                    .BindAllInterfaces()
-                    .Configure(c => c.InTransientScope()
-                    .WithPropertyValue("NodeFactory", ctxt => ctxt.Kernel.Get(typeof(INodeFactory<>))));
-                k.FromAssemblyContaining<NodeResult>()
-                    .Select(type => type == typeof(TransitionFuncNode<,>))
-                    .BindToSelf()
-                    .Configure(c => c.InTransientScope()
-                    .WithPropertyValue("NodeFactory", ctxt => ctxt.Kernel.Get(typeof(INodeFactory<>))));
-            });
+            builder.Bind(k => k.FromAssemblyContaining<NodeResult>()
+                .Select(type => type == typeof(TransitionFuncNode<,>))
+                .BindAllInterfaces()
+                .Configure(c => c.InTransientScope()));
 
 
             return builder;

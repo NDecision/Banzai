@@ -36,7 +36,7 @@ namespace Banzai
     /// </summary>
     /// <typeparam name="TSource">Source node type.</typeparam>
     /// <typeparam name="TDestination">Destination node type.</typeparam>
-    public class TransitionFuncNode<TSource,TDestination> : TransitionNode<TSource, TDestination>
+    public class TransitionFuncNode<TSource,TDestination> : TransitionNode<TSource, TDestination>, ITransitionFuncNode<TSource, TDestination>
     {
         /// <summary>
         /// Asynchronous function to transition the source to the destination.
