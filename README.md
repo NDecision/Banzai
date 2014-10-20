@@ -248,11 +248,12 @@ Represents the run status of the node.  The status will be one of the following:
   * Faulted - The node faulted (threw an exception)
 
 ##Registering Nodes
-Registering nodes with an IOC container is easy.  Currently, we provide Autofac helpers in the [Banzai.Autofac library](https://www.nuget.org/packages/Banzai.Autofac/).  
+Registering nodes with an IOC container is easy.  Currently, we provide Autofac helpers in the [Banzai.Autofac library](https://www.nuget.org/packages/Banzai.Autofac/)
+and Ninject helpers in the [Banzai.Ninject library](https://www.nuget.org/packages/Banzai.Ninject/).  
 These extensions scan the indicated assembly for any custom nodes you have created and register them as themselves and their implemented interfaces.
 Nodes are registered as Transient/PerDependency.
 
-Scan the current assembly
+Scan the current assembly (Example in Autofac)
 
     var containerBuilder = new ContainerBuilder();
     containerBuilder.RegisterBanzaiNodes(GetType().Assembly);
@@ -307,7 +308,7 @@ Typically, nodes want to concern themselves with injecting things that provide a
 so this declutters the constructor and I see this as a cross-cutting concern.  Additionally, this allows the parent flow to apply logic to adding child flows 
 rather than just receiving the same child flows each time via straight injection.
 
-If you've used Banzai.Autofac to register your nodes, INodeFactory will be able to request nodes via any interface implemented or via the class type itself.
+If you've used Banzai.Autofac or Banzai.Ninject to register your nodes, INodeFactory will be able to request nodes via any interface implemented or via the class type itself.
 
     var containerBuilder = new ContainerBuilder();
     containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
