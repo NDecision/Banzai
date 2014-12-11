@@ -6,10 +6,6 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("Banzai.Log4Net")]
 [assembly: AssemblyDescription("Log4Net Library for Banzai")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
 
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM

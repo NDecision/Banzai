@@ -6,6 +6,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright 2014 Eric Swann - All rights reserved.")]
 [assembly: AssemblyVersion("1.2.9")]
 [assembly: AssemblyFileVersion("1.2.9")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
 
 [assembly: AssemblyInformationalVersion("1.2.9.0")]
 [assembly: ComVisible(false)]

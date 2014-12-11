@@ -6,10 +6,6 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("Banzai.Autofac")]
 [assembly: AssemblyDescription("An easy Autofac extension for registering nodes in Banzai.")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
 
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM

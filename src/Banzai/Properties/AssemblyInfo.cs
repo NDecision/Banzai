@@ -6,10 +6,6 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("Banzai")]
 [assembly: AssemblyDescription("An easy async pipeline orchestration library")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("cdbbc75d-62c4-4f60-b095-ea7168853959")]

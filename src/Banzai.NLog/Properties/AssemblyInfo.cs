@@ -6,11 +6,6 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("Banzai.NLog")]
 [assembly: AssemblyDescription("NLog Library for Banzai")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("07280df1-d42f-4711-90e7-a78ee8078368")]
