@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Banzai.NodeJs.Test")]
+[assembly: AssemblyTitle("Banzai.Json.Test")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Banzai.NodeJs.Test")]
+[assembly: AssemblyProduct("Banzai.Json.Test")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("19ad83af-a91f-44a2-a0fa-95e1a1102d1f")]
+[assembly: Guid("7c4b6856-703a-4f80-b8d8-aece02412f04")]
 
 // Version information for an assembly consists of the following four values:
 //
