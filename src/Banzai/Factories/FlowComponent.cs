@@ -10,6 +10,7 @@ namespace Banzai.Factories
     public class FlowComponent<T>
     {
         private readonly List<FlowComponent<T>> _children = new List<FlowComponent<T>>();
+        private IDictionary<string, object> _metaData = new Dictionary<string, object>();
 
         /// <summary>
         /// Type of the node if this represents a node or in a flow the subject type.
@@ -43,6 +44,15 @@ namespace Banzai.Factories
         /// Allows the ShouldExecuteFuncAsync for this FlowComponent to be retrieved.
         /// </summary>
         public Func<IExecutionContext<T>, Task<bool>> ShouldExecuteFuncAsync { get; private set; }
+
+        /// <summary>
+        /// Allows metadata about this node to be set.
+        /// </summary>
+        public IDictionary<string, object> MetaData
+        {
+            get { return _metaData; }
+            set { _metaData = value; }
+        }
 
         /// <summary>
         /// Adds a child to this FlowComponent.

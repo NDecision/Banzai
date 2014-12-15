@@ -74,6 +74,14 @@ namespace Banzai.Factories
         IFlowComponentBuilder<T> SetShouldExecuteAsync(Func<IExecutionContext<T>, Task<bool>> shouldExecuteFuncAsync);
 
         /// <summary>
+        /// Allows metadata about the flow component to be added.
+        /// </summary>
+        /// <param name="key">Key of the data to add.</param>
+        /// <param name="data">Data to add.</param>
+        /// <returns></returns>
+        IFlowComponentBuilder<T> SetMetaData(string key, object data);
+            
+        /// <summary>
         /// Returns an instance of FlowComponent representing the requested child node.
         /// </summary>
         /// <typeparam name="TNode">Type of the node.</typeparam>
@@ -212,6 +220,22 @@ namespace Banzai.Factories
         public IFlowComponentBuilder<T> SetShouldExecuteAsync(Func<IExecutionContext<T>, Task<bool>> shouldExecuteAsyncFunc)
         {
             _component.SetShouldExecuteAsync(shouldExecuteAsyncFunc);
+            return this;
+        }
+
+        /// <summary>
+        /// Allows metadata about the flow component to be added.
+        /// </summary>
+        /// <param name="key">Key of the data to add.</param>
+        /// <param name="data">Data to add.</param>
+        /// <returns></returns>
+        public IFlowComponentBuilder<T> SetMetaData(string key, object data)
+        {
+            if (_component.MetaData.ContainsKey(key))
+                _component.MetaData[key] = data;
+            else
+                _component.MetaData.Add(key, data);
+
             return this;
         }
 

@@ -38,7 +38,7 @@ namespace Banzai.JavaScript
     /// A node that exposes functions to set to perform node execution.
     /// </summary>
     /// <typeparam name="T">Type of the subject that the node operates on.</typeparam>
-    public sealed class JavaScriptNode<T> : Node<T>, IJavaScriptNode<T>
+    public class JavaScriptNode<T> : Node<T>, IJavaScriptNode<T>
     {
         private readonly IList<HostType> _hostTypes = new List<HostType>();
         private readonly IList<HostObject> _hostObjects = new List<HostObject>();

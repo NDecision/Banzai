@@ -65,6 +65,10 @@ namespace Banzai.Ninject
                         .SelectAllClasses().Where(t => t.InheritsOrImplements(typeof(INode<>)))
                         .BindToSelf()
                         .Configure(c => c.InTransientScope());
+                    k.From(assembly)
+                        .SelectAllClasses().Where(t => t.InheritsOrImplements(typeof(IMetaDataBuilder)))
+                        .BindAllInterfaces()
+                        .Configure(c => c.InTransientScope());
                 });
             }
 

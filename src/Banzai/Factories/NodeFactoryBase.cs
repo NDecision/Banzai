@@ -70,6 +70,14 @@ namespace Banzai.Factories
         protected abstract FlowComponent<T> GetFlowRoot<T>(string name);
 
         /// <summary>
+        /// Applies metadata to the node during node construction.
+        /// </summary>
+        /// <typeparam name="T">Type of node subject.</typeparam>
+        /// <param name="node">Node to which metadata is applied.</param>
+        /// <param name="metaData">MetaData to apply.</param>
+        protected abstract void ApplyMetaData<T>(INode<T> node, IDictionary<string, object> metaData);
+
+        /// <summary>
         /// Builds a node from the provided FlowComponent.
         /// </summary>
         /// <param name="component">Flowcomponent providing the node definition.</param>
@@ -105,6 +113,11 @@ namespace Banzai.Factories
             else if (shouldExecuteFunc != null)
             {
                 node.AddShouldExecute(shouldExecuteFunc);
+            }
+
+            if (component.MetaData != null && component.MetaData.Count > 0)
+            {
+                ApplyMetaData(node, component.MetaData);
             }
 
             if (component.Children != null && component.Children.Count > 0)
@@ -193,6 +206,13 @@ namespace Banzai.Factories
         protected abstract FlowComponent<T> GetFlowRoot(string name);
 
         /// <summary>
+        /// Applies metadata to the node during node construction.
+        /// </summary>
+        /// <param name="node">Node to which metadata is applied.</param>
+        /// <param name="metaData">Metadata to apply to the node.</param>
+        protected abstract void ApplyMetaData(INode<T> node, IDictionary<string, object> metaData);
+
+        /// <summary>
         /// Builds a node from the provided FlowComponent.
         /// </summary>
         /// <param name="component">Flowcomponent providing the node definition.</param>
@@ -228,6 +248,11 @@ namespace Banzai.Factories
             else if (shouldExecuteFunc != null)
             {
                 node.AddShouldExecute(shouldExecuteFunc);
+            }
+
+            if (component.MetaData != null && component.MetaData.Count > 0)
+            {
+                ApplyMetaData(node, component.MetaData);
             }
 
             if (component.Children != null && component.Children.Count > 0)

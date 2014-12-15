@@ -62,7 +62,7 @@ Request.prototype.onEnd = function (strings, buffer, response, callback) {
             // can't move to this until https://github.com/rvagg/bl/issues/13
             response.body = buffer.slice();
         } else {
-            response.body = buffer.toString(self.encoding);
+            response.body = buffer.asString(self.encoding);
         }
     } else if (strings.length) {
         // The UTF8 BOM [0xEF,0xBB,0xBF] is converted to [0xFE,0xFF] in the JS UTC16/UCS2 representation.
@@ -83,7 +83,6 @@ Request.prototype.onEnd = function (strings, buffer, response, callback) {
         response.body = '';
     }
     callback.call(null, null, response, response.body);
-    // self.emit('complete', response, response.body)
 };
 
 if (typeof module != 'undefined' && module != null) {
@@ -92,4 +91,4 @@ if (typeof module != 'undefined' && module != null) {
 
 requestFactory.Request = Request;
 
-request = requestFactory;
+request.exports = requestFactory;

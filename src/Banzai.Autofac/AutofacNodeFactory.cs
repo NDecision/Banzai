@@ -84,6 +84,24 @@ namespace Banzai.Autofac
             return _componentContext.ResolveNamed<FlowComponent<T>>(name);
         }
 
+        /// <summary>
+        /// Applies metadata to the node during node construction.
+        /// </summary>
+        /// <param name="node">Node to which metadata is applied.</param>
+        /// <param name="metaData">MetaData to apply.</param>
+        protected override void ApplyMetaData<T>(INode<T> node, IDictionary<string, object> metaData)
+        {
+            var builders = _componentContext.Resolve<IEnumerable<IMetaDataBuilder>>();
+
+            if (builders != null)
+            {
+                foreach (var builder in builders)
+                {
+                    builder.Apply(node, metaData);
+                }
+            }
+        }
+
     }
 
 
@@ -174,6 +192,24 @@ namespace Banzai.Autofac
         protected override FlowComponent<T> GetFlowRoot(string name)
         {
             return _componentContext.ResolveNamed<FlowComponent<T>>(name);
+        }
+
+        /// <summary>
+        /// Applies metadata to the node during node construction.
+        /// </summary>
+        /// <param name="node">Node to which metadata is applied.</param>
+        /// <param name="metaData">MetaData to apply</param>
+        protected override void ApplyMetaData(INode<T> node, IDictionary<string, object> metaData)
+        {
+            var builders = _componentContext.Resolve<IEnumerable<IMetaDataBuilder>>();
+
+            if (builders != null)
+            {
+                foreach (var builder in builders)
+                {
+                    builder.Apply(node, metaData);
+                }
+            }
         }
     }
 }

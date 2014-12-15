@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Banzai.JavaScript;
 
 namespace Banzai.Json.Test
 {
@@ -84,6 +85,14 @@ namespace Banzai.Json.Test
     {
     }
 
+    public interface ITestJsNode : IJavaScriptNode<object>
+    {
+    }
+
+    public interface ITestJsNode2 : IJavaScriptNode<TestObjectA>{}
+
+    public class TestJsNode2 : JavaScriptNode<TestObjectA>, ITestJsNode2
+    { }
 
     public class TestObjectA
     {

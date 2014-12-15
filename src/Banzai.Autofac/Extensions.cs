@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Autofac;
 using Autofac.Core;
@@ -48,7 +50,7 @@ namespace Banzai.Autofac
         {
             if (assembly != null)
             {
-                var types = assembly.GetTypes().Where(t => t.IsClass && t.IsClosedTypeOf(typeof (INode<>)));
+                var types = assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract && t.IsClosedTypeOf(typeof (INode<>)));
 
                 foreach (var type in types)
                 {
@@ -83,6 +85,8 @@ namespace Banzai.Autofac
                         }
                     }
                 }
+
+                RegisterMetaDataBuilders(builder, assembly);
             }
 
             if (includeCore)
@@ -166,6 +170,15 @@ namespace Banzai.Autofac
         private static bool IsNodeFactory(this ParameterInfo parameterInfo)
         {
             return parameterInfo.Member.Name == "set_NodeFactory" && parameterInfo.ParameterType.IsClosedTypeOf(typeof (INodeFactory<>));
+        }
+
+        private static void RegisterMetaDataBuilders(ContainerBuilder builder, Assembly assembly)
+        {
+            IEnumerable<Type> types = assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract && (typeof(IMetaDataBuilder)).IsAssignableFrom(t));
+            foreach (var type in types)
+            {
+                builder.RegisterType(type).As<IMetaDataBuilder>();
+            }
         }
 
     }

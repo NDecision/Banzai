@@ -48,6 +48,7 @@
     <Compile Include="Factories\FlowComponentBuilder.cs" />
     <Compile Include="Factories\IComponentSerializer.cs" />
     <Compile Include="Factories\IFlowRegistrar.cs" />
+    <Compile Include="Factories\IMetaDataBuilder.cs" />
     <Compile Include="Factories\NodeFactoryBase.cs" />
     <Compile Include="FirstMatchNode.cs">
       <SubType>Code</SubType>
