@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using Banzai.Ninject.Utility;
 using Ninject;
 using Ninject.Extensions.Conventions;

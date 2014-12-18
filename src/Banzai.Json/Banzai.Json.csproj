@@ -45,6 +45,8 @@
   <ItemGroup>
     <Compile Include="JsonComponentSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="JsonContractResolver.cs" />
+    <Compile Include="TypeJsonConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,4 +1,6 @@
-﻿namespace Banzai.Factories
+﻿using Banzai.Factories;
+
+namespace Banzai.Serialization
 {
     public interface IComponentSerializer
     {

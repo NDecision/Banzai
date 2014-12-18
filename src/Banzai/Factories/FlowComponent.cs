@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
 namespace Banzai.Factories
@@ -7,32 +9,38 @@ namespace Banzai.Factories
     /// <summary>
     /// Represents the definition of a flow component. Can represent a flow or a node.
     /// </summary>
+    [DataContract]
     public class FlowComponent<T>
     {
-        private readonly List<FlowComponent<T>> _children = new List<FlowComponent<T>>();
+        private List<FlowComponent<T>> _children = new List<FlowComponent<T>>();
         private IDictionary<string, object> _metaData = new Dictionary<string, object>();
 
         /// <summary>
         /// Type of the node if this represents a node or in a flow the subject type.
         /// </summary>
+        [DataMember]
         public Type Type { get; set; }
 
         /// <summary>
         /// Name of the node or flow.
         /// </summary>
+        [DataMember]
         public string Name { get; set; }
 
         /// <summary>
         /// Indicates whether or not this component represents a flow or a node.
         /// </summary>
+        [DataMember]
         public bool IsFlow { get; set; }
 
         /// <summary>
         /// Children of this definition.
         /// </summary>
+        [DataMember]
         public IReadOnlyList<FlowComponent<T>> Children
         {
             get { return _children; }
+            set { _children = value.ToList(); }
         }
 
         /// <summary>
@@ -48,6 +56,7 @@ namespace Banzai.Factories
         /// <summary>
         /// Allows metadata about this node to be set.
         /// </summary>
+        [DataMember]
         public IDictionary<string, object> MetaData
         {
             get { return _metaData; }

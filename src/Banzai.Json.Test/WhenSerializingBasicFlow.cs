@@ -1,6 +1,8 @@
-﻿using Autofac;
+﻿using System;
+using Autofac;
 using Banzai.Autofac;
 using Banzai.Factories;
+using Banzai.Serialization;
 using NUnit.Framework;
 using Should;
 
@@ -9,6 +11,13 @@ namespace Banzai.Json.Test
     [TestFixture]
     public class WhenSerializingBasicFlow
     {
+        [TestFixtureSetUp]
+        public void Setup()
+        {
+            //TypeAbbreviationCache.Clear();
+            TypeAbbreviationCache.RegisterFromAssembly(GetType().Assembly);
+        }
+
         [Test]
         public void Simple_Flow_Is_Serialized()
         {
@@ -28,8 +37,35 @@ namespace Banzai.Json.Test
 
             var definition = serializer.Serialize(rootComponent);
 
+            Console.WriteLine(definition);
+
             definition.ShouldNotBeNull().ShouldNotBeEmpty();
            
+        }
+
+        [Test]
+        public void Simple_Flow_Is_Serialized_With_Abbreviations()
+        {
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+            TypeAbbreviationCache.RegisterFromAssembly(GetType().Assembly);
+
+            var flowBuilder = new FlowBuilder<object>(new AutofacFlowRegistrar(containerBuilder));
+
+            flowBuilder.CreateFlow("TestFlow1")
+                .AddRoot<IPipelineNode<object>>()
+                .AddChild<ITestJsNode>()
+                .AddChild<ITestNode2>();
+
+            var rootComponent = flowBuilder.RootComponent;
+
+            var serializer = new JsonComponentSerializer();
+
+            var definition = serializer.Serialize(rootComponent);
+
+            Console.WriteLine(definition);
+
+            definition.ShouldNotBeNull().ShouldNotBeEmpty();
         }
 
         [Test]
@@ -37,6 +73,7 @@ namespace Banzai.Json.Test
         {
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+            TypeAbbreviationCache.RegisterFromAssembly(GetType().Assembly);
 
             var flowBuilder = new FlowBuilder<object>(new AutofacFlowRegistrar(containerBuilder));
 
@@ -56,7 +93,6 @@ namespace Banzai.Json.Test
             deserializedComponent.ShouldNotBeNull();
 
             deserializedComponent.Children[0].Children.Count.ShouldEqual(2);
-
         }
 
         [Test]
@@ -75,7 +111,9 @@ namespace Banzai.Json.Test
 
             var serializer = new JsonComponentSerializer();
 
-            var definition = serializer.Serialize(rootComponent);
+            string definition = serializer.Serialize(rootComponent);
+
+            Console.WriteLine(definition);
 
             FlowComponent<object> deserializedComponent = serializer.Deserialize<object>(definition);
 

@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using Autofac;
 using Banzai.Autofac;
 using Banzai.Factories;
@@ -120,6 +121,8 @@ namespace Banzai.Json.Test
             var serializer = new JsonComponentSerializer();
 
             var definition = serializer.Serialize(rootComponent);
+
+            Console.WriteLine(definition);
 
             FlowComponent<TestObjectA> deserializedComponent = serializer.Deserialize<TestObjectA>(definition);
 

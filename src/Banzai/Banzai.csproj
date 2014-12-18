@@ -35,6 +35,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,7 +47,7 @@
     <Compile Include="Factories\FlowBuilder.cs" />
     <Compile Include="Factories\FlowComponent.cs" />
     <Compile Include="Factories\FlowComponentBuilder.cs" />
-    <Compile Include="Factories\IComponentSerializer.cs" />
+    <Compile Include="Serialization\IComponentSerializer.cs" />
     <Compile Include="Factories\IFlowRegistrar.cs" />
     <Compile Include="Factories\IMetaDataBuilder.cs" />
     <Compile Include="Factories\NodeFactoryBase.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="ResultExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Serialization\TypeAbbreviationCache.cs" />
     <Compile Include="TransitionFuncNode.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -90,6 +92,7 @@
     <Compile Include="NodeRunStatus.cs" />
     <Compile Include="NodeResultStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\ListExtensions.cs" />
     <Compile Include="Utility\NodeTimer.cs" />
     <Compile Include="Utility\ParallelExtensions.cs" />
   </ItemGroup>
