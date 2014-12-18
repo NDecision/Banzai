@@ -19,4 +19,10 @@ powershell -NoProfile -ExecutionPolicy unrestricted -Command "& {.\publish.ps1 -
 powershell -NoProfile -ExecutionPolicy unrestricted -Command "& {.\publish.ps1 -PackageName 'Banzai.NLog'; exit $error.Count}"
 
 
+powershell -NoProfile -ExecutionPolicy unrestricted -Command "& {.\publish.ps1 -PackageName 'Banzai.Json'; exit $error.Count}"
+
+
+powershell -NoProfile -ExecutionPolicy unrestricted -Command "& {.\publish.ps1 -PackageName 'Banzai.JavaScript'; exit $error.Count}"
+
+
 pause

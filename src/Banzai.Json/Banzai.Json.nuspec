@@ -13,11 +13,10 @@
         <summary>$description$</summary>
         <copyright>Copyright 2014 Eric Swann, et. al. - All rights reserved.</copyright>
         <language />
-        <tags>Banzai Pipeline Dataflow Workflow JavaScript V8 ClearScript</tags>
+        <tags>Banzai Pipeline Dataflow Workflow Json</tags>
         <dependencies>
           <dependency id="Banzai" version="$version$" />
-          <dependency id="ClearScript.Manager.Http" version="1.3.3" />
-          <dependency id="ClearScript.Manager" version="1.3.3" />
+          <dependency id="Newtonsoft.Json" version="6.0.5" />
         </dependencies>
     </metadata>
   <files>
