@@ -1,4 +1,5 @@
 ﻿using Banzai.Serialization;
+using Banzai.Utility;
 
 namespace Banzai.Factories
 {
@@ -54,6 +55,26 @@ namespace Banzai.Factories
                 return null;
 
             return SerializerProvider.Serializer.Serialize(RootComponent);
+        }
+
+        /// <summary>
+        /// Deserializes the root component using the currently registered serializer.
+        /// </summary>
+        public FlowComponent<T> DeserializeRootComponent(string serializedComponent)
+        {
+            Guard.AgainstNullOrEmptyArgument("serializedComponent", serializedComponent);
+
+            return SerializerProvider.Serializer.Deserialize<T>(serializedComponent);
+        }
+
+        /// <summary>
+        /// Deserializes and sets the root component using the currently registered serializer.
+        /// </summary>
+        public FlowComponent<T> DeserializeAndSetRootComponent(string serializedComponent)
+        {
+            RootComponent = DeserializeRootComponent(serializedComponent);
+
+            return RootComponent;
         }
 
     }
