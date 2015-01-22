@@ -106,6 +106,37 @@ namespace Banzai.Autofac.Test
         }
 
 
+
+        [Test]
+        public void Flow_Builder_Is_Hydrated_And_Flow_Built_From_Json_Serializer()
+        {
+            Json.Registrar.RegisterAsDefault();
+
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+
+            var container = containerBuilder.Build();
+
+            var factory = container.Resolve<INodeFactory<object>>();
+
+            var flowBuilder = new FlowBuilder<object>(new AutofacFlowRegistrar(containerBuilder));
+
+            flowBuilder.CreateFlow("TestFlow1")
+                .AddRoot<IPipelineNode<object>>()
+                .AddChild<ITestNode2>();
+
+            var serialized = flowBuilder.SerializeRootComponent();
+
+            var component = flowBuilder.DeserializeAndSetRootComponent(serialized);
+
+            var flow = factory.BuildFlow(component);
+
+            flow.ShouldNotBeNull();
+
+           
+        }
+
+
         [Test]
         public void Simple_Flow_Contains_All_Nodes()
         {

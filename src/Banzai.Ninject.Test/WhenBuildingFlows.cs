@@ -85,13 +85,35 @@ namespace Banzai.Ninject.Test
                 .AddRoot<IPipelineNode<object>>()
                 .AddChild<ITestNode2>();
 
-            var component = flowBuilder.RootComponent;
-
-            var serialized = SerializerProvider.Serializer.Serialize(component);
+            var serialized = flowBuilder.SerializeRootComponent();
 
             var factory = kernel.Get<INodeFactory<object>>();
 
             var flow = factory.BuildFlow(serialized);
+
+            flow.ShouldNotBeNull();
+        }
+
+        [Test]
+        public void Flow_Builder_Is_Hydrated_And_Flow_Built_From_Json_Serializer()
+        {
+            Json.Registrar.RegisterAsDefault();
+            var kernel = new StandardKernel();
+            kernel.RegisterBanzaiNodes(GetType().Assembly, true);
+
+            var flowBuilder = new FlowBuilder<object>(new NinjectFlowRegistrar(kernel));
+
+            flowBuilder.CreateFlow("TestFlow1")
+                .AddRoot<IPipelineNode<object>>()
+                .AddChild<ITestNode2>();
+
+            var serialized = flowBuilder.SerializeRootComponent();
+
+            var component = flowBuilder.DeserializeAndSetRootComponent(serialized);
+
+            var factory = kernel.Get<INodeFactory<object>>();
+
+            var flow = factory.BuildFlow(component);
 
             flow.ShouldNotBeNull();
         }
