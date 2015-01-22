@@ -1,6 +1,5 @@
 ﻿using System;
 using Banzai.Factories;
-using Banzai.Ninject;
 using Ninject;
 using NUnit.Framework;
 using Should;
@@ -47,6 +46,51 @@ namespace Banzai.Ninject.Test
             var factory = kernel.Get<INodeFactory<object>>();
 
             var flow = factory.GetFlow("TestFlow1");
+
+            flow.ShouldNotBeNull();
+        }
+
+        [Test]
+        public void Simple_Flow_Is_Built_With_NodeFactory()
+        {
+            var kernel = new StandardKernel();
+            kernel.RegisterBanzaiNodes(GetType().Assembly, true);
+
+            var flowBuilder = new FlowBuilder<object>(new NinjectFlowRegistrar(kernel));
+
+            flowBuilder.CreateFlow("TestFlow1")
+                .AddRoot<IPipelineNode<object>>()
+                .AddChild<ITestNode2>();
+
+            var component = flowBuilder.RootComponent;
+
+            var factory = kernel.Get<INodeFactory<object>>();
+
+            var flow = factory.BuildFlow(component);
+
+            flow.ShouldNotBeNull();
+        }
+
+        [Test]
+        public void Simple_Flow_Is_Built_With_NodeFactory_And_Json_Serializer()
+        {
+            Json.Registrar.RegisterAsDefault();
+            var kernel = new StandardKernel();
+            kernel.RegisterBanzaiNodes(GetType().Assembly, true);
+
+            var flowBuilder = new FlowBuilder<object>(new NinjectFlowRegistrar(kernel));
+
+            flowBuilder.CreateFlow("TestFlow1")
+                .AddRoot<IPipelineNode<object>>()
+                .AddChild<ITestNode2>();
+
+            var component = flowBuilder.RootComponent;
+
+            var serialized = NodeFactoryBase.Serializer.Serialize(component);
+
+            var factory = kernel.Get<INodeFactory<object>>();
+
+            var flow = factory.BuildFlow(serialized);
 
             flow.ShouldNotBeNull();
         }

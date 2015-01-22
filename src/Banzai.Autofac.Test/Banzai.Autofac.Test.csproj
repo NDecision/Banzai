@@ -65,6 +65,10 @@
       <Project>{78862a74-4e53-4b6d-8f13-c4d84f0318de}</Project>
       <Name>Banzai.Autofac</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Banzai.Json\Banzai.Json.csproj">
+      <Project>{18ceb3eb-ba94-411e-bb21-0f2540d7ebf7}</Project>
+      <Name>Banzai.Json</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Banzai\Banzai.csproj">
       <Project>{A8077697-24C3-4B06-B0F0-3B7F47F5FD0A}</Project>
       <Name>Banzai</Name>

@@ -8,4 +8,5 @@ namespace Banzai.Serialization
 
         FlowComponent<T> Deserialize<T>(string body);
     }
+
 }

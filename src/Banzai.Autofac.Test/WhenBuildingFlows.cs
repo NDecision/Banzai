@@ -55,6 +55,57 @@ namespace Banzai.Autofac.Test
         }
 
         [Test]
+        public void Simple_Flow_Is_Built_With_NodeFactory()
+        {
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+
+            var container = containerBuilder.Build();
+
+            var factory = container.Resolve<INodeFactory<object>>();
+
+            var flowBuilder = new FlowBuilder<object>(new AutofacFlowRegistrar(containerBuilder));
+
+            flowBuilder.CreateFlow("TestFlow1")
+                .AddRoot<IPipelineNode<object>>()
+                .AddChild<ITestNode2>();
+
+            var component = flowBuilder.RootComponent;
+
+            var flow = factory.BuildFlow(component);
+
+            flow.ShouldNotBeNull();
+        }
+
+        [Test]
+        public void Simple_Flow_Is_Built_With_NodeFactory_And_Json_Serializer()
+        {
+            Json.Registrar.RegisterAsDefault();
+
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+
+            var container = containerBuilder.Build();
+
+            var factory = container.Resolve<INodeFactory<object>>();
+
+            var flowBuilder = new FlowBuilder<object>(new AutofacFlowRegistrar(containerBuilder));
+
+            flowBuilder.CreateFlow("TestFlow1")
+                .AddRoot<IPipelineNode<object>>()
+                .AddChild<ITestNode2>();
+
+            var component = flowBuilder.RootComponent;
+
+            var serialized = NodeFactoryBase.Serializer.Serialize(component);
+
+            var flow = factory.BuildFlow(serialized);
+
+            flow.ShouldNotBeNull();
+        }
+
+
+        [Test]
         public void Simple_Flow_Contains_All_Nodes()
         {
             var containerBuilder = new ContainerBuilder();

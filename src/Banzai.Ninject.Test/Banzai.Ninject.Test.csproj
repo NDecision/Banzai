@@ -60,6 +60,10 @@
     <Compile Include="WhenScanningAssemblies.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Banzai.Json\Banzai.Json.csproj">
+      <Project>{18ceb3eb-ba94-411e-bb21-0f2540d7ebf7}</Project>
+      <Name>Banzai.Json</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Banzai.Ninject\Banzai.Ninject.csproj">
       <Project>{871967df-24ee-449d-abe8-1952c3280d29}</Project>
       <Name>Banzai.Ninject</Name>

@@ -16,10 +16,10 @@ namespace Banzai.Json
             _serializer = new JsonSerializer
             {
                 NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore,
                 ContractResolver = new JsonContractResolver()
             };
         }
-
 
         public string Serialize<T>(FlowComponent<T> component)
         {

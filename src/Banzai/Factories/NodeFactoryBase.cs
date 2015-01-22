@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Banzai.Serialization;
 using Banzai.Utility;
 
 namespace Banzai.Factories
@@ -11,6 +12,19 @@ namespace Banzai.Factories
     /// </summary>
     public abstract class NodeFactoryBase : INodeFactory
     {
+        private static IComponentSerializer _serializer;
+
+        public static IComponentSerializer Serializer
+        {
+            get
+            {
+                if(_serializer == null)
+                    throw new NullReferenceException("The Serializer has not been set...did you install a serializer package (like Banzai.JSON) and call RegisterAsDefault?");
+                return _serializer;
+            }
+            set { _serializer = value; }
+        }
+
         /// <summary>
         /// Gets a node by the specified type.
         /// </summary>
@@ -43,6 +57,32 @@ namespace Banzai.Factories
             Guard.AgainstNullOrEmptyArgument("name", name);
 
             var flowRoot = GetFlowRoot<T>(name);
+
+            return BuildNode(flowRoot.Children[0], flowRoot.ShouldExecuteFuncAsync, flowRoot.ShouldExecuteFunc);
+        }
+
+        /// <summary>
+        /// Builds a flow matching the specified flow component.
+        /// </summary>
+        /// <param name="flowRoot">Definition of the flow to build.</param>
+        /// <returns>Flow matching the requested flow root.</returns>
+        public INode<T> BuildFlow<T>(FlowComponent<T> flowRoot)
+        {
+            Guard.AgainstNullArgument("flowRoot", flowRoot);
+
+            return BuildNode(flowRoot.Children[0], flowRoot.ShouldExecuteFuncAsync, flowRoot.ShouldExecuteFunc);
+        }
+
+        /// <summary>
+        /// Builds a flow matching the specified flow component.
+        /// </summary>
+        /// <param name="serializedFlow">Serialized definition of the flow to build.</param>
+        /// <returns>Flow matching the requested flow root.</returns>
+        public INode<T> BuildFlow<T>(string serializedFlow)
+        {
+            Guard.AgainstNullOrEmptyArgument("serializedFlow", serializedFlow);
+
+            FlowComponent<T> flowRoot = Serializer.Deserialize<T>(serializedFlow);
 
             return BuildNode(flowRoot.Children[0], flowRoot.ShouldExecuteFuncAsync, flowRoot.ShouldExecuteFunc);
         }
@@ -194,6 +234,32 @@ namespace Banzai.Factories
             Guard.AgainstNullOrEmptyArgument("name", name);
 
             var flowRoot = GetFlowRoot(name);
+
+            return BuildNode(flowRoot.Children[0], flowRoot.ShouldExecuteFuncAsync, flowRoot.ShouldExecuteFunc);
+        }
+
+        /// <summary>
+        /// Builds a flow matching the specified flow component.
+        /// </summary>
+        /// <param name="flowRoot">Definition of the flow to build.</param>
+        /// <returns>Flow matching the requested flow root.</returns>
+        public INode<T> BuildFlow(FlowComponent<T> flowRoot)
+        {
+            Guard.AgainstNullArgument("flowRoot", flowRoot);
+
+            return BuildNode(flowRoot.Children[0], flowRoot.ShouldExecuteFuncAsync, flowRoot.ShouldExecuteFunc);
+        }
+
+        /// <summary>
+        /// Builds a flow matching the specified flow component.
+        /// </summary>
+        /// <param name="serializedFlow">Serialized definition of the flow to build.</param>
+        /// <returns>Flow matching the requested flow root.</returns>
+        public INode<T> BuildFlow(string serializedFlow)
+        {
+            Guard.AgainstNullOrEmptyArgument("serializedFlow", serializedFlow);
+
+            FlowComponent<T> flowRoot = NodeFactoryBase.Serializer.Deserialize<T>(serializedFlow);
 
             return BuildNode(flowRoot.Children[0], flowRoot.ShouldExecuteFuncAsync, flowRoot.ShouldExecuteFunc);
         }

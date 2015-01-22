@@ -50,6 +50,7 @@
     <Compile Include="JsonComponentSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="JsonContractResolver.cs" />
+    <Compile Include="Registrar.cs" />
     <Compile Include="TypeJsonConverter.cs" />
   </ItemGroup>
   <ItemGroup>
