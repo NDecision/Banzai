@@ -1,4 +1,4 @@
-﻿using Banzai.Factories;
+﻿using Banzai.Serialization;
 
 namespace Banzai.Json
 {
@@ -6,7 +6,7 @@ namespace Banzai.Json
     {
         public static void RegisterAsDefault()
         {
-            NodeFactoryBase.Serializer = new JsonComponentSerializer();
+            SerializerProvider.Serializer = new JsonComponentSerializer();
         }
     }
 }

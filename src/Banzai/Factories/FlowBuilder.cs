@@ -1,4 +1,6 @@
-﻿namespace Banzai.Factories
+﻿using Banzai.Serialization;
+
+namespace Banzai.Factories
 {
     /// <summary>
     /// Root class for building flows.
@@ -41,7 +43,18 @@
         /// <summary>
         /// Gets/Sets the root component of this flow.
         /// </summary>
-        public FlowComponent<T> RootComponent { get { return _rootComponent; } set { _rootComponent = value; } } 
+        public FlowComponent<T> RootComponent { get { return _rootComponent; } set { _rootComponent = value; } }
+
+        /// <summary>
+        /// Serializes the root component using the currently registered serializer.
+        /// </summary>
+        public string SerializeRootComponent()
+        {
+            if (RootComponent == null)
+                return null;
+
+            return SerializerProvider.Serializer.Serialize(RootComponent);
+        }
 
     }
 }

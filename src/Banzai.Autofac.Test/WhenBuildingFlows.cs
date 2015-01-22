@@ -1,6 +1,7 @@
 ﻿using System;
 using Autofac;
 using Banzai.Factories;
+using Banzai.Serialization;
 using NUnit.Framework;
 using Should;
 
@@ -97,7 +98,7 @@ namespace Banzai.Autofac.Test
 
             var component = flowBuilder.RootComponent;
 
-            var serialized = NodeFactoryBase.Serializer.Serialize(component);
+            var serialized = SerializerProvider.Serializer.Serialize(component);
 
             var flow = factory.BuildFlow(serialized);
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using Banzai.Factories;
+using Banzai.Serialization;
 using Ninject;
 using NUnit.Framework;
 using Should;
@@ -86,7 +87,7 @@ namespace Banzai.Ninject.Test
 
             var component = flowBuilder.RootComponent;
 
-            var serialized = NodeFactoryBase.Serializer.Serialize(component);
+            var serialized = SerializerProvider.Serializer.Serialize(component);
 
             var factory = kernel.Get<INodeFactory<object>>();
 

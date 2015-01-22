@@ -78,6 +78,7 @@
     <Compile Include="ResultExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Serialization\SerializerProvider.cs" />
     <Compile Include="Serialization\TypeAbbreviationCache.cs" />
     <Compile Include="TransitionFuncNode.cs">
       <SubType>Code</SubType>

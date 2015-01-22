@@ -12,18 +12,6 @@ namespace Banzai.Factories
     /// </summary>
     public abstract class NodeFactoryBase : INodeFactory
     {
-        private static IComponentSerializer _serializer;
-
-        public static IComponentSerializer Serializer
-        {
-            get
-            {
-                if(_serializer == null)
-                    throw new NullReferenceException("The Serializer has not been set...did you install a serializer package (like Banzai.JSON) and call RegisterAsDefault?");
-                return _serializer;
-            }
-            set { _serializer = value; }
-        }
 
         /// <summary>
         /// Gets a node by the specified type.
@@ -82,7 +70,7 @@ namespace Banzai.Factories
         {
             Guard.AgainstNullOrEmptyArgument("serializedFlow", serializedFlow);
 
-            FlowComponent<T> flowRoot = Serializer.Deserialize<T>(serializedFlow);
+            FlowComponent<T> flowRoot = SerializerProvider.Serializer.Deserialize<T>(serializedFlow);
 
             return BuildNode(flowRoot.Children[0], flowRoot.ShouldExecuteFuncAsync, flowRoot.ShouldExecuteFunc);
         }
@@ -259,7 +247,7 @@ namespace Banzai.Factories
         {
             Guard.AgainstNullOrEmptyArgument("serializedFlow", serializedFlow);
 
-            FlowComponent<T> flowRoot = NodeFactoryBase.Serializer.Deserialize<T>(serializedFlow);
+            FlowComponent<T> flowRoot = SerializerProvider.Serializer.Deserialize<T>(serializedFlow);
 
             return BuildNode(flowRoot.Children[0], flowRoot.ShouldExecuteFuncAsync, flowRoot.ShouldExecuteFunc);
         }
