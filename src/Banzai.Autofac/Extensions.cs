@@ -50,41 +50,9 @@ namespace Banzai.Autofac
         {
             if (assembly != null)
             {
-                var types = assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract && t.IsClosedTypeOf(typeof (INode<>)));
+                RegisterNodes(builder, assembly);
 
-                foreach (var type in types)
-                {
-                    if (type.IsGenericTypeDefinition)
-                    {
-                        var registrationBuilder = builder.RegisterGeneric(type)
-                            .AsSelf()
-                            .AsImplementedInterfaces()
-                            .InstancePerDependency();
-
-                        if (type.IsClosedTypeOf(typeof (IMultiNode<>)) || type.IsClosedTypeOf(typeof(ITransitionNode<,>)))
-                        {
-                            registrationBuilder.WithProperty(
-                                new ResolvedParameter(
-                                    (pi, c) => pi.IsNodeFactory(),
-                                    (pi, c) => c.Resolve(pi.ParameterType)));
-                        }
-                    }
-                    else
-                    {
-                        var registrationBuilder = builder.RegisterType(type)
-                            .AsSelf()
-                            .AsImplementedInterfaces()
-                            .InstancePerDependency();
-
-                        if (type.IsClosedTypeOf(typeof (IMultiNode<>)) || type.IsClosedTypeOf(typeof(ITransitionNode<,>)))
-                        {
-                            registrationBuilder.WithProperty(
-                                new ResolvedParameter(
-                                    (pi, c) => pi.IsNodeFactory(),
-                                    (pi, c) => c.Resolve(pi.ParameterType)));
-                        }
-                    }
-                }
+                RegisterShouldExecuteBlocks(builder, assembly);
 
                 RegisterMetaDataBuilders(builder, assembly);
             }
@@ -97,7 +65,7 @@ namespace Banzai.Autofac
             return builder;
         }
 
-
+       
         /// <summary>
         /// Scans the provided assemblly for INodes.  Registers the node as self and as I{NodeClassName}
         /// </summary>
@@ -170,6 +138,68 @@ namespace Banzai.Autofac
         private static bool IsNodeFactory(this ParameterInfo parameterInfo)
         {
             return parameterInfo.Member.Name == "set_NodeFactory" && parameterInfo.ParameterType.IsClosedTypeOf(typeof (INodeFactory<>));
+        }
+
+        private static void RegisterNodes(ContainerBuilder builder, Assembly assembly)
+        {
+            var types = assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract && t.IsClosedTypeOf(typeof(INode<>)));
+
+            foreach (var type in types)
+            {
+                if (type.IsGenericTypeDefinition)
+                {
+                    var registrationBuilder = builder.RegisterGeneric(type)
+                        .AsSelf()
+                        .AsImplementedInterfaces()
+                        .InstancePerDependency();
+
+                    if (type.IsClosedTypeOf(typeof(IMultiNode<>)) || type.IsClosedTypeOf(typeof(ITransitionNode<,>)))
+                    {
+                        registrationBuilder.WithProperty(
+                            new ResolvedParameter(
+                                (pi, c) => pi.IsNodeFactory(),
+                                (pi, c) => c.Resolve(pi.ParameterType)));
+                    }
+                }
+                else
+                {
+                    var registrationBuilder = builder.RegisterType(type)
+                        .AsSelf()
+                        .AsImplementedInterfaces()
+                        .InstancePerDependency();
+
+                    if (type.IsClosedTypeOf(typeof(IMultiNode<>)) || type.IsClosedTypeOf(typeof(ITransitionNode<,>)))
+                    {
+                        registrationBuilder.WithProperty(
+                            new ResolvedParameter(
+                                (pi, c) => pi.IsNodeFactory(),
+                                (pi, c) => c.Resolve(pi.ParameterType)));
+                    }
+                }
+            }
+        }
+
+        private static void RegisterShouldExecuteBlocks(ContainerBuilder builder, Assembly assembly)
+        {
+            var types = assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract && t.IsClosedTypeOf(typeof(IShouldExecuteBlock<>)));
+
+            foreach (var type in types)
+            {
+                if (type.IsGenericTypeDefinition)
+                {
+                    builder.RegisterGeneric(type)
+                        .AsSelf()
+                        .AsImplementedInterfaces()
+                        .InstancePerDependency();
+                }
+                else
+                {
+                    builder.RegisterType(type)
+                        .AsSelf()
+                        .AsImplementedInterfaces()
+                        .InstancePerDependency();
+                }
+            }
         }
 
         private static void RegisterMetaDataBuilders(ContainerBuilder builder, Assembly assembly)

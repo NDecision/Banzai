@@ -43,7 +43,8 @@ namespace Banzai.Serialization
         /// <param name="assembly">Assembly to scan.</param>
         public static void RegisterFromAssembly(Assembly assembly)
         {
-            var types = assembly.GetTypes().Where(x => x.GetInterfaces().Any(y => y.IsGenericType && y.GetGenericTypeDefinition() == typeof(INode<>)));
+            var types = assembly.GetTypes().Where(x => x.GetInterfaces()
+                .Any(y => y.IsGenericType && (y.GetGenericTypeDefinition() == typeof(INode<>) || y.GetGenericTypeDefinition() == typeof(IShouldExecuteBlock<>))));
             
             foreach (var type in types)
             {

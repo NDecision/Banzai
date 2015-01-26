@@ -34,6 +34,11 @@ namespace Banzai.Factories
         public bool IsFlow { get; set; }
 
         /// <summary>
+        /// Parent of this definition.
+        /// </summary>
+        public FlowComponent<T> Parent { get; set; }
+
+        /// <summary>
         /// Children of this definition.
         /// </summary>
         [DataMember]
@@ -52,6 +57,12 @@ namespace Banzai.Factories
         /// Allows the ShouldExecuteFuncAsync for this FlowComponent to be retrieved.
         /// </summary>
         public Func<IExecutionContext<T>, Task<bool>> ShouldExecuteFuncAsync { get; private set; }
+
+        /// <summary>
+        /// Allows the ShouldExecuteBlock type for this FlowComponent to be retrieved.
+        /// </summary>
+        [DataMember]
+        public Type ShouldExecuteBlockType { get; private set; }
 
         /// <summary>
         /// Allows metadata about this node to be set.
@@ -74,6 +85,7 @@ namespace Banzai.Factories
                 throw new IndexOutOfRangeException("A flow can only have one root child.");
 
             _children.Add(child);
+            child.Parent = this;
 
             return child;
         }
@@ -97,6 +109,20 @@ namespace Banzai.Factories
         protected internal FlowComponent<T> SetShouldExecuteAsync(Func<IExecutionContext<T>, Task<bool>> shouldExecuteFuncAsync)
         {
             ShouldExecuteFuncAsync = shouldExecuteFuncAsync;
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a ShouldExecuteBlock to the FlowComponent (to be added to the resultant node).
+        /// </summary>
+        /// <param name="blockType">ShouldExecuteBlock to add to the flowcomponent.</param>
+        /// <returns>The current FlowComponent instance.</returns>
+        protected internal FlowComponent<T> SetShouldExecute(Type blockType)
+        {
+            if (!typeof(IShouldExecuteBlock<T>).IsAssignableFrom(blockType))
+                throw new ArgumentException("blockType must be assignable to IShouldExecuteBlock<T>.", "blockType");
+
+            ShouldExecuteBlockType = blockType;
             return this;
         }
 

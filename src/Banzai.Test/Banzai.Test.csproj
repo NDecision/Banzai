@@ -76,6 +76,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="WhenRunningWithDegreeOfParallelism.cs" />
+    <Compile Include="WhenRunningWithShouldExecuteBlocks.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Banzai\Banzai.csproj">

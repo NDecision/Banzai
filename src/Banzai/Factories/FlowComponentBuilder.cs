@@ -67,6 +67,18 @@ namespace Banzai.Factories
         IFlowComponentBuilder<T> SetShouldExecute(Func<IExecutionContext<T>, bool> shouldExecuteFunc);
 
         /// <summary>
+        /// Adds a ShouldExecuteBlock to the flowcomponent (to be added to the resultant node).
+        /// </summary>
+        /// <returns>The current FlowComponentBuilder instance.</returns>
+        IFlowComponentBuilder<T> SetShouldExecuteBlock<TBlock>() where TBlock : IShouldExecuteBlock<T>;
+
+        /// <summary>
+        /// Adds a ShouldExecuteBlock to the flowcomponent (to be added to the resultant node).
+        /// </summary>
+        /// <returns>The current FlowComponentBuilder instance.</returns>
+        IFlowComponentBuilder<T> SetShouldExecuteBlock(Type blockType);
+
+        /// <summary>
         /// Adds a ShouldExecuteAsync to the flowcomponent (to be added to the resultant node).
         /// </summary>
         /// <param name="shouldExecuteFuncAsync">Function to add as ShouldExecute to the flowcomponent.</param>
@@ -102,10 +114,22 @@ namespace Banzai.Factories
         /// <summary>
         /// Returns an instance of FlowComponentBuilder representing the requested child flow.
         /// </summary>
-        /// <param name="name">Optional name of the node in IOC registration.</param>
+        /// <param name="name">Optional name of the child flow in IOC registration.</param>
         /// <param name="index">Index of the node if multiple matches are found in the parent.  Defaults to first.</param>
         /// <returns>A child FlowComponentBuilder of this FlowComponentBuilder.</returns>
         IFlowComponentBuilder<T> ForChildFlow(string name = null, int index = 0);
+
+        /// <summary>
+        /// Returns an instance of FlowComponentBuilder representing the last child of the current builder.
+        /// </summary>
+        /// <returns>A child FlowComponentBuilder of this FlowComponentBuilder.</returns>
+        IFlowComponentBuilder<T> ForLastChild();
+
+        /// <summary>
+        /// Returns an instance of FlowComponentBuilder representing the requested parent.
+        /// </summary>
+        /// <returns>A parent FlowComponentBuilder of this FlowComponentBuilder.</returns>
+        IFlowComponentBuilder<T> ForParent();
     }
 
 
@@ -213,6 +237,26 @@ namespace Banzai.Factories
         }
 
         /// <summary>
+        /// Adds a ShouldExecuteBlock to the flowcomponent (to be added to the resultant node).
+        /// </summary>
+        /// <returns>The current FlowComponentBuilder instance.</returns>
+        public IFlowComponentBuilder<T> SetShouldExecuteBlock<TBlock>() where TBlock : IShouldExecuteBlock<T>
+        {
+            _component.SetShouldExecute(typeof(TBlock));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a ShouldExecuteBlock to the flowcomponent (to be added to the resultant node).
+        /// </summary>
+        /// <returns>The current FlowComponentBuilder instance.</returns>
+        public IFlowComponentBuilder<T> SetShouldExecuteBlock(Type blockType)
+        {
+            _component.SetShouldExecute(blockType);
+            return this;
+        }
+
+        /// <summary>
         /// Adds a ShouldExecuteAsync to the FlowComponent (to be added to the resultant node).
         /// </summary>
         /// <param name="shouldExecuteAsyncFunc">Function to add as ShouldExecute to the flowcomponent.</param>
@@ -297,6 +341,34 @@ namespace Banzai.Factories
             var child = results[index];
 
             return new FlowComponentBuilder<T>(child);
+        }
+
+        /// <summary>
+        /// Returns an instance of FlowComponentBuilder representing the last child of the current builder.
+        /// </summary>
+        /// <returns>A child FlowComponentBuilder of this FlowComponentBuilder.</returns>
+        public IFlowComponentBuilder<T> ForLastChild()
+        {
+            if (_component.Children == null || _component.Children.Count == 0)
+                throw new IndexOutOfRangeException("This item has no children.");
+
+            FlowComponent<T> child = _component.Children.Last();
+
+            return new FlowComponentBuilder<T>(child);
+        }
+
+        /// <summary>
+        /// Returns an instance of FlowComponentBuilder representing the requested parent.
+        /// </summary>
+        /// <returns>A parent FlowComponentBuilder of this FlowComponentBuilder.</returns>
+        public IFlowComponentBuilder<T> ForParent()
+        {
+            FlowComponent<T> parent = _component.Parent;
+
+            if (parent == null)
+                throw new InvalidOperationException("This item has no parent.");
+
+            return new FlowComponentBuilder<T>(parent);
         }
 
     }

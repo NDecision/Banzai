@@ -76,6 +76,16 @@ namespace Banzai.Ninject
         }
 
         /// <summary>
+        /// Gets a ShouldExecuteBlock matching the specified subject type.
+        /// </summary>
+        /// <param name="type">Type of ShouldExecuteBlock to return.</param>
+        /// <returns>Flow matching the requested criteria.</returns>
+        public override IShouldExecuteBlock<T> GetShouldExecuteBlock<T>(Type type)
+        {
+            return (IShouldExecuteBlock<T>) _resolver.Get(type);
+        }
+
+        /// <summary>
         /// Gets a flow matching the specified name and subject type.
         /// </summary>
         /// <param name="name">Name of flow to return.</param>
@@ -183,6 +193,16 @@ namespace Banzai.Ninject
         public override IEnumerable<TNode> GetAllNodes<TNode>() 
         {
             return _resolver.GetAll<TNode>();
+        }
+
+        /// <summary>
+        /// Gets a ShouldExecuteBlock matching the specified subject type.
+        /// </summary>
+        /// <param name="type">Type of ShouldExecuteBlock to return.</param>
+        /// <returns>Flow matching the requested criteria.</returns>
+        public override IShouldExecuteBlock<T> GetShouldExecuteBlock(Type type)
+        {
+            return (IShouldExecuteBlock<T>)_resolver.Get(type);
         }
 
         /// <summary>

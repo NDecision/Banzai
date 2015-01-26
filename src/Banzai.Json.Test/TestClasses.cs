@@ -94,6 +94,14 @@ namespace Banzai.Json.Test
     public class TestJsNode2 : JavaScriptNode<TestObjectA>, ITestJsNode2
     { }
 
+    public class ShouldNotExecuteTestBlock : ShouldExecuteBlock<object>
+    {
+        public override bool ShouldExecute(IExecutionContext<object> context)
+        {
+            return false;
+        }
+    }
+
     public class TestObjectA
     {
         public string TestValueString { get; set; }

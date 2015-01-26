@@ -36,6 +36,13 @@ namespace Banzai.Factories
         public abstract IEnumerable<TNode> GetAllNodes<TNode>();
 
         /// <summary>
+        /// Gets a ShouldExecuteBlock by the specified type.
+        /// </summary>
+        /// <param name="type">Type of the ShouldExecuteBlock to return.</param>
+        /// <returns>The block matching the type.</returns>
+        public abstract IShouldExecuteBlock<T> GetShouldExecuteBlock<T>(Type type);
+
+        /// <summary>
         /// Gets a flow matching the specified name and subject type.
         /// </summary>
         /// <param name="name">Name of flow to return.</param>
@@ -142,6 +149,10 @@ namespace Banzai.Factories
             {
                 node.AddShouldExecute(shouldExecuteFunc);
             }
+            if (component.ShouldExecuteBlockType != null)
+            {
+                node.AddShouldExecuteBlock(GetShouldExecuteBlock<T>(component.ShouldExecuteBlockType));
+            }
 
             if (component.MetaData != null && component.MetaData.Count > 0)
             {
@@ -227,6 +238,13 @@ namespace Banzai.Factories
         }
 
         /// <summary>
+        /// Gets a ShouldExecuteBlock by the specified type.
+        /// </summary>
+        /// <param name="type">Type of the ShouldExecuteBlock to return.</param>
+        /// <returns>The block matching the type.</returns>
+        public abstract IShouldExecuteBlock<T> GetShouldExecuteBlock(Type type);
+
+        /// <summary>
         /// Builds a flow matching the specified flow component.
         /// </summary>
         /// <param name="flowRoot">Definition of the flow to build.</param>
@@ -302,6 +320,10 @@ namespace Banzai.Factories
             else if (shouldExecuteFunc != null)
             {
                 node.AddShouldExecute(shouldExecuteFunc);
+            }
+            if (component.ShouldExecuteBlockType != null)
+            {
+                node.AddShouldExecuteBlock(GetShouldExecuteBlock(component.ShouldExecuteBlockType));
             }
 
             if (component.MetaData != null && component.MetaData.Count > 0)

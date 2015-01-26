@@ -361,6 +361,12 @@ adding both nodes and subflows.  Once a flow is registered, it can be accessed f
 
 <b>ForChild</b> - Changes the FlowComponentBuilder context to the specified child node.
 
+<b>ForChildFlow</b> - Changes the FlowComponentBuilder context to the specified child flow node.
+
+<b>ForLastChild</b> - Changes the FlowComponentBuilder context to the last child added to the current context.
+
+<b>ForParent</b> - Changes the FlowComponentBuilder context to the parent of the current node.
+
 <b>SetShouldExecute/SetShouldExecuteAsync</b> - Allows a ShouldExecute function to be set on the fly when building a flow with flowbuilder.
 
 <b>Register</b> - Must be called to indicate the flow definition as been completed and to register the flow with the container. 

@@ -75,6 +75,17 @@ namespace Banzai.Autofac
         }
 
         /// <summary>
+        /// Gets a ShouldExecuteBlock matching the specified subject type.
+        /// </summary>
+        /// <param name="type">Type of ShouldExecuteBlock to return.</param>
+        /// <returns>Flow matching the requested criteria.</returns>
+
+        public override IShouldExecuteBlock<T> GetShouldExecuteBlock<T>(Type type)
+        {
+            return (IShouldExecuteBlock<T>)_componentContext.Resolve(type);
+        }
+
+        /// <summary>
         /// Gets a flow matching the specified name and subject type.
         /// </summary>
         /// <param name="name">Name of flow to return.</param>
@@ -182,6 +193,17 @@ namespace Banzai.Autofac
         public override IEnumerable<TNode> GetAllNodes<TNode>() 
         {
             return _componentContext.Resolve<IEnumerable<TNode>>();
+        }
+
+        /// <summary>
+        /// Gets a ShouldExecuteBlock matching the specified subject type.
+        /// </summary>
+        /// <param name="type">Type of ShouldExecuteBlock to return.</param>
+        /// <returns>Flow matching the requested criteria.</returns>
+
+        public override IShouldExecuteBlock<T> GetShouldExecuteBlock(Type type)
+        {
+            return (IShouldExecuteBlock<T>)_componentContext.Resolve(type);
         }
 
         /// <summary>

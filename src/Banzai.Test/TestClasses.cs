@@ -129,6 +129,7 @@ namespace Banzai.Test
         }
     }
 
+
     public class SimpleTestNodeB1 : Node<TestObjectB>
     {
         private readonly bool _shouldExecute = true;
@@ -198,6 +199,18 @@ namespace Banzai.Test
             context.Subject.TestValueBool = false;
 
             return Task.FromResult(NodeResultStatus.Failed);
+        }
+    }
+
+    public class ShouldExecuteBlockA : ShouldExecuteBlock<TestObjectA>
+    {
+    }
+
+    public class ShouldNotExecuteBlockA : ShouldExecuteBlock<TestObjectA>
+    {
+        public override bool ShouldExecute(IExecutionContext<TestObjectA> context)
+        {
+            return false;
         }
     }
 

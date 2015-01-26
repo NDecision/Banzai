@@ -47,6 +47,7 @@
     <Compile Include="Factories\FlowBuilder.cs" />
     <Compile Include="Factories\FlowComponent.cs" />
     <Compile Include="Factories\FlowComponentBuilder.cs" />
+    <Compile Include="NodeExtensions.cs" />
     <Compile Include="Serialization\IComponentSerializer.cs" />
     <Compile Include="Factories\IFlowRegistrar.cs" />
     <Compile Include="Factories\IMetaDataBuilder.cs" />
@@ -80,6 +81,9 @@
     </Compile>
     <Compile Include="Serialization\SerializerProvider.cs" />
     <Compile Include="Serialization\TypeAbbreviationCache.cs" />
+    <Compile Include="ShouldExecuteBlock.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TransitionFuncNode.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -65,6 +65,14 @@ namespace Banzai.Ninject
                         .BindToSelf()
                         .Configure(c => c.InTransientScope());
                     k.From(assembly)
+                        .SelectAllClasses().Where(t => t.InheritsOrImplements(typeof(IShouldExecuteBlock<>)))
+                        .BindAllInterfaces()
+                        .Configure(c => c.InTransientScope());
+                    k.FromThisAssembly()
+                        .SelectAllClasses().Where(t => t.InheritsOrImplements(typeof(IShouldExecuteBlock<>)))
+                        .BindToSelf()
+                        .Configure(c => c.InTransientScope());
+                    k.From(assembly)
                         .SelectAllClasses().Where(t => t.InheritsOrImplements(typeof(IMetaDataBuilder)))
                         .BindAllInterfaces()
                         .Configure(c => c.InTransientScope());

@@ -130,10 +130,12 @@ namespace Banzai.Ninject.Test
                 .AddRoot<PipelineNode<object>>()
                 .AddChild<ITestNode2>()
                 .AddChild<IPipelineNode<object>>()
-                .ForChild<IPipelineNode<object>>()
-                .AddChild<ITestNode4>()
-                .AddChild<ITestNode3>()
-                .AddChild<ITestNode2>();
+                    .ForLastChild()
+                    .AddChild<ITestNode4>()
+                    .AddChild<ITestNode3>()
+                    .AddChild<ITestNode2>()
+                .ForParent()
+                .AddChild<ITestNode3>();
                 
             flowBuilder.Register();
 
@@ -142,7 +144,7 @@ namespace Banzai.Ninject.Test
             var flow = (IPipelineNode<object>)factory.GetFlow("TestFlow1");
 
             flow.ShouldBeType<PipelineNode<object>>();
-            flow.Children.Count.ShouldEqual(2);
+            flow.Children.Count.ShouldEqual(3);
             var subflow = (IPipelineNode<object>)flow.Children[1];
             subflow.Children.Count.ShouldEqual(3);
             subflow.Children[1].ShouldBeType<TestNode3>();

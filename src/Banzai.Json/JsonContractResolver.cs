@@ -36,7 +36,7 @@ namespace Banzai.Json
                             return data != null && ((IDictionary)data).Count > 0;
                         };
                 }
-                else if (property.PropertyName == "Type")
+                else if (property.PropertyName.EndsWith("Type"))
                 {
                     property.Converter = new TypeJsonConverter();
                     property.MemberConverter = new TypeJsonConverter();

@@ -40,6 +40,11 @@ namespace Banzai
         Func<IExecutionContext<object>, Task<bool>> ShouldExecuteFuncAsync { get; set; }
 
         /// <summary>
+        /// Gets or sets the block to define if this node should be executed.
+        /// </summary>
+        object ShouldExecuteBlock { get; set; }
+
+        /// <summary>
         /// Determines if the node should be executed.
         /// </summary>
         /// <param name="context">The current execution context.</param>
@@ -139,6 +144,12 @@ namespace Banzai
             LogWriter.Debug("Resetting the node.");
             Status = NodeRunStatus.NotRun;
         }
+
+
+        /// <summary>
+        /// Gets or sets the block to define if this node should be executed.
+        /// </summary>
+        public object ShouldExecuteBlock { get; set; }
 
         /// <summary>
         /// Gets or sets the function to define if this node should be executed.
@@ -449,16 +460,23 @@ namespace Banzai
         {
         }
 
-
         private async Task<bool> ShouldExecuteInternalAsync(IExecutionContext<T> context)
         {
+            bool shouldExecute = true;
+
             if (ShouldExecuteFuncAsync != null)
-                return await ShouldExecuteFuncAsync((IExecutionContext<object>)context).ConfigureAwait(false);
+                shouldExecute = await ShouldExecuteFuncAsync((IExecutionContext<object>)context).ConfigureAwait(false);
 
-            if (ShouldExecuteFunc != null)
-                return ShouldExecuteFunc((IExecutionContext<object>)context);
+            if (shouldExecute && ShouldExecuteFunc != null)
+                shouldExecute = ShouldExecuteFunc((IExecutionContext<object>)context);
 
-            return await ShouldExecuteAsync(context).ConfigureAwait(false);
+            if (shouldExecute && ShouldExecuteBlock != null)
+                shouldExecute = await ((IShouldExecuteBlock<T>)ShouldExecuteBlock).ShouldExecuteAsync(context).ConfigureAwait(false);
+
+            if(shouldExecute)
+                shouldExecute = await ShouldExecuteAsync(context).ConfigureAwait(false);
+
+            return shouldExecute;
         }
 
         private void ProcessExecuteManyResults(ExecutionOptions options, NodeResult aggregateResult)
@@ -475,40 +493,4 @@ namespace Banzai
         }
 
     }
-
-
-    /// <summary>
-    /// Extensions to make adding should execute functions to an INode type safe.
-    /// </summary>
-    public static class NodeExtensions
-    {
-        /// <summary>
-        /// Adds a ShouldExecuteFunc to the INode.
-        /// </summary>
-        /// <typeparam name="T">Type of the subject the node acts upon.</typeparam>
-        /// <param name="node">Node to add ShouldExecute to.</param>
-        /// <param name="shouldExecuteFunc">Strongly typed ShouldExecuteFunc.</param>
-        /// <returns>The INode with the function added.</returns>
-        public static INode<T> AddShouldExecute<T>(this INode<T> node,
-            Func<IExecutionContext<T>, bool> shouldExecuteFunc)
-        {
-            node.ShouldExecuteFunc = context => shouldExecuteFunc((IExecutionContext<T>) context);
-            return node;
-        }
-
-        /// <summary>
-        /// Adds a ShouldExecuteFuncAsync to the INode.
-        /// </summary>
-        /// <typeparam name="T">Type of the subject the node acts upon.</typeparam>
-        /// <param name="node">Node to add ShouldExecute to.</param>
-        /// <param name="shouldExecuteFuncAsync">Strongly typed ShouldExecuteFuncAsync.</param>
-        /// <returns>The INode with the function added.</returns>
-        public static INode<T> AddShouldExecute<T>(this INode<T> node,
-            Func<IExecutionContext<T>, Task<bool>> shouldExecuteFuncAsync)
-        {
-            node.ShouldExecuteFuncAsync = context => shouldExecuteFuncAsync((IExecutionContext<T>) context);
-            return node;
-        }
-    }
-
 }
