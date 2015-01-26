@@ -57,6 +57,21 @@ namespace Banzai.Factories
         }
 
         /// <summary>
+        /// Gets a flow matching the specified name and subject type.
+        /// </summary>
+        /// <param name="type">Specific flow type to retrieve if the flow type does not match the current node type.</param>
+        /// <param name="name">Name of flow to return.</param>
+        /// <returns>Flow matching the requested criteria.</returns>
+        public INode<T> GetFlow<T>(Type type, string name)
+        {
+            Guard.AgainstNullOrEmptyArgument("name", name);
+
+            var flowRoot = GetFlowRoot<T>(type, name);
+
+            return BuildNode(flowRoot.Children[0], flowRoot.ShouldExecuteFuncAsync, flowRoot.ShouldExecuteFunc);
+        }
+
+        /// <summary>
         /// Builds a flow matching the specified flow component.
         /// </summary>
         /// <param name="flowRoot">Definition of the flow to build.</param>
@@ -100,6 +115,14 @@ namespace Banzai.Factories
         /// <summary>
         /// Method overridden to provide a root FlowComponent based on a name.
         /// </summary>
+        /// <param name="type">Type of the flow subject.</param>
+        /// <param name="name">Name of the flow root.</param>
+        /// <returns>FlowComponent corresponding to the named root.</returns>
+        protected abstract dynamic GetFlowRoot<T>(Type type, string name);
+
+        /// <summary>
+        /// Method overridden to provide a root FlowComponent based on a name.
+        /// </summary>
         /// <param name="name">Name of the flow root.</param>
         /// <returns>FlowComponent corresponding to the named root.</returns>
         protected abstract FlowComponent<T> GetFlowRoot<T>(string name);
@@ -126,7 +149,7 @@ namespace Banzai.Factories
             //Get the node or flow from the flowComponent
             if (component.IsFlow)
             {
-                node = GetFlow<T>(component.Name);
+                node = typeof (T) == component.Type ? GetFlow<T>(component.Name) : GetFlow<T>(component.Type, component.Name);
             }
             else
             {
@@ -276,6 +299,14 @@ namespace Banzai.Factories
         /// <param name="name">Name of the flow root.</param>
         /// <returns>FlowComponent corresponding to the named root.</returns>
         protected abstract FlowComponent<T> GetFlowRoot(string name);
+
+        /// <summary>
+        /// Method overridden to provide a root FlowComponent based on a name.
+        /// </summary>
+        /// <param name="type">Type of the flow root to create.</param>
+        /// <param name="name">Name of the flow root.</param>
+        /// <returns>FlowComponent corresponding to the named root.</returns>
+        protected abstract dynamic GetFlowRoot(Type type, string name);
 
         /// <summary>
         /// Applies metadata to the node during node construction.

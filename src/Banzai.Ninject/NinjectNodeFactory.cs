@@ -96,6 +96,18 @@ namespace Banzai.Ninject
         }
 
         /// <summary>
+        /// Gets a flow matching the specified name and subject type.
+        /// </summary>
+        /// <param name="type">Type of the flow subject.</param>
+        /// <param name="name">Name of flow to return.</param>
+        /// <returns>Flow matching the requested criteria.</returns>
+        protected override dynamic GetFlowRoot<T>(Type type, string name)
+        {
+            Type componentType = typeof(FlowComponent<>).MakeGenericType(type);
+            return _resolver.Get(componentType, name);
+        }
+
+        /// <summary>
         /// Applies metadata to the node during node construction.
         /// </summary>
         /// <param name="node">Node to which metadata is applied.</param>
@@ -213,6 +225,18 @@ namespace Banzai.Ninject
         protected override FlowComponent<T> GetFlowRoot(string name)
         {
             return _resolver.Get<FlowComponent<T>>(name);
+        }
+
+        /// <summary>
+        /// Gets a flow matching the specified name and subject type.
+        /// </summary>
+        /// <param name="type">Type of the flow subject.</param>
+        /// <param name="name">Name of flow to return.</param>
+        /// <returns>Flow matching the requested criteria.</returns>
+        protected override dynamic GetFlowRoot(Type type, string name)
+        {
+            Type componentType = typeof(FlowComponent<>).MakeGenericType(type);
+            return _resolver.Get(componentType, name);
         }
 
         /// <summary>

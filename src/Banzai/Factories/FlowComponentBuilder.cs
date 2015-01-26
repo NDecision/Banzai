@@ -44,6 +44,13 @@ namespace Banzai.Factories
         IFlowComponentBuilder<T> AddFlow(string name);
 
         /// <summary>
+        /// Adds a previously registered flow by name as a child of this node.
+        /// </summary>
+        /// <param name="name">The name of the flow to add.</param>
+        /// <returns>The current FlowComponentBuilder instance.</returns>
+        IFlowComponentBuilder<T> AddFlow<TNode>(string name);
+
+        /// <summary>
         /// Adds a child node to this flow.
         /// </summary>
         /// <typeparam name="TNode">Type of the node to add.</typeparam>
@@ -158,12 +165,22 @@ namespace Banzai.Factories
         /// <returns>The current FlowComponentBuilder instance.</returns>
         public IFlowComponentBuilder<T> AddFlow(string name)
         {
+            return AddFlow<T>(name);
+        }
+
+        /// <summary>
+        /// Adds a previously registered flow by name as a child of this node.
+        /// </summary>
+        /// <param name="name">The name of the flow to add.</param>
+        /// <returns>The current FlowComponentBuilder instance.</returns>
+        public IFlowComponentBuilder<T> AddFlow<TNode>(string name)
+        {
             Guard.AgainstNullOrEmptyArgument("name", name);
 
             if (!typeof(IMultiNode<T>).IsAssignableFrom(_component.Type))
                 throw new InvalidOperationException("In order to have children, nodeType must be assignable to IMultiNode<T>.");
 
-            _component.AddChild(new FlowComponent<T> { Type = typeof(T), Name = name, IsFlow = true });
+            _component.AddChild(new FlowComponent<T> { Type = typeof(TNode), Name = name, IsFlow = true });
             return this;
         }
 

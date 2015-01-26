@@ -88,6 +88,18 @@ namespace Banzai.Autofac
         /// <summary>
         /// Gets a flow matching the specified name and subject type.
         /// </summary>
+        /// <param name="type">Type of the flow component to retrieve.</param>
+        /// <param name="name">Name of flow to return.</param>
+        /// <returns>Flow matching the requested criteria.</returns>
+        protected override dynamic GetFlowRoot<T>(Type type, string name)
+        {
+            Type componentType = typeof(FlowComponent<>).MakeGenericType(type);
+            return _componentContext.ResolveNamed(name, componentType);
+        }
+
+        /// <summary>
+        /// Gets a flow matching the specified name and subject type.
+        /// </summary>
         /// <param name="name">Name of flow to return.</param>
         /// <returns>Flow matching the requested criteria.</returns>
         protected override FlowComponent<T> GetFlowRoot<T>(string name)
@@ -214,6 +226,18 @@ namespace Banzai.Autofac
         protected override FlowComponent<T> GetFlowRoot(string name)
         {
             return _componentContext.ResolveNamed<FlowComponent<T>>(name);
+        }
+
+        /// <summary>
+        /// Gets a flow matching the specified name and subject type.
+        /// </summary>
+        /// <param name="type">Type of the flow subject.</param>
+        /// <param name="name">Name of flow to return.</param>
+        /// <returns>Flow matching the requested criteria.</returns>
+        protected override dynamic GetFlowRoot(Type type, string name)
+        {
+            Type componentType = typeof(FlowComponent<>).MakeGenericType(type);
+            return _componentContext.ResolveNamed(name, componentType);
         }
 
         /// <summary>

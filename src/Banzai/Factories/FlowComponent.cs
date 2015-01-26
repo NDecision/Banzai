@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Banzai.Factories
 {
+    
     /// <summary>
     /// Represents the definition of a flow component. Can represent a flow or a node.
     /// </summary>
