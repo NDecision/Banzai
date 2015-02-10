@@ -8,7 +8,7 @@ using Should;
 
 namespace Banzai.Json.Test
 {
-    [TestFixture]
+    [TestFixture("JSON")]
     public class WhenSerializingBasicFlow
     {
         [TestFixtureSetUp]
