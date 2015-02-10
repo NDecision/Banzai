@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Reflection;
 using Autofac;
 using Banzai.Autofac;
 using Banzai.Factories;
-using Banzai.JavaScript;
 using Banzai.JavaScript.Factories;
 using NUnit.Framework;
 using Should;

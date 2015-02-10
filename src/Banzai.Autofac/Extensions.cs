@@ -100,6 +100,11 @@ namespace Banzai.Autofac
                 .AsSelf()
                 .InstancePerLifetimeScope();
 
+            builder.RegisterType<CustomDataMetaDataBuilder>()
+                .AsImplementedInterfaces()
+                .AsSelf()
+                .InstancePerLifetimeScope();
+
             builder.RegisterGeneric(typeof (GroupNode<>))
                 .AsImplementedInterfaces()
                 .AsSelf()

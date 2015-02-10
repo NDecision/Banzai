@@ -105,6 +105,7 @@ namespace Banzai.Ninject
             builder.Bind(typeof (INodeFactory<>)).To(typeof(NinjectNodeFactory<>)).InSingletonScope();
             builder.Bind<INodeFactory>().To<NinjectNodeFactory>().InSingletonScope();
             builder.Bind<IFlowRegistrar>().To<NinjectFlowRegistrar>().InSingletonScope();
+            builder.Bind<IMetaDataBuilder>().To<CustomDataMetaDataBuilder>().InSingletonScope();
 
             builder.Components.Add<IInjectionHeuristic, NodeFactoryInjectionHeuristic>();
 

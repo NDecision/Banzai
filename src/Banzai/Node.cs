@@ -25,6 +25,11 @@ namespace Banzai
         NodeRunStatus Status { get; }
 
         /// <summary>
+        /// Metadata applied to the node.
+        /// </summary>
+        dynamic CustomData { get; set; }
+
+        /// <summary>
         /// Gets the current log writer
         /// </summary>
         ILogWriter LogWriter { get; }
@@ -127,6 +132,11 @@ namespace Banzai
         /// Current run status of this node.
         /// </summary>
         public NodeRunStatus Status { get; private set; }
+
+        /// <summary>
+        /// Metadata applied to the node.
+        /// </summary>
+        public dynamic CustomData { get; set; }
 
         /// <summary>
         /// LogWriter used to write to the log from this node.

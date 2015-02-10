@@ -44,9 +44,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExecutionContext.cs" />
+    <Compile Include="Factories\CustomDataExtensions.cs" />
     <Compile Include="Factories\FlowBuilder.cs" />
     <Compile Include="Factories\FlowComponent.cs" />
     <Compile Include="Factories\FlowComponentBuilder.cs" />
+    <Compile Include="Factories\CustomDataMetaDataBuilder.cs" />
     <Compile Include="NodeExtensions.cs" />
     <Compile Include="Serialization\IComponentSerializer.cs" />
     <Compile Include="Factories\IFlowRegistrar.cs" />
