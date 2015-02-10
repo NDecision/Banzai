@@ -3,7 +3,7 @@ using Should;
 
 namespace Banzai.JavaScript.Test
 {
-    [TestFixture("JavaScript")]
+    [TestFixture, Explicit]
     public class WhenRunningBasicJavaScript
     {
 
