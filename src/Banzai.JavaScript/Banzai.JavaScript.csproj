@@ -32,12 +32,13 @@
     <DocumentationFile>bin\Release\Banzai.JavaScript.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ClearScript">
-      <HintPath>..\packages\ClearScript.Installer.1.0.1.31662\lib\net45\ClearScript.dll</HintPath>
+    <Reference Include="ClearScript, Version=5.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ClearScript.Installer.1.0.3.20340\lib\net45\ClearScript.dll</HintPath>
     </Reference>
     <Reference Include="ClearScript.Manager, Version=1.3.3.18070, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ClearScript.Manager.1.3.3.18070\lib\net45\ClearScript.Manager.dll</HintPath>
+      <HintPath>..\packages\ClearScript.Manager.1.3.4.26813\lib\net45\ClearScript.Manager.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

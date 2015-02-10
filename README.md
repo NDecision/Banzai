@@ -456,8 +456,58 @@ If you have a MultiNode (Pipeline/Group/FirstMatch) that has a subject Type of T
 Create an envelope for your subject and use this as the subject passed to the flow instead of passing the naked subject.  This envelope can contain the subject
 but can also contain other properties or data that is necessary for the workflow.  Favor this over sending information in the State property of the ExecutionContext.
 
-####Lots of examples present in the unit tests...
+
+
+##Banzai.JavaScript
+Banzai.JavaScript allows you to create nodes that accept javascript as the language of use.
+The JavaScript is executed using the ClearScript.V8 engine (wrapper around V8) by way of ClearScript.Manager.
+For more information about using ClearScript Manager, please check out it's [Project Page](https://github.com/eswann/clearscript.manager).
+
+Adding Banzai.JavaScript also adds extensions for configuring the flow to dynamically add JavaScript to both the Execution and ShouldExecute functionalities.
+
+Execution:
+
+    flowBuilder.CreateFlow("TestFlow1")
+      .AddRoot<ITestJsNode>()
+          .SetExecutedJavaScript("context.Subject.TestValueString = 'Hello JavaScript!';")
+          .SetShouldExecuteJavaScript("result.ShouldExecute = true;");
+
+For several other examples, look at the Banzai.JavaScript.Test and Banzai.Json.Test projects.
+
+##Banzai.Json
+Banzai.Json allow Banzai flows to be serialized as JSON strings so that they can be stored and rehydrated.  Alternately, a flow can be
+entirely defined in JSON.
+
+###Implementing IComponentSerializer
+In order to serialize flows in any format, a provider can be created by implementing IComponentSerializer.
+The JSON serializer uses JSON.Net for this purpose.
+
+The JSON serializer can be registered by calling:
+
+    Banzai.Json.Registrar.RegisterAsDefault();
+
+Internally, this simply sets the serializer to be used:
+
+    Banzai.Serialization.SerializerProvider.Serializer = new JsonComponentSerializer();
+
+###Abbreviating the JSON Output
+
+Typically, the output of JSON serialization is fairly verbose when it comes to serializing types.
+Banzai.Json allows these items to be abbreviated using the following calls:
+
+In order to abbreviate the core node types, the following call can be made in configuration.  This is automatically called when using Banzai.Json.
+
+    TypeAbbreviationCache.RegisterCoreTypes();
+
+To add additional types to the abbreviations:
+
+    //Register a single type
+    TypeAbbreviationCache.RegisterType(Typeof(MyNode), optionalName);
+    //By Assembly
+    TypeAbbreviationCache.RegisterFromAssembly(AssemblyContainingMyNodes);
+
+
+##Lots of examples present in the unit tests...
 
 ####See the [Wiki for release notes](https://github.com/eswann/Banzai/wiki).
-
 

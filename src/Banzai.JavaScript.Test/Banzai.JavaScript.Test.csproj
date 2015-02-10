@@ -35,16 +35,16 @@
       <HintPath>..\packages\Autofac.3.4.0\lib\net40\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ClearScript">
-      <HintPath>..\packages\ClearScript.Installer.1.0.1.31662\lib\net45\ClearScript.dll</HintPath>
-    </Reference>
-    <Reference Include="ClearScript.Manager, Version=1.3.3.18070, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ClearScript, Version=5.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ClearScript.Manager.1.3.3.18070\lib\net45\ClearScript.Manager.dll</HintPath>
+      <HintPath>..\packages\ClearScript.Installer.1.0.3.20340\lib\net45\ClearScript.dll</HintPath>
     </Reference>
-    <Reference Include="ClearScript.Manager.Http, Version=1.3.3.18070, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ClearScript.Manager.Http.1.3.3.18070\lib\net45\ClearScript.Manager.Http.dll</HintPath>
+    <Reference Include="ClearScript.Manager">
+      <HintPath>..\packages\ClearScript.Manager.1.3.4.26813\lib\net45\ClearScript.Manager.dll</HintPath>
+    </Reference>
+    <Reference Include="ClearScript.Manager.Http">
+      <HintPath>..\packages\ClearScript.Manager.Http.1.3.4.26814\lib\net45\ClearScript.Manager.Http.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
