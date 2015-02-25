@@ -67,13 +67,6 @@ namespace Banzai.Factories
         IFlowComponentBuilder<T> AddChild(Type nodeType, string name = null);
 
         /// <summary>
-        /// Adds a ShouldExecute to the flowcomponent (to be added to the resultant node).
-        /// </summary>
-        /// <param name="shouldExecuteFunc">Function to add as ShouldExecute to the flowcomponent.</param>
-        /// <returns>The current FlowComponentBuilder instance.</returns>
-        IFlowComponentBuilder<T> SetShouldExecute(Func<IExecutionContext<T>, bool> shouldExecuteFunc);
-
-        /// <summary>
         /// Adds a ShouldExecuteBlock to the flowcomponent (to be added to the resultant node).
         /// </summary>
         /// <returns>The current FlowComponentBuilder instance.</returns>
@@ -88,9 +81,9 @@ namespace Banzai.Factories
         /// <summary>
         /// Adds a ShouldExecuteAsync to the flowcomponent (to be added to the resultant node).
         /// </summary>
-        /// <param name="shouldExecuteFuncAsync">Function to add as ShouldExecute to the flowcomponent.</param>
+        /// <param name="shouldExecuteFunc">Function to add as ShouldExecute to the flowcomponent.</param>
         /// <returns>The current FlowComponentBuilder instance.</returns>
-        IFlowComponentBuilder<T> SetShouldExecuteAsync(Func<IExecutionContext<T>, Task<bool>> shouldExecuteFuncAsync);
+        IFlowComponentBuilder<T> SetShouldExecute(Func<IExecutionContext<T>, Task<bool>> shouldExecuteFunc);
 
         /// <summary>
         /// Allows metadata about the flow component to be added.
@@ -242,16 +235,6 @@ namespace Banzai.Factories
             return this;
         }
 
-        /// <summary>
-        /// Adds a ShouldExecute to the FlowComponent (to be added to the resultant node).
-        /// </summary>
-        /// <param name="shouldExecuteFunc">Function to add as ShouldExecute to the flowcomponent.</param>
-        /// <returns>The current FlowComponentBuilder instance.</returns>
-        public IFlowComponentBuilder<T> SetShouldExecute(Func<IExecutionContext<T>, bool> shouldExecuteFunc)
-        {
-            _component.SetShouldExecute(shouldExecuteFunc);
-            return this;
-        }
 
         /// <summary>
         /// Adds a ShouldExecuteBlock to the flowcomponent (to be added to the resultant node).
@@ -276,11 +259,11 @@ namespace Banzai.Factories
         /// <summary>
         /// Adds a ShouldExecuteAsync to the FlowComponent (to be added to the resultant node).
         /// </summary>
-        /// <param name="shouldExecuteAsyncFunc">Function to add as ShouldExecute to the flowcomponent.</param>
+        /// <param name="shouldExecuteFunc">Function to add as ShouldExecute to the flowcomponent.</param>
         /// <returns>The current FlowComponentBuilder instance.</returns>
-        public IFlowComponentBuilder<T> SetShouldExecuteAsync(Func<IExecutionContext<T>, Task<bool>> shouldExecuteAsyncFunc)
+        public IFlowComponentBuilder<T> SetShouldExecute(Func<IExecutionContext<T>, Task<bool>> shouldExecuteFunc)
         {
-            _component.SetShouldExecuteAsync(shouldExecuteAsyncFunc);
+            _component.SetShouldExecute(shouldExecuteFunc);
             return this;
         }
 

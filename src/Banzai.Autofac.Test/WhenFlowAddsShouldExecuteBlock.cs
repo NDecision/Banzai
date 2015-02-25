@@ -28,7 +28,7 @@ namespace Banzai.Autofac.Test
 
             var flowRootNode = factory.GetFlow("TestFlow1");
             flowRootNode.ShouldExecuteBlock.ShouldNotBeNull();
-            ((IShouldExecuteBlock<object>)flowRootNode.ShouldExecuteBlock).ShouldExecute(new ExecutionContext<object>(new object())).ShouldBeFalse();
+            ((IShouldExecuteBlock<object>)flowRootNode.ShouldExecuteBlock).ShouldExecuteAsync(new ExecutionContext<object>(new object())).Result.ShouldBeFalse();
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace Banzai.Autofac.Test
 
             var subflow = flow.Children[0];
             subflow.ShouldExecuteBlock.ShouldNotBeNull();
-            ((IShouldExecuteBlock<object>)subflow.ShouldExecuteBlock).ShouldExecute(new ExecutionContext<object>(new object())).ShouldBeFalse();
+            ((IShouldExecuteBlock<object>)subflow.ShouldExecuteBlock).ShouldExecuteAsync(new ExecutionContext<object>(new object())).Result.ShouldBeFalse();
         }
 
         [Test]
@@ -90,7 +90,7 @@ namespace Banzai.Autofac.Test
 
             var subflowRoot = (IPipelineNode<object>)flow.Children[1];
             subflowRoot.ShouldExecuteBlock.ShouldNotBeNull();
-            ((IShouldExecuteBlock<object>)subflowRoot.ShouldExecuteBlock).ShouldExecute(new ExecutionContext<object>(new object())).ShouldBeFalse();
+            ((IShouldExecuteBlock<object>)subflowRoot.ShouldExecuteBlock).ShouldExecuteAsync(new ExecutionContext<object>(new object())).Result.ShouldBeFalse();
         }
 
     }

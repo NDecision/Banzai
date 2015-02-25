@@ -96,17 +96,7 @@ namespace Banzai
         /// <returns></returns>
         protected virtual Task<TDestination> TransitionSourceAsync(IExecutionContext<TSource> sourceContext)
         {
-            return Task.FromResult(TransitionSource(sourceContext));
-        }
-
-        /// <summary>
-        /// Transitions from the source subject to the destination subject.
-        /// </summary>
-        /// <param name="sourceContext">The source execution context, including the subject.</param>
-        /// <returns></returns>
-        protected virtual TDestination TransitionSource(IExecutionContext<TSource> sourceContext)
-        {
-            return default(TDestination);
+            return Task.FromResult(default(TDestination));
         }
 
         /// <summary>
@@ -117,18 +107,7 @@ namespace Banzai
         /// <returns>The transitioned subject.</returns>
         protected virtual Task<TSource> TransitionResultAsync(IExecutionContext<TSource> sourceContext, NodeResult result)
         {
-            return Task.FromResult(TransitionResult(sourceContext, result));
-        }
-
-        /// <summary>
-        /// Transitions the source based on the child result to prepare for. 
-        /// </summary>
-        /// <param name="sourceContext">Context including the source subject.</param>
-        /// <param name="result">The result of the destination node.</param>
-        /// <returns>The transitioned subject.</returns>
-        protected virtual TSource TransitionResult(IExecutionContext<TSource> sourceContext, NodeResult result)
-        {
-            return sourceContext.Subject;
+            return Task.FromResult(sourceContext.Subject);
         }
 
     }

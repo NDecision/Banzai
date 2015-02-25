@@ -13,7 +13,7 @@ namespace Banzai.Test
             var node = new FuncNode<TestObjectA>();
 
             node.AddShouldExecuteBlock(new ShouldExecuteBlockA());
-            node.ExecutedFuncAsync = context => { context.Subject.TestValueString = "Completed"; return Task.FromResult(NodeResultStatus.Succeeded); };
+            node.ExecutedFunc = context => { context.Subject.TestValueString = "Completed"; return Task.FromResult(NodeResultStatus.Succeeded); };
 
             var testObject = new TestObjectA();
             NodeResult result = await node.ExecuteAsync(testObject);
@@ -29,7 +29,7 @@ namespace Banzai.Test
             var node = new FuncNode<TestObjectA>();
 
             node.AddShouldExecuteBlock(new ShouldNotExecuteBlockA());
-            node.ExecutedFuncAsync = context => { context.Subject.TestValueString = "Completed"; return Task.FromResult(NodeResultStatus.Succeeded); };
+            node.ExecutedFunc = context => { context.Subject.TestValueString = "Completed"; return Task.FromResult(NodeResultStatus.Succeeded); };
 
             var testObject = new TestObjectA();
             NodeResult result = await node.ExecuteAsync(testObject);

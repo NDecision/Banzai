@@ -11,7 +11,7 @@ namespace Banzai.Json.Test
     [TestFixture, Explicit]
     public class WhenSerializingJavascriptNodes
     {
-               [Test]
+        [Test]
         public void Simple_Flow_Is_Serialized()
         {
             var containerBuilder = new ContainerBuilder();

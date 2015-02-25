@@ -16,29 +16,15 @@ namespace Banzai
         /// <param name="shouldExecuteFunc">Strongly typed ShouldExecuteFunc.</param>
         /// <returns>The INode with the function added.</returns>
         public static INode<T> AddShouldExecute<T>(this INode<T> node,
-            Func<IExecutionContext<T>, bool> shouldExecuteFunc)
+            Func<IExecutionContext<T>, Task<bool>> shouldExecuteFunc)
         {
             node.ShouldExecuteFunc = context => shouldExecuteFunc((IExecutionContext<T>) context);
             return node;
         }
 
-        /// <summary>
-        /// Adds a ShouldExecuteFuncAsync to the INode.
-        /// </summary>
-        /// <typeparam name="T">Type of the subject the node acts upon.</typeparam>
-        /// <param name="node">Node to add ShouldExecute to.</param>
-        /// <param name="shouldExecuteFuncAsync">Strongly typed ShouldExecuteFuncAsync.</param>
-        /// <returns>The INode with the function added.</returns>
-        public static INode<T> AddShouldExecute<T>(this INode<T> node,
-            Func<IExecutionContext<T>, Task<bool>> shouldExecuteFuncAsync)
-        {
-            node.ShouldExecuteFuncAsync = context => shouldExecuteFuncAsync((IExecutionContext<T>) context);
-            return node;
-        }
-
 
         /// <summary>
-        /// Adds a ShouldExecuteFuncAsync to the INode.
+        /// Adds a ShouldExecuteFunc to the INode.
         /// </summary>
         /// <typeparam name="T">Type of the subject the node acts upon.</typeparam>
         /// <param name="node">Node to add ShouldExecute to.</param>

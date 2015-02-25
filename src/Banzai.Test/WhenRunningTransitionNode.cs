@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Threading.Tasks;
+using NUnit.Framework;
 using Should;
 
 namespace Banzai.Test
@@ -57,14 +58,14 @@ namespace Banzai.Test
 
         public class SimpleTransitionNode : TransitionNode<TestObjectA, TestObjectB>
         {
-            protected override TestObjectB TransitionSource(IExecutionContext<TestObjectA> sourceContext)
+            protected override Task<TestObjectB> TransitionSourceAsync(IExecutionContext<TestObjectA> sourceContext)
             {
-                return new TestObjectB();
+                return Task.FromResult(new TestObjectB());
             }
 
-            protected override TestObjectA TransitionResult(IExecutionContext<TestObjectA> sourceContext, NodeResult result)
+            protected override Task<TestObjectA> TransitionResultAsync(IExecutionContext<TestObjectA> sourceContext, NodeResult result)
             {
-                return sourceContext.Subject;
+                return Task.FromResult(sourceContext.Subject);
             }
         }
 

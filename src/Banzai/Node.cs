@@ -35,26 +35,14 @@ namespace Banzai
         ILogWriter LogWriter { get; }
 
         /// <summary>
-        /// Gets or sets the function to define if this node should be executed.
-        /// </summary>
-        Func<IExecutionContext<object>, bool> ShouldExecuteFunc { get; set; }
-
-        /// <summary>
         /// Gets or sets the async function to call to determine if this node should be executed.
         /// </summary>
-        Func<IExecutionContext<object>, Task<bool>> ShouldExecuteFuncAsync { get; set; }
+        Func<IExecutionContext<object>, Task<bool>> ShouldExecuteFunc { get; set; }
 
         /// <summary>
         /// Gets or sets the block to define if this node should be executed.
         /// </summary>
         object ShouldExecuteBlock { get; set; }
-
-        /// <summary>
-        /// Determines if the node should be executed.
-        /// </summary>
-        /// <param name="context">The current execution context.</param>
-        /// <returns>Bool indicating if the current node should be run.</returns>
-        bool ShouldExecute(IExecutionContext<T> context);
 
         /// <summary>
         /// Determines if the node should be executed.
@@ -162,24 +150,9 @@ namespace Banzai
         public object ShouldExecuteBlock { get; set; }
 
         /// <summary>
-        /// Gets or sets the function to define if this node should be executed.
-        /// </summary>
-        public Func<IExecutionContext<object>, bool> ShouldExecuteFunc { get; set; }
-
-        /// <summary>
         /// Gets or sets the async function to call to determine if this node should be executed.
         /// </summary>
-        public Func<IExecutionContext<object>, Task<bool>> ShouldExecuteFuncAsync { get; set; }
-
-        /// <summary>
-        /// Determines if the current node should execute with synchronous wrapper.
-        /// </summary>
-        /// <param name="context">Current ExecutionContext</param>
-        /// <returns>Bool indicating if this node should run.</returns>
-        public virtual bool ShouldExecute(IExecutionContext<T> context)
-        {
-            return true;
-        }
+        public Func<IExecutionContext<object>, Task<bool>> ShouldExecuteFunc { get; set; }
 
         /// <summary>
         /// Determines if the current node should execute.
@@ -188,7 +161,7 @@ namespace Banzai
         /// <returns>Bool indicating if this node should run.</returns>
         public virtual Task<bool> ShouldExecuteAsync(IExecutionContext<T> context)
         {
-            return Task.FromResult(ShouldExecute(context));
+            return Task.FromResult(true);
         }
 
         /// <summary>
@@ -419,15 +392,6 @@ namespace Banzai
             return globalOptions;
         }
 
-        /// <summary>
-        /// Method to override to provide functionality to the current node with synchronous wrapper.
-        /// </summary>
-        /// <param name="context">Current execution context.</param>
-        /// <returns>Final result execution status of the node.</returns>
-        protected virtual NodeResultStatus PerformExecute(IExecutionContext<T> context)
-        {
-            return NodeResultStatus.Succeeded;
-        }
 
         /// <summary>
         /// Method to override to provide functionality to the current node.
@@ -436,7 +400,7 @@ namespace Banzai
         /// <returns>Final result execution status of the node.</returns>
         protected virtual Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<T> context)
         {
-            return Task.FromResult(PerformExecute(context));
+            return Task.FromResult(NodeResultStatus.Succeeded);
         }
 
         /// <summary>
@@ -474,11 +438,8 @@ namespace Banzai
         {
             bool shouldExecute = true;
 
-            if (ShouldExecuteFuncAsync != null)
-                shouldExecute = await ShouldExecuteFuncAsync((IExecutionContext<object>)context).ConfigureAwait(false);
-
-            if (shouldExecute && ShouldExecuteFunc != null)
-                shouldExecute = ShouldExecuteFunc((IExecutionContext<object>)context);
+            if (ShouldExecuteFunc != null)
+                shouldExecute = await ShouldExecuteFunc((IExecutionContext<object>)context).ConfigureAwait(false);
 
             if (shouldExecute && ShouldExecuteBlock != null)
                 shouldExecute = await ((IShouldExecuteBlock<T>)ShouldExecuteBlock).ShouldExecuteAsync(context).ConfigureAwait(false);

@@ -46,7 +46,7 @@ These are the nodes that contain functionality that runs against the subject of 
 
   * <b>ShouldExecuteFunc/Async</b> - Property that accepts a function to determine if the node should be executed.  Not strongly typed.
 
-  * <b>AddShouldExecute</b> - Extension method to set ShouldExecuteFunc or ShouldExecuteFuncAsync in a strongly typed manner. Has to be done this way to enable variance.
+  * <b>AddShouldExecute</b> - Extension method to set ShouldExecuteFunc in a strongly typed manner. Has to be done this way to enable variance.
 
 
 Example of overriding to provide functionality
@@ -111,12 +111,12 @@ If you wish to create a custom MultiNode, reference [Abstract Multi Nodes](#abst
     var matchNode = new FirstMatchNode<TestObjectA>();
 
     var firstNode = new SimpleTestNodeA1();
-    firstNode.ShouldExecuteFuncAsync = 
+    firstNode.ShouldExecuteFunc = 
         context => Task.FromResult(context.Subject.TestValueInt == 0);
     matchNode.AddChild(firstNode);
 
     var secondNode = new SimpleTestNodeA2();
-    secondNode.ShouldExecuteFuncAsync = 
+    secondNode.ShouldExecuteFunc = 
         context => Task.FromResult(context.Subject.TestValueInt == 1);
     matchNode.AddChild(secondNode);
 

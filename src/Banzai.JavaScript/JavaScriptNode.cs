@@ -73,19 +73,19 @@ namespace Banzai.JavaScript
             using (var scope = new ManagerScope())
             {
                 SetScriptIdIfEmpty();
-                var hostObjects = SetupHostObjects(context, result);
-                var hostTypes = SetupHostTypes();
 
-                await scope.RuntimeManager.ExecuteAsync(ScriptId, ShouldExecuteScript, hostObjects, hostTypes);
+                var options = new ClearScript.Manager.ExecutionOptions
+                {
+                    HostObjects = SetupHostObjects(context, result),
+                    HostTypes = SetupHostTypes()
+                };
+
+                await scope.RuntimeManager.ExecuteAsync(ScriptId, ShouldExecuteScript, options);
 
                 return result.ShouldExecute;
             }
         }
 
-        public override bool ShouldExecute(IExecutionContext<T> context)
-        {
-            return ShouldExecuteAsync(context).Result;
-        }
 
         protected async override Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<T> context)
         {
@@ -97,10 +97,14 @@ namespace Banzai.JavaScript
                 using (var scope = new ManagerScope())
                 {
                     SetScriptIdIfEmpty();
-                    var hostObjects = SetupHostObjects(context, result);
-                    var hostTypes = SetupHostTypes();
 
-                    await scope.RuntimeManager.ExecuteAsync(ScriptId, ExecutedScript, hostObjects, hostTypes);
+                    var options = new ClearScript.Manager.ExecutionOptions
+                    {
+                        HostObjects = SetupHostObjects(context, result),
+                        HostTypes = SetupHostTypes()
+                    };
+
+                    await scope.RuntimeManager.ExecuteAsync(ScriptId, ExecutedScript, options);
 
                     if (!result.IsSuccess)
                     {
@@ -113,10 +117,6 @@ namespace Banzai.JavaScript
             return NodeResultStatus.Succeeded;
         }
 
-        protected override NodeResultStatus PerformExecute(IExecutionContext<T> context)
-        {
-            return PerformExecuteAsync(context).Result;
-        }
 
         private List<HostType> SetupHostTypes()
         {

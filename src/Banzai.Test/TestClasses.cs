@@ -208,9 +208,9 @@ namespace Banzai.Test
 
     public class ShouldNotExecuteBlockA : ShouldExecuteBlock<TestObjectA>
     {
-        public override bool ShouldExecute(IExecutionContext<TestObjectA> context)
+        public override Task<bool> ShouldExecuteAsync(IExecutionContext<TestObjectA> context)
         {
-            return false;
+            return Task.FromResult(false);
         }
     }
 

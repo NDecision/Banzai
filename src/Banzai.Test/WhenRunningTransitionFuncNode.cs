@@ -17,7 +17,7 @@ namespace Banzai.Test
             pipelineNode.AddChild(new TransitionFuncNode<TestObjectA, TestObjectB>
             {
                 ChildNode = new SimpleTestNodeB1(),
-                TransitionSourceFunc = ctxt => new TestObjectB()
+                TransitionSourceFuncAsync = ctxt => Task.FromResult(new TestObjectB())
             });
             pipelineNode.AddChild(new SimpleTestNodeA2());
 
@@ -37,7 +37,7 @@ namespace Banzai.Test
             pipelineNode.AddChild(new TransitionFuncNode<TestObjectA, TestObjectB>
             {
                 ChildNode = new SimpleTestNodeB1(),
-                TransitionSourceFunc = ctxt => { throw new Exception(); }
+                TransitionSourceFuncAsync = ctxt => { throw new Exception(); }
             });
             pipelineNode.AddChild(new SimpleTestNodeA2());
 
@@ -57,8 +57,8 @@ namespace Banzai.Test
             pipelineNode.AddChild(new TransitionFuncNode<TestObjectA, TestObjectB>
             {
                 ChildNode = new SimpleTestNodeB1(),
-                TransitionSourceFunc = ctxt => new TestObjectB(),
-                TransitionResultFunc = (ctxt, res) => { throw new Exception(); }
+                TransitionSourceFuncAsync = ctxt => Task.FromResult(new TestObjectB()),
+                TransitionResultFuncAsync = (ctxt, res) => { throw new Exception(); }
             });
             pipelineNode.AddChild(new SimpleTestNodeA2());
 
@@ -98,8 +98,8 @@ namespace Banzai.Test
             pipelineNode.AddChild(new TransitionFuncNode<TestObjectA, TestObjectB>
             {
                 ChildNode = new SimpleTestNodeB1(),
-                TransitionSourceFunc = ctxt => new TestObjectB(),
-                TransitionResultFunc = (ctxt, res) => ctxt.Subject
+                TransitionSourceFuncAsync = ctxt => Task.FromResult(new TestObjectB()),
+                TransitionResultFuncAsync = (ctxt, res) => Task.FromResult(ctxt.Subject)
             });
             pipelineNode.AddChild(new SimpleTestNodeA2());
 
@@ -134,9 +134,9 @@ namespace Banzai.Test
 
         public class SimpleTransitionNode : TransitionNode<TestObjectA, TestObjectB>
         {
-            protected override TestObjectB TransitionSource(IExecutionContext<TestObjectA> sourceContext)
+            protected override Task<TestObjectB> TransitionSourceAsync(IExecutionContext<TestObjectA> sourceContext)
             {
-                return new TestObjectB();
+                return Task.FromResult(new TestObjectB());
             }
         }
 

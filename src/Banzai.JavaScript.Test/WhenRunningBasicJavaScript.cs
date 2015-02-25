@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Threading.Tasks;
+using NUnit.Framework;
 using Should;
 
 namespace Banzai.JavaScript.Test
@@ -98,7 +99,7 @@ namespace Banzai.JavaScript.Test
             var testNode = new JavaScriptNode<TestObjectA>
             {
                 ExecutedScript = "context.Subject.TestValueString = 'Hello JavaScript!';",
-                ShouldExecuteFunc = c => false
+                ShouldExecuteFunc = c => Task.FromResult(false)
             };
 
             var testObject = new TestObjectA();

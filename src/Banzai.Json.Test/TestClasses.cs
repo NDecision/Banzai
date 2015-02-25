@@ -96,9 +96,9 @@ namespace Banzai.Json.Test
 
     public class ShouldNotExecuteTestBlock : ShouldExecuteBlock<object>
     {
-        public override bool ShouldExecute(IExecutionContext<object> context)
+        public override Task<bool> ShouldExecuteAsync(IExecutionContext<object> context)
         {
-            return false;
+            return Task.FromResult(false);
         }
     }
 

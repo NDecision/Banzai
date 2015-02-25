@@ -54,7 +54,7 @@ namespace Banzai.Test
             var testNode = new SimpleTestNodeA1();
             var testNode2 = new SimpleTestNodeASub1();
 
-            testNode2.AddShouldExecute(context => context.Subject.TestValueDecimal == 1);
+            testNode2.AddShouldExecute(context => Task.FromResult(context.Subject.TestValueDecimal == 1));
 
             var pipeline = new PipelineNode<TestObjectASub>();
 
@@ -75,7 +75,7 @@ namespace Banzai.Test
             var testNode = new FuncNode<TestObjectA>();
 
             testNode.AddShouldExecute(context => Task.FromResult(context.Subject.TestValueInt == 0));
-            testNode.ExecutedFuncAsync = context => { context.Subject.TestValueString = "Completed"; return Task.FromResult(NodeResultStatus.Succeeded); };
+            testNode.ExecutedFunc = context => { context.Subject.TestValueString = "Completed"; return Task.FromResult(NodeResultStatus.Succeeded); };
 
             var testObject = new TestObjectASub();
 

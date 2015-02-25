@@ -52,12 +52,7 @@ namespace Banzai.Factories
         /// <summary>
         /// Allows the ShouldExecuteFunc for this FlowComponent to be retrieved.
         /// </summary>
-        public Func<IExecutionContext<T>, bool> ShouldExecuteFunc { get; private set; }
-
-        /// <summary>
-        /// Allows the ShouldExecuteFuncAsync for this FlowComponent to be retrieved.
-        /// </summary>
-        public Func<IExecutionContext<T>, Task<bool>> ShouldExecuteFuncAsync { get; private set; }
+        public Func<IExecutionContext<T>, Task<bool>> ShouldExecuteFunc { get; private set; }
 
         /// <summary>
         /// Allows the ShouldExecuteBlock type for this FlowComponent to be retrieved.
@@ -92,24 +87,13 @@ namespace Banzai.Factories
         }
 
         /// <summary>
-        /// Adds a ShouldExecute to the FlowComponent (to be added to the resultant node).
+        /// Adds a ShouldExecuteFunc to the FlowComponent (to be added to the resultant node).
         /// </summary>
         /// <param name="shouldExecuteFunc">Function to add as ShouldExecute to the flowcomponent.</param>
         /// <returns>The current FlowComponent instance.</returns>
-        protected internal FlowComponent<T> SetShouldExecute(Func<IExecutionContext<T>, bool> shouldExecuteFunc)
+        protected internal FlowComponent<T> SetShouldExecute(Func<IExecutionContext<T>, Task<bool>> shouldExecuteFunc)
         {
             ShouldExecuteFunc = shouldExecuteFunc;
-            return this;
-        }
-
-        /// <summary>
-        /// Adds a ShouldExecuteAsync to the FlowComponent (to be added to the resultant node).
-        /// </summary>
-        /// <param name="shouldExecuteFuncAsync">Function to add as ShouldExecute to the flowcomponent.</param>
-        /// <returns>The current FlowComponent instance.</returns>
-        protected internal FlowComponent<T> SetShouldExecuteAsync(Func<IExecutionContext<T>, Task<bool>> shouldExecuteFuncAsync)
-        {
-            ShouldExecuteFuncAsync = shouldExecuteFuncAsync;
             return this;
         }
 

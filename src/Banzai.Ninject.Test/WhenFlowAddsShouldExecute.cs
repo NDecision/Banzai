@@ -18,7 +18,7 @@ namespace Banzai.Ninject.Test
             var flowBuilder = new FlowBuilder<object>(new NinjectFlowRegistrar(kernel));
 
             flowBuilder.CreateFlow("TestFlow1")
-                .AddRoot<IPipelineNode<object>>().SetShouldExecute(ctxt => (1 + 1 != 2))
+                .AddRoot<IPipelineNode<object>>().SetShouldExecute(ctxt => Task.FromResult(1 + 1 != 2))
                 .AddChild<ITestNode2>();
 
             flowBuilder.Register();
@@ -27,7 +27,7 @@ namespace Banzai.Ninject.Test
 
             var flowRootNode = factory.GetFlow("TestFlow1");
             flowRootNode.ShouldExecuteFunc.ShouldNotBeNull();
-            flowRootNode.ShouldExecuteFunc(new ExecutionContext<object>(new object())).ShouldBeFalse();
+            flowRootNode.ShouldExecuteFunc(new ExecutionContext<object>(new object())).Result.ShouldBeFalse();
         }
 
         [Test]
@@ -42,7 +42,7 @@ namespace Banzai.Ninject.Test
                 .AddRoot<IPipelineNode<object>>()
                 .AddChild<ITestNode2>()
                 .ForChild<ITestNode2>()
-                .SetShouldExecute(ctxt => (1 + 1 == 3));
+                .SetShouldExecute(ctxt => Task.FromResult(1 + 1 == 3));
 
             flowBuilder.Register();
 
@@ -52,7 +52,7 @@ namespace Banzai.Ninject.Test
 
             var subflow = flow.Children[0];
             subflow.ShouldExecuteFunc.ShouldNotBeNull();
-            subflow.ShouldExecuteFunc(new ExecutionContext<object>(new object())).ShouldBeFalse();
+            subflow.ShouldExecuteFunc(new ExecutionContext<object>(new object())).Result.ShouldBeFalse();
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace Banzai.Ninject.Test
             var flowBuilder = new FlowBuilder<object>(new NinjectFlowRegistrar(kernel));
 
             flowBuilder.CreateFlow("TestFlow1")
-                .AddRoot<IPipelineNode<object>>().SetShouldExecuteAsync(ctxt => Task.FromResult(1 + 1 != 2))
+                .AddRoot<IPipelineNode<object>>().SetShouldExecute(ctxt => Task.FromResult(1 + 1 != 2))
                 .AddChild<ITestNode2>();
 
             flowBuilder.Register();
@@ -72,8 +72,8 @@ namespace Banzai.Ninject.Test
             var factory = kernel.Get<INodeFactory<object>>();
 
             var flowRootNode = factory.GetFlow("TestFlow1");
-            flowRootNode.ShouldExecuteFuncAsync.ShouldNotBeNull();
-            (await flowRootNode.ShouldExecuteFuncAsync(new ExecutionContext<object>(new object()))).ShouldBeFalse();
+            flowRootNode.ShouldExecuteFunc.ShouldNotBeNull();
+            (await flowRootNode.ShouldExecuteFunc(new ExecutionContext<object>(new object()))).ShouldBeFalse();
         }
 
         [Test]
@@ -87,7 +87,7 @@ namespace Banzai.Ninject.Test
             flowBuilder.CreateFlow("TestFlow1")
                 .AddRoot<IPipelineNode<object>>()
                 .AddChild<ITestNode2>()
-                .ForChild<ITestNode2>().SetShouldExecuteAsync(ctxt => Task.FromResult(1 + 1 != 2));
+                .ForChild<ITestNode2>().SetShouldExecute(ctxt => Task.FromResult(1 + 1 != 2));
 
             flowBuilder.Register();
 
@@ -96,8 +96,8 @@ namespace Banzai.Ninject.Test
             var flow = (IPipelineNode<object>)factory.GetFlow("TestFlow1");
 
             var subflow = flow.Children[0];
-            subflow.ShouldExecuteFuncAsync.ShouldNotBeNull();
-            (await subflow.ShouldExecuteFuncAsync(new ExecutionContext<object>(new object()))).ShouldBeFalse();
+            subflow.ShouldExecuteFunc.ShouldNotBeNull();
+            (await subflow.ShouldExecuteFunc(new ExecutionContext<object>(new object()))).ShouldBeFalse();
         }
 
         [Test]
@@ -120,7 +120,7 @@ namespace Banzai.Ninject.Test
                 .AddRoot<PipelineNode<object>>()
                 .AddChild<ITestNode2>()
                 .AddFlow("TestFlow2")
-                .ForChildFlow("TestFlow2").SetShouldExecute(ctxt => 1 + 1 == 3);
+                .ForChildFlow("TestFlow2").SetShouldExecute(ctxt => Task.FromResult(1 + 1 == 3));
 
             flowBuilder.Register();
 
@@ -130,7 +130,7 @@ namespace Banzai.Ninject.Test
 
             var subflowRoot = (IPipelineNode<object>)flow.Children[1];
             subflowRoot.ShouldExecuteFunc.ShouldNotBeNull();
-            subflowRoot.ShouldExecuteFunc(new ExecutionContext<object>(new object())).ShouldBeFalse();
+            subflowRoot.ShouldExecuteFunc(new ExecutionContext<object>(new object())).Result.ShouldBeFalse();
         }
 
     }

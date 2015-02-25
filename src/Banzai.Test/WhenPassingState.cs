@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Threading.Tasks;
+using NUnit.Framework;
 using Should;
 
 namespace Banzai.Test
@@ -12,8 +13,8 @@ namespace Banzai.Test
             var pipelineNode = new PipelineNode<TestObjectA>();
 
             pipelineNode.AddChild(new SimpleTestNodeA1());
-            pipelineNode.AddChild(new FuncNode<TestObjectA> { ExecutedFunc = ctxt => { ctxt.State.Foo = "Bar"; return NodeResultStatus.Succeeded; } });
-            pipelineNode.AddChild(new FuncNode<TestObjectA> { ExecutedFunc = ctxt => (ctxt.State.Foo == "Bar") ? NodeResultStatus.Succeeded : NodeResultStatus.Failed });
+            pipelineNode.AddChild(new FuncNode<TestObjectA> { ExecutedFunc = ctxt => { ctxt.State.Foo = "Bar"; return Task.FromResult(NodeResultStatus.Succeeded); } });
+            pipelineNode.AddChild(new FuncNode<TestObjectA> { ExecutedFunc = ctxt => (ctxt.State.Foo == "Bar") ? Task.FromResult(NodeResultStatus.Succeeded) : Task.FromResult(NodeResultStatus.Failed) });
 
             var testObject = new TestObjectA();
             NodeResult result = await pipelineNode.ExecuteAsync(testObject);
@@ -26,7 +27,7 @@ namespace Banzai.Test
             var pipelineNode = new PipelineNode<TestObjectA>();
 
             pipelineNode.AddChild(new SimpleTestNodeA1());
-            pipelineNode.AddChild(new FuncNode<TestObjectA> { ExecutedFunc = ctxt => { ctxt.State.Foo = "Bar"; return NodeResultStatus.Succeeded; } });
+            pipelineNode.AddChild(new FuncNode<TestObjectA> { ExecutedFunc = ctxt => { ctxt.State.Foo = "Bar"; return Task.FromResult(NodeResultStatus.Succeeded); } });
 
             var testObject = new TestObjectA();
             var context = new ExecutionContext<TestObjectA>(testObject);
