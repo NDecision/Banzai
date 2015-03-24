@@ -25,7 +25,7 @@ namespace Banzai.Ninject.Test
 
             var factory = kernel.Get<INodeFactory<object>>();
 
-            var flowRootNode = factory.GetFlow("TestFlow1");
+            var flowRootNode = factory.BuildFlow("TestFlow1");
             flowRootNode.ShouldExecuteFunc.ShouldNotBeNull();
             flowRootNode.ShouldExecuteFunc(new ExecutionContext<object>(new object())).Result.ShouldBeFalse();
         }
@@ -48,7 +48,7 @@ namespace Banzai.Ninject.Test
 
             var factory = kernel.Get<INodeFactory<object>>();
 
-            var flow = (IPipelineNode<object>)factory.GetFlow("TestFlow1");
+            var flow = (IPipelineNode<object>)factory.BuildFlow("TestFlow1");
 
             var subflow = flow.Children[0];
             subflow.ShouldExecuteFunc.ShouldNotBeNull();
@@ -71,7 +71,7 @@ namespace Banzai.Ninject.Test
 
             var factory = kernel.Get<INodeFactory<object>>();
 
-            var flowRootNode = factory.GetFlow("TestFlow1");
+            var flowRootNode = factory.BuildFlow("TestFlow1");
             flowRootNode.ShouldExecuteFunc.ShouldNotBeNull();
             (await flowRootNode.ShouldExecuteFunc(new ExecutionContext<object>(new object()))).ShouldBeFalse();
         }
@@ -93,7 +93,7 @@ namespace Banzai.Ninject.Test
 
             var factory = kernel.Get<INodeFactory<object>>();
 
-            var flow = (IPipelineNode<object>)factory.GetFlow("TestFlow1");
+            var flow = (IPipelineNode<object>)factory.BuildFlow("TestFlow1");
 
             var subflow = flow.Children[0];
             subflow.ShouldExecuteFunc.ShouldNotBeNull();
@@ -126,7 +126,7 @@ namespace Banzai.Ninject.Test
 
             var factory = kernel.Get<INodeFactory<object>>();
 
-            var flow = (IPipelineNode<object>)factory.GetFlow("TestFlow1");
+            var flow = (IPipelineNode<object>)factory.BuildFlow("TestFlow1");
 
             var subflowRoot = (IPipelineNode<object>)flow.Children[1];
             subflowRoot.ShouldExecuteFunc.ShouldNotBeNull();

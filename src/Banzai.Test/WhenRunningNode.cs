@@ -85,7 +85,8 @@ namespace Banzai.Test
 
             result.Status.ShouldEqual(NodeResultStatus.Succeeded);
             result.Exception.ShouldEqual(null);
-
+            result.Id.ShouldEqual(testNode.Id);
+           
             context.Subject.TestValueString.ShouldEqual("Completed");
         }
 

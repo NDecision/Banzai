@@ -26,7 +26,7 @@ namespace Banzai.Autofac.Test
 
             var factory = container.Resolve<INodeFactory<object>>();
 
-            var flowRootNode = factory.GetFlow("TestFlow1");
+            var flowRootNode = factory.BuildFlow("TestFlow1");
             flowRootNode.ShouldExecuteBlock.ShouldNotBeNull();
             ((IShouldExecuteBlock<object>)flowRootNode.ShouldExecuteBlock).ShouldExecuteAsync(new ExecutionContext<object>(new object())).Result.ShouldBeFalse();
         }
@@ -51,7 +51,7 @@ namespace Banzai.Autofac.Test
 
             var factory = container.Resolve<INodeFactory<object>>();
 
-            var flow = (IPipelineNode<object>)factory.GetFlow("TestFlow1");
+            var flow = (IPipelineNode<object>)factory.BuildFlow("TestFlow1");
 
             var subflow = flow.Children[0];
             subflow.ShouldExecuteBlock.ShouldNotBeNull();
@@ -86,7 +86,7 @@ namespace Banzai.Autofac.Test
 
             var factory = container.Resolve<INodeFactory<object>>();
 
-            var flow = (IPipelineNode<object>)factory.GetFlow("TestFlow1");
+            var flow = (IPipelineNode<object>)factory.BuildFlow("TestFlow1");
 
             var subflowRoot = (IPipelineNode<object>)flow.Children[1];
             subflowRoot.ShouldExecuteBlock.ShouldNotBeNull();

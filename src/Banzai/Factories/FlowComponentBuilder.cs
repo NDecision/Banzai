@@ -18,16 +18,18 @@ namespace Banzai.Factories
         /// </summary>
         /// <typeparam name="TNode">Type of the node to add.</typeparam>
         /// <param name="name">Optional name of the node if needed to find in IOC container.</param>
+        /// <param name="id">Id of the flow.  This can be used for identification in debugging.  Flows default to the flow name.</param>
         /// <returns>The current FlowComponentBuilder instance.</returns>
-        IFlowComponentBuilder<T> AddRoot<TNode>(string name = null) where TNode : INode<T>;
+        IFlowComponentBuilder<T> AddRoot<TNode>(string name = null, string id = null) where TNode : INode<T>;
 
         /// <summary>
         /// Adds a child node to this flow.
         /// </summary>
         /// <param name="nodeType">Type of the node to add.</param>
         /// <param name="name">Optional name of the node if needed to find in IOC container.</param>
+        /// <param name="id">Id of the flow.  This can be used for identification in debugging.  Flows default to the flow name.</param>
         /// <returns>The current FlowComponentBuilder instance.</returns>
-        IFlowComponentBuilder<T> AddRoot(Type nodeType, string name = null);
+        IFlowComponentBuilder<T> AddRoot(Type nodeType, string name = null, string id = null);
     }
 
     /// <summary>
@@ -40,31 +42,35 @@ namespace Banzai.Factories
         /// Adds a previously registered flow by name as a child of this node.
         /// </summary>
         /// <param name="name">The name of the flow to add.</param>
+        /// <param name="id">Id of the flow. This can be used for identification in debugging. Defaults to the flow name.</param>
         /// <returns>The current FlowComponentBuilder instance.</returns>
-        IFlowComponentBuilder<T> AddFlow(string name);
+        IFlowComponentBuilder<T> AddFlow(string name, string id = null);
 
         /// <summary>
         /// Adds a previously registered flow by name as a child of this node.
         /// </summary>
         /// <param name="name">The name of the flow to add.</param>
+        /// <param name="id">Id of the flow. This can be used for identification in debugging. Defaults to the flow name.</param>
         /// <returns>The current FlowComponentBuilder instance.</returns>
-        IFlowComponentBuilder<T> AddFlow<TNode>(string name);
+        IFlowComponentBuilder<T> AddFlow<TNode>(string name, string id = null);
 
         /// <summary>
         /// Adds a child node to this flow.
         /// </summary>
         /// <typeparam name="TNode">Type of the node to add.</typeparam>
         /// <param name="name">Optional name of the node if needed to find in IOC container.</param>
+        /// <param name="id">Id of the node. This can be used for identification in debugging. Defaults to the node type with the name if included.</param>
         /// <returns>The current FlowComponentBuilder instance.</returns>
-        IFlowComponentBuilder<T> AddChild<TNode>(string name = null) where TNode : INode<T>;
+        IFlowComponentBuilder<T> AddChild<TNode>(string name = null, string id = null) where TNode : INode<T>;
 
         /// <summary>
         /// Adds a child node to this flow.
         /// </summary>
         /// <param name="nodeType">Type of the node to add.</param>
         /// <param name="name">Optional name of the node if needed to find in IOC container.</param>
+        /// <param name="id">Id of the node. This can be used for identification in debugging. Defaults to the node type with the name if included.</param>
         /// <returns>The current FlowComponentBuilder instance.</returns>
-        IFlowComponentBuilder<T> AddChild(Type nodeType, string name = null);
+        IFlowComponentBuilder<T> AddChild(Type nodeType, string name = null, string id = null);
 
         /// <summary>
         /// Adds a ShouldExecuteBlock to the flowcomponent (to be added to the resultant node).
@@ -155,25 +161,27 @@ namespace Banzai.Factories
         /// Adds a previously registered flow by name as a child of this node.
         /// </summary>
         /// <param name="name">The name of the flow to add.</param>
+        /// <param name="id">Id of the flow. This can be used for identification in debugging. Defaults to the flow name.</param>
         /// <returns>The current FlowComponentBuilder instance.</returns>
-        public IFlowComponentBuilder<T> AddFlow(string name)
+        public IFlowComponentBuilder<T> AddFlow(string name, string id = null)
         {
-            return AddFlow<T>(name);
+            return AddFlow<T>(name, id);
         }
 
         /// <summary>
         /// Adds a previously registered flow by name as a child of this node.
         /// </summary>
         /// <param name="name">The name of the flow to add.</param>
+        /// <param name="id">Id of the flow. This can be used for identification in debugging. Defaults to the flow name.</param>
         /// <returns>The current FlowComponentBuilder instance.</returns>
-        public IFlowComponentBuilder<T> AddFlow<TNode>(string name)
+        public IFlowComponentBuilder<T> AddFlow<TNode>(string name, string id = null)
         {
             Guard.AgainstNullOrEmptyArgument("name", name);
 
             if (!typeof(IMultiNode<T>).IsAssignableFrom(_component.Type))
                 throw new InvalidOperationException("In order to have children, nodeType must be assignable to IMultiNode<T>.");
 
-            _component.AddChild(new FlowComponent<T> { Type = typeof(TNode), Name = name, IsFlow = true });
+            _component.AddChild(new FlowComponent<T> { Type = typeof(TNode), Name = name, IsFlow = true, Id = string.IsNullOrEmpty(id)?name:id });
             return this;
         }
 
@@ -182,10 +190,11 @@ namespace Banzai.Factories
         /// </summary>
         /// <typeparam name="TNode">Type of the node to add.</typeparam>
         /// <param name="name">Optional name of the node if needed to find in IOC container.</param>
+        /// <param name="id">Id of the flow.  This can be used for identification in debugging.  Flows default to the flow name.</param>
         /// <returns>The current FlowComponentBuilder instance.</returns>
-        public IFlowComponentBuilder<T> AddRoot<TNode>(string name = null) where TNode : INode<T>
+        public IFlowComponentBuilder<T> AddRoot<TNode>(string name = null, string id = null) where TNode : INode<T>
         {
-            return AddRoot(typeof(TNode), name);
+            return AddRoot(typeof(TNode), name, id);
         }
 
         /// <summary>
@@ -193,8 +202,9 @@ namespace Banzai.Factories
         /// </summary>
         /// <param name="nodeType">Type of the node to add.</param>
         /// <param name="name">Optional name of the node if needed to find in IOC container.</param>
+        /// <param name="id">Id of the flow.  This can be used for identification in debugging.  Flows default to the flow name.</param>
         /// <returns>The current FlowComponentBuilder instance.</returns>
-        public IFlowComponentBuilder<T> AddRoot(Type nodeType, string name = null)
+        public IFlowComponentBuilder<T> AddRoot(Type nodeType, string name = null, string id = null)
         {
             if (!_component.IsFlow)
                 throw new InvalidOperationException("This method is only valid for flow components.");
@@ -202,7 +212,7 @@ namespace Banzai.Factories
             if (!typeof(INode<T>).IsAssignableFrom(nodeType))
                 throw new ArgumentException("nodeType must be assignable to INode<T>.", "nodeType");
 
-            var child = _component.AddChild(new FlowComponent<T> { Type = nodeType, Name = name });
+            var child = _component.AddChild(new FlowComponent<T> { Type = nodeType, Name = name, Id = string.IsNullOrEmpty(id)?name:id });
             return new FlowComponentBuilder<T>(child);
         }
 
@@ -211,10 +221,11 @@ namespace Banzai.Factories
         /// </summary>
         /// <typeparam name="TNode">Type of the node to add.</typeparam>
         /// <param name="name">Optional name of the node if needed to find in IOC container.</param>
+        /// <param name="id">Id of the node. This can be used for identification in debugging. Defaults to the node type with the name if included.</param>
         /// <returns>The current FlowComponentBuilder instance.</returns>
-        public IFlowComponentBuilder<T> AddChild<TNode>(string name = null) where TNode : INode<T>
+        public IFlowComponentBuilder<T> AddChild<TNode>(string name = null, string id = null) where TNode : INode<T>
         {
-            return AddChild(typeof(TNode), name);
+            return AddChild(typeof(TNode), name, id);
         }
 
         /// <summary>
@@ -222,8 +233,9 @@ namespace Banzai.Factories
         /// </summary>
         /// <param name="nodeType">Type of the node to add.</param>
         /// <param name="name">Optional name of the node if needed to find in IOC container.</param>
+        /// <param name="id">Id of the node. This can be used for identification in debugging. Defaults to the node type with the name if included.</param>
         /// <returns>The current FlowComponentBuilder instance.</returns>
-        public IFlowComponentBuilder<T> AddChild(Type nodeType, string name = null)
+        public IFlowComponentBuilder<T> AddChild(Type nodeType, string name = null, string id = null)
         {
             if (!typeof(INode<T>).IsAssignableFrom(nodeType))
                 throw new ArgumentException("nodeType must be assignable to INode<T>.", "nodeType");
@@ -231,7 +243,15 @@ namespace Banzai.Factories
             if (!typeof(IMultiNode<T>).IsAssignableFrom(_component.Type))
                 throw new InvalidOperationException("In order to have children, nodeType must be assignable to IMultiNode<T>.");
 
-            _component.AddChild(new FlowComponent<T> { Type = nodeType, Name = name });
+            if (string.IsNullOrEmpty(id))
+            {
+                id = nodeType.FullName;
+
+                if (!string.IsNullOrEmpty(name))
+                    id += ":" + name;
+            }
+
+            _component.AddChild(new FlowComponent<T> { Type = nodeType, Name = name, Id = id });
             return this;
         }
 

@@ -27,7 +27,7 @@ namespace Banzai.Autofac.Test
 
             var factory = container.Resolve<INodeFactory<object>>();
 
-            var flowRootNode = factory.GetFlow("TestFlow1");
+            var flowRootNode = factory.BuildFlow("TestFlow1");
             ObjectAssertExtensions.ShouldEqual(flowRootNode.CustomData, "TestData");
         }
 
@@ -49,7 +49,7 @@ namespace Banzai.Autofac.Test
 
             var factory = container.Resolve<INodeFactory<object>>();
 
-            var flowRootNode = factory.GetFlow("TestFlow1");
+            var flowRootNode = factory.BuildFlow("TestFlow1");
             ObjectAssertExtensions.ShouldEqual(flowRootNode.CustomData.Test, "Test");
             ObjectAssertExtensions.ShouldEqual(flowRootNode.CustomData.Thang, "Thang");
         }

@@ -1,6 +1,6 @@
 ﻿using System;
 using Banzai.Factories;
-using Banzai.Serialization;
+using Banzai.Json;
 using Ninject;
 using NUnit.Framework;
 using Should;
@@ -46,7 +46,7 @@ namespace Banzai.Ninject.Test
 
             var factory = kernel.Get<INodeFactory<object>>();
 
-            var flow = factory.GetFlow("TestFlow1");
+            var flow = factory.BuildFlow("TestFlow1");
 
             flow.ShouldNotBeNull();
         }
@@ -75,7 +75,7 @@ namespace Banzai.Ninject.Test
         [Test]
         public void Simple_Flow_Is_Built_With_NodeFactory_And_Json_Serializer()
         {
-            Json.Registrar.RegisterAsDefault();
+            Registrar.RegisterAsDefault();
             var kernel = new StandardKernel();
             kernel.RegisterBanzaiNodes(GetType().Assembly, true);
 
@@ -89,7 +89,7 @@ namespace Banzai.Ninject.Test
 
             var factory = kernel.Get<INodeFactory<object>>();
 
-            var flow = factory.BuildFlow(serialized);
+            var flow = factory.BuildSerializedFlow(serialized);
 
             flow.ShouldNotBeNull();
         }
@@ -97,7 +97,7 @@ namespace Banzai.Ninject.Test
         [Test]
         public void Flow_Builder_Is_Hydrated_And_Flow_Built_From_Json_Serializer()
         {
-            Json.Registrar.RegisterAsDefault();
+            Registrar.RegisterAsDefault();
             var kernel = new StandardKernel();
             kernel.RegisterBanzaiNodes(GetType().Assembly, true);
 
@@ -141,7 +141,7 @@ namespace Banzai.Ninject.Test
 
             var factory = kernel.Get<INodeFactory<object>>();
 
-            var flow = (IPipelineNode<object>)factory.GetFlow("TestFlow1");
+            var flow = (IPipelineNode<object>)factory.BuildFlow("TestFlow1");
 
             flow.ShouldBeType<PipelineNode<object>>();
             flow.Children.Count.ShouldEqual(3);
@@ -174,10 +174,10 @@ namespace Banzai.Ninject.Test
 
             var factory = kernel.Get<INodeFactory<object>>();
 
-            var flow = factory.GetFlow("TestFlow1");
+            var flow = factory.BuildFlow("TestFlow1");
             flow.ShouldNotBeNull();
 
-            flow = factory.GetFlow("TestFlow2");
+            flow = factory.BuildFlow("TestFlow2");
             flow.ShouldNotBeNull();
         }
 
@@ -206,7 +206,7 @@ namespace Banzai.Ninject.Test
 
             var factory = kernel.Get<INodeFactory<object>>();
 
-            var flow = (IPipelineNode<object>)factory.GetFlow("TestFlow1");
+            var flow = (IPipelineNode<object>)factory.BuildFlow("TestFlow1");
 
             flow.ShouldBeType<PipelineNode<object>>();
             flow.Children.Count.ShouldEqual(2);
@@ -227,7 +227,6 @@ namespace Banzai.Ninject.Test
                 .AddRoot<ITestNode4>();
 
             Assert.Throws<InvalidOperationException>(() => componentBuilder.AddChild<ITestNode4>());
-
         }
 
         [Test]

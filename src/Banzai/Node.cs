@@ -15,6 +15,16 @@ namespace Banzai
     public interface INode<in T>
     {
         /// <summary>
+        /// Id of the current node, can be set to help with debugging.  Defaults to the node type name.
+        /// </summary>
+        string Id { get; set; }
+
+        /// <summary>
+        /// Id of the current flow, can be set to help with debugging.
+        /// </summary>
+        string FlowId { get; set; }
+
+        /// <summary>
         /// Gets the local options associated with this node.  These options will apply only to the current node.
         /// </summary>
         ExecutionOptions LocalOptions { get; }
@@ -95,11 +105,14 @@ namespace Banzai
     /// <typeparam name="T">Type that the pipeline acts upon.</typeparam>
     public abstract class Node<T> : INode<T>
     {
+        private string _id;
+
         /// <summary>
         /// Creates a new Node.
         /// </summary>
         protected Node()
         {
+            _id = GetType().FullName;
         }
 
         /// <summary>
@@ -110,6 +123,20 @@ namespace Banzai
         {
             LocalOptions = localOptions;
         }
+
+        /// <summary>
+        /// Id of the current node, can be set to help with debugging.  Defaults to the node type name.
+        /// </summary>
+        public virtual string Id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+
+        /// <summary>
+        /// Id of the current flow, can be set to help with debugging.
+        /// </summary>
+        public virtual string FlowId { get; set; }
 
         /// <summary>
         /// Local options which override the global options when this Node is run.  Applies only to the current node.
@@ -142,7 +169,6 @@ namespace Banzai
             LogWriter.Debug("Resetting the node.");
             Status = NodeRunStatus.NotRun;
         }
-
 
         /// <summary>
         /// Gets or sets the block to define if this node should be executed.
@@ -191,7 +217,7 @@ namespace Banzai
                 nodeTimer.LogStart(LogWriter, this, "ExecuteManySeriallyAsync");
                 var subjectList = subjects.ToList();
 
-                var aggregateResult = new NodeResult(default(T));
+                var aggregateResult = new NodeResult(default(T), Id, FlowId);
 
                 if (subjectList.Count == 0)
                     return aggregateResult;
@@ -248,7 +274,7 @@ namespace Banzai
             try
             {
                 nodeTimer.LogStart(LogWriter, this, "ExecuteManyAsync");
-                var aggregateResult = new NodeResult(default(T));
+                var aggregateResult = new NodeResult(default(T), Id, FlowId);
 
                 var subjectList = subjects.ToList();
 
@@ -316,7 +342,7 @@ namespace Banzai
                 }
 
                 var subject = sourceContext.Subject;
-                var result = new NodeResult(subject);
+                var result = new NodeResult(subject, Id, FlowId);
 
                 IExecutionContext<T> context = PrepareExecutionContext(sourceContext, result);
 

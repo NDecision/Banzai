@@ -25,7 +25,7 @@ namespace Banzai.Ninject.Test
 
             var factory = kernel.Get<INodeFactory<object>>();
 
-            var flowRootNode = factory.GetFlow("TestFlow1");
+            var flowRootNode = factory.BuildFlow("TestFlow1");
             ObjectAssertExtensions.ShouldEqual(flowRootNode.CustomData, "TestData");
         }
 
@@ -45,7 +45,7 @@ namespace Banzai.Ninject.Test
 
             var factory = kernel.Get<INodeFactory<object>>();
 
-            var flowRootNode = factory.GetFlow("TestFlow1");
+            var flowRootNode = factory.BuildFlow("TestFlow1");
             ObjectAssertExtensions.ShouldEqual(flowRootNode.CustomData.Test, "Test");
             ObjectAssertExtensions.ShouldEqual(flowRootNode.CustomData.Thang, "Thang");
         }

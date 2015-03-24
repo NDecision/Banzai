@@ -106,7 +106,7 @@ namespace Banzai.Factories
         /// </summary>
         /// <param name="name">Name of flow to return.</param>
         /// <returns>Flow matching the requested criteria.</returns>
-        INode<T> GetFlow(string name);
+        INode<T> BuildFlow(string name);
 
         /// <summary>
         /// Builds a flow matching the specified flow component.
@@ -120,7 +120,7 @@ namespace Banzai.Factories
         /// </summary>
         /// <param name="serializedFlow">Serialized definition of the flow to build.</param>
         /// <returns>Flow matching the requested flow root.</returns>
-        INode<T> BuildFlow(string serializedFlow);
+        INode<T> BuildSerializedFlow(string serializedFlow);
 
     }
 

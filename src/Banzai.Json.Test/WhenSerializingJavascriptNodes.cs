@@ -134,7 +134,7 @@ namespace Banzai.Json.Test
 
             var factory = container.Resolve<INodeFactory<TestObjectA>>();
 
-            var flowRootNode = factory.GetFlow("TestFlow1");
+            var flowRootNode = factory.BuildFlow("TestFlow1");
 
             NodeResult result = await flowRootNode.ExecuteAsync(new TestObjectA());
 

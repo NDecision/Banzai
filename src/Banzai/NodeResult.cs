@@ -15,10 +15,24 @@ namespace Banzai
         /// Constructs a new NodeResult.
         /// </summary>
         /// <param name="subject">Subject operated on by the node.</param>
-        public NodeResult(object subject)
+        /// <param name="id">The id of the node that produced this result.</param>
+        /// <param name="flowId">The id of the flow that contains this node.</param>
+        public NodeResult(object subject, string id, string flowId)
         {
             Subject = subject;
+            Id = id;
+            FlowId = flowId;
         }
+
+        /// <summary>
+        /// Id of the current node, can be set to help with debugging.  Defaults to the node type name.
+        /// </summary>
+        public string Id { get; set; }
+
+        /// <summary>
+        /// Id of the current flow, can be set to help with debugging.
+        /// </summary>
+        public string FlowId { get; set; }
         
         /// <summary>
         /// Subject operated on by the node.

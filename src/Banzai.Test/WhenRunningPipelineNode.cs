@@ -4,7 +4,6 @@ using Should;
 
 namespace Banzai.Test
 {
-
     [TestFixture]
     public class WhenRunningPipelineNode
     {
@@ -50,6 +49,28 @@ namespace Banzai.Test
 
             pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
             result.ChildResults.Count().ShouldEqual(2);
+        }
+
+        [Test]
+        public async void Pipeline_Result_Ids_Equal_Node_Ids()
+        {
+            var pipelineNode = new PipelineNode<TestObjectA>{Id="PipelineNode1", FlowId = "Flow1"};
+
+            pipelineNode.AddChild(new SimpleTestNodeA1{FlowId = "Flow1"});
+            pipelineNode.AddChild(new SimpleTestNodeA2{Id = "Child2", FlowId = "Flow1"});
+
+            var testObject = new TestObjectA();
+            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
+
+            pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
+            result.FlowId.ShouldEqual("Flow1");
+            result.Id.ShouldEqual("PipelineNode1");
+            result.ChildResults.First().Id.ShouldEqual("Banzai.Test.SimpleTestNodeA1");
+            result.ChildResults.First().FlowId.ShouldEqual("Flow1");
+
+            var secondResult = result.ChildResults.FirstOrDefault(x => x.Id == "Child2");
+            secondResult.ShouldNotBeNull();
+            secondResult.FlowId.ShouldEqual("Flow1");
         }
 
         [Test]

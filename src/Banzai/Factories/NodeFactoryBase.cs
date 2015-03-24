@@ -6,7 +6,6 @@ using Banzai.Utility;
 
 namespace Banzai.Factories
 {
-
     /// <summary>
     /// Base class for untyped node factories
     /// </summary>
@@ -68,7 +67,7 @@ namespace Banzai.Factories
 
             var flowRoot = GetFlowRoot<T>(type, name);
 
-            return BuildNode(flowRoot.Children[0], flowRoot.ShouldExecuteFunc);
+            return BuildNode(flowRoot.Children[0], flowRoot.ShouldExecuteFunc, flowRoot.Id);
         }
 
         /// <summary>
@@ -80,7 +79,7 @@ namespace Banzai.Factories
         {
             Guard.AgainstNullArgument("flowRoot", flowRoot);
 
-            return BuildNode(flowRoot.Children[0], flowRoot.ShouldExecuteFunc);
+            return BuildNode(flowRoot.Children[0], flowRoot.ShouldExecuteFunc, flowRoot.Id);
         }
 
         /// <summary>
@@ -94,7 +93,7 @@ namespace Banzai.Factories
 
             FlowComponent<T> flowRoot = SerializerProvider.Serializer.Deserialize<T>(serializedFlow);
 
-            return BuildNode(flowRoot.Children[0], flowRoot.ShouldExecuteFunc);
+            return BuildNode(flowRoot.Children[0], flowRoot.ShouldExecuteFunc, flowRoot.Id);
         }
 
         /// <summary>
@@ -140,9 +139,10 @@ namespace Banzai.Factories
         /// </summary>
         /// <param name="component">Flowcomponent providing the node definition.</param>
         /// <param name="shouldExecuteFunc">Allows a ShouldExecuteAsyncFunc to be specified from the parent.</param>
+        /// <param name="parentFlowId">ID of the parent flow if it exists.</param>
         /// <returns>A constructed INode.</returns>
         protected INode<T> BuildNode<T>(FlowComponent<T> component,
-            Func<IExecutionContext<T>, Task<bool>> shouldExecuteFunc = null)
+            Func<IExecutionContext<T>, Task<bool>> shouldExecuteFunc = null, string parentFlowId = null)
         {
             INode<T> node;
             //Get the node or flow from the flowComponent
@@ -153,6 +153,12 @@ namespace Banzai.Factories
             else
             {
                 node = string.IsNullOrEmpty(component.Name) ? GetNode<T>(component.Type) : GetNode<T>(component.Type, component.Name);
+                node.FlowId = parentFlowId;
+            }
+
+            if (!string.IsNullOrEmpty(component.Id))
+            {
+                node.Id = component.Id;
             }
 
             if (component.ShouldExecuteFunc != null)
@@ -237,19 +243,6 @@ namespace Banzai.Factories
         /// <returns>Enumerable of nodes matching the requested type.</returns>
         public abstract IEnumerable<TNode> GetAllNodes<TNode>() where TNode : INode<T>;
 
-        /// <summary>
-        /// Gets a flow matching the specified name and subject type.
-        /// </summary>
-        /// <param name="name">Name of flow to return.</param>
-        /// <returns>Flow matching the requested criteria.</returns>
-        public INode<T> GetFlow(string name)
-        {
-            Guard.AgainstNullOrEmptyArgument("name", name);
-
-            var flowRoot = GetFlowRoot(name);
-
-            return BuildNode(flowRoot.Children[0], flowRoot.ShouldExecuteFunc);
-        }
 
         /// <summary>
         /// Gets a ShouldExecuteBlock by the specified type.
@@ -257,6 +250,22 @@ namespace Banzai.Factories
         /// <param name="type">Type of the ShouldExecuteBlock to return.</param>
         /// <returns>The block matching the type.</returns>
         public abstract IShouldExecuteBlock<T> GetShouldExecuteBlock(Type type);
+
+
+        /// <summary>
+        /// Builds a flow matching the specified name and subject type.
+        /// </summary>
+        /// <param name="name">Name of flow to return.</param>
+        /// <returns>Flow matching the requested criteria.</returns>
+        public INode<T> BuildFlow(string name)
+        {
+            Guard.AgainstNullOrEmptyArgument("name", name);
+
+            var flowRoot = GetFlowRoot(name);
+
+            return BuildFlow(flowRoot);
+        }
+
 
         /// <summary>
         /// Builds a flow matching the specified flow component.
@@ -267,7 +276,7 @@ namespace Banzai.Factories
         {
             Guard.AgainstNullArgument("flowRoot", flowRoot);
 
-            return BuildNode(flowRoot.Children[0], flowRoot.ShouldExecuteFunc);
+            return BuildNode(flowRoot.Children[0], flowRoot.ShouldExecuteFunc, flowRoot.Id);
         }
 
         /// <summary>
@@ -275,13 +284,13 @@ namespace Banzai.Factories
         /// </summary>
         /// <param name="serializedFlow">Serialized definition of the flow to build.</param>
         /// <returns>Flow matching the requested flow root.</returns>
-        public INode<T> BuildFlow(string serializedFlow)
+        public INode<T> BuildSerializedFlow(string serializedFlow)
         {
             Guard.AgainstNullOrEmptyArgument("serializedFlow", serializedFlow);
 
             FlowComponent<T> flowRoot = SerializerProvider.Serializer.Deserialize<T>(serializedFlow);
 
-            return BuildNode(flowRoot.Children[0], flowRoot.ShouldExecuteFunc);
+            return BuildNode(flowRoot.Children[0], flowRoot.ShouldExecuteFunc, flowRoot.Id);
         }
 
         /// <summary>
@@ -311,18 +320,25 @@ namespace Banzai.Factories
         /// </summary>
         /// <param name="component">Flowcomponent providing the node definition.</param>
         /// <param name="shouldExecuteFunc">Allows a ShouldExecuteAsyncFunc to be specified from the parent.</param>
+        /// <param name="parentFlowId">ID of the parent flow if it exists.</param>
         /// <returns>A constructed INode.</returns>
-        protected INode<T> BuildNode(FlowComponent<T> component, Func<IExecutionContext<T>, Task<bool>> shouldExecuteFunc = null)
+        protected INode<T> BuildNode(FlowComponent<T> component, Func<IExecutionContext<T>, Task<bool>> shouldExecuteFunc = null, string parentFlowId = null)
         {
             INode<T> node;
             //Get the node or flow from the flowComponent
             if (component.IsFlow)
             {
-                node = GetFlow(component.Name);
+                node = BuildFlow(component.Name);
             }
             else
             {
                 node = string.IsNullOrEmpty(component.Name) ? GetNode(component.Type) : GetNode(component.Type, component.Name);
+                node.FlowId = parentFlowId;
+            }
+
+            if (!string.IsNullOrEmpty(component.Id))
+            {
+                node.Id = component.Id;
             }
 
             if (component.ShouldExecuteFunc != null)
@@ -348,7 +364,7 @@ namespace Banzai.Factories
                 var multiNode = (IMultiNode<T>)node;
                 foreach (var childComponent in component.Children)
                 {
-                    multiNode.AddChild(BuildNode(childComponent));
+                    multiNode.AddChild(BuildNode(childComponent, parentFlowId:node.FlowId));
                 }
             }
 

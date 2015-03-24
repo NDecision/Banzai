@@ -23,7 +23,13 @@ namespace Banzai.Factories
         public Type Type { get; set; }
 
         /// <summary>
-        /// Name of the node or flow.
+        /// Id of the node or flow.  This can be used for identification in debugging.
+        /// </summary>
+        [DataMember]
+        public string Id { get; set; }
+
+        /// <summary>
+        /// Name of the node or flow.  This is used for IOC registration primarily.
         /// </summary>
         [DataMember]
         public string Name { get; set; }

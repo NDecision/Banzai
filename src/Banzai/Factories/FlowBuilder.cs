@@ -9,7 +9,6 @@ namespace Banzai.Factories
     /// <typeparam name="T">Subject type for the flow to build.</typeparam>
     public sealed class FlowBuilder<T>
     {
-        private FlowComponent<T> _rootComponent;
         private readonly IFlowRegistrar _flowRegistrar;
 
         /// <summary>
@@ -25,12 +24,13 @@ namespace Banzai.Factories
         /// Creates a flow of the specified name and current subject type (T).
         /// </summary>
         /// <param name="name">Name of the flow.</param>
+        /// <param name="id">Id of the node, if not supplied, defaults to the name.</param>
         /// <returns></returns>
-        public IFlowBuilder<T> CreateFlow(string name)
+        public IFlowBuilder<T> CreateFlow(string name, string id = null)
         {
-            _rootComponent = new FlowComponent<T> { Type = typeof(T), Name = name, IsFlow = true };
+            RootComponent = new FlowComponent<T> { Type = typeof(T), Name = name, Id = (string.IsNullOrEmpty(id) ? name : id), IsFlow = true };
 
-            return new FlowComponentBuilder<T>(_rootComponent);
+            return new FlowComponentBuilder<T>(RootComponent);
         }
 
         /// <summary>
@@ -38,13 +38,13 @@ namespace Banzai.Factories
         /// </summary>
         public void Register()
         {
-            _flowRegistrar.RegisterFlow(_rootComponent);
+            _flowRegistrar.RegisterFlow(RootComponent);
         }
 
         /// <summary>
         /// Gets/Sets the root component of this flow.
         /// </summary>
-        public FlowComponent<T> RootComponent { get { return _rootComponent; } set { _rootComponent = value; } }
+        public FlowComponent<T> RootComponent { get; set; }
 
         /// <summary>
         /// Serializes the root component using the currently registered serializer.

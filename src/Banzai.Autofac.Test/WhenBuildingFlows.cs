@@ -50,7 +50,7 @@ namespace Banzai.Autofac.Test
 
             var factory = container.Resolve<INodeFactory<object>>();
 
-            var flow = factory.GetFlow("TestFlow1");
+            var flow = factory.BuildFlow("TestFlow1");
 
             flow.ShouldNotBeNull();
         }
@@ -100,7 +100,7 @@ namespace Banzai.Autofac.Test
 
             var serialized = SerializerProvider.Serializer.Serialize(component);
 
-            var flow = factory.BuildFlow(serialized);
+            var flow = factory.BuildSerializedFlow(serialized);
 
             flow.ShouldNotBeNull();
         }
@@ -160,7 +160,7 @@ namespace Banzai.Autofac.Test
 
             var factory = container.Resolve<INodeFactory<object>>();
 
-            var flow = (IPipelineNode<object>)factory.GetFlow("TestFlow1");
+            var flow = (IPipelineNode<object>)factory.BuildFlow("TestFlow1");
 
             flow.ShouldBeType<PipelineNode<object>>();
             flow.Children.Count.ShouldEqual(3);
@@ -195,10 +195,10 @@ namespace Banzai.Autofac.Test
 
             var factory = container.Resolve<INodeFactory<object>>();
 
-            var flow = factory.GetFlow("TestFlow1");
+            var flow = factory.BuildFlow("TestFlow1");
             flow.ShouldNotBeNull();
 
-            flow = factory.GetFlow("TestFlow2");
+            flow = factory.BuildFlow("TestFlow2");
             flow.ShouldNotBeNull();
         }
 
@@ -229,7 +229,7 @@ namespace Banzai.Autofac.Test
 
             var factory = container.Resolve<INodeFactory<object>>();
 
-            var flow = (IPipelineNode<object>)factory.GetFlow("TestFlow1");
+            var flow = (IPipelineNode<object>)factory.BuildFlow("TestFlow1");
 
             flow.ShouldBeType<PipelineNode<object>>();
             flow.Children.Count.ShouldEqual(2);
