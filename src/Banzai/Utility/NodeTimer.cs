@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Banzai.Logging;
 
 namespace Banzai.Utility
@@ -11,31 +10,31 @@ namespace Banzai.Utility
     {
         private Stopwatch _stopwatch;
 
-        public string StartTimer(string typeName, string methodName)
+        public string StartTimer(dynamic instance, string methodName)
         {
             _stopwatch = Stopwatch.StartNew();
-            return string.Format("Starting stopwatch for methodName {0} of class {1}.", methodName, typeName);
+            return string.Format("Starting stopwatch for methodName {0} of class {1} with nodeId {2} from flowId {3}.", methodName, instance.GetType().FullName, instance.Id, instance.FlowId);
         }
 
-        public string StopTimer(string typeName, string methodName)
+        public string StopTimer(dynamic instance, string methodName)
         {
             if (_stopwatch != null && _stopwatch.IsRunning)
             {
                 _stopwatch.Stop();
                 var elapsed = _stopwatch.Elapsed.TotalMilliseconds;
-                return string.Format("Stopping stopwatch for methodName {0} of class {1}. Elapsed ms: {2}", methodName, typeName, elapsed);
+                return string.Format("Stopping stopwatch for methodName {0} of class {1} with nodeId {2} from flowId {3}. Elapsed ms: {4}", methodName, instance.GetType().FullName, instance.Id, instance.FlowId, elapsed);
             }
-            return string.Format("Call to stop occurred, but stopwatch not started. Class {0}, Method {1}. ", typeName, methodName);
+            return string.Format("Call to stop occurred, but stopwatch not started. Class {0}, Method {1}, NodeId {2}, FlowId {3}. ", instance.GetType().FullName, methodName, instance.Id, instance.FlowId);
         }
 
-        public void LogStart(ILogWriter logWriter, object instance, string methodName)
+        public void LogStart(ILogWriter logWriter, dynamic node, string methodName)
         {
-            logWriter.Debug(() => StartTimer(instance.GetType().FullName, methodName));
+            logWriter.Debug(() => StartTimer(node, methodName));
         }
 
-        public void LogStop(ILogWriter logWriter, object instance, string methodName)
+        public void LogStop(ILogWriter logWriter, dynamic node, string methodName)
         {
-            logWriter.Debug(() => StopTimer(instance.GetType().FullName, methodName));
+            logWriter.Debug(() => StopTimer(node, methodName));
         }
     }
 }

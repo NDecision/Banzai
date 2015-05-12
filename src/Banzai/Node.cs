@@ -8,6 +8,7 @@ using Banzai.Utility;
 
 namespace Banzai
 {
+
     /// <summary>
     /// The basic interface for a node to be run by the pipeline.
     /// </summary>
@@ -23,6 +24,7 @@ namespace Banzai
         /// Id of the current flow, can be set to help with debugging.
         /// </summary>
         string FlowId { get; set; }
+
 
         /// <summary>
         /// Gets the local options associated with this node.  These options will apply only to the current node.
@@ -53,6 +55,12 @@ namespace Banzai
         /// Gets or sets the block to define if this node should be executed.
         /// </summary>
         object ShouldExecuteBlock { get; set; }
+
+        /// <summary>
+        /// Used to reset the node to a prerun state
+        /// </summary>
+        void Reset();
+
 
         /// <summary>
         /// Determines if the node should be executed.
@@ -91,11 +99,6 @@ namespace Banzai
         /// <returns>An aggregated NodeResult.</returns>
         Task<NodeResult> ExecuteManySeriallyAsync(IEnumerable<T> subjects, ExecutionOptions options = null);
 
-        /// <summary>
-        /// Used to reset the node to a prerun state
-        /// </summary>
-        void Reset();
-
     }
 
 
@@ -105,6 +108,7 @@ namespace Banzai
     /// <typeparam name="T">Type that the pipeline acts upon.</typeparam>
     public abstract class Node<T> : INode<T>
     {
+        private bool _processManyMode;
         private string _id;
 
         /// <summary>
@@ -149,6 +153,11 @@ namespace Banzai
         public NodeRunStatus Status { get; private set; }
 
         /// <summary>
+        /// Holds a reference to the result of the most recent node execution.
+        /// </summary>
+        public NodeResult Result { get; private set; }
+
+        /// <summary>
         /// Metadata applied to the node.
         /// </summary>
         public dynamic CustomData { get; set; }
@@ -166,6 +175,7 @@ namespace Banzai
         /// </summary>
         public virtual void Reset()
         {
+            
             LogWriter.Debug("Resetting the node.");
             Status = NodeRunStatus.NotRun;
         }
@@ -181,6 +191,27 @@ namespace Banzai
         public Func<IExecutionContext<object>, Task<bool>> ShouldExecuteFunc { get; set; }
 
         /// <summary>
+        /// Gets the current effective options of this node based on the passed execution options and its own local options.
+        /// </summary>
+        /// <param name="globalOptions">Current global options (typically from the current ExecutionContext)</param>
+        /// <returns>Effective options applied to this node when it executes.</returns>
+        public ExecutionOptions GetEffectiveOptions(ExecutionOptions globalOptions)
+        {
+            if (LocalOptions != null)
+            {
+                LogWriter.Debug(
+                    "Local options detected, merging with global settings. Local Options - ContinueOnFailure:{0}, ThrowOnError:{1}",
+                    LocalOptions.ContinueOnFailure, LocalOptions.ThrowOnError);
+                return LocalOptions;
+            }
+            LogWriter.Debug(
+                "Local options not present, defaulting to global settings. Global Options - ContinueOnFailure:{0}, ThrowOnError:{1}",
+                globalOptions.ContinueOnFailure, globalOptions.ThrowOnError);
+
+            return globalOptions;
+        }
+
+        /// <summary>
         /// Determines if the current node should execute.
         /// </summary>
         /// <param name="context">Current ExecutionContext</param>
@@ -188,16 +219,6 @@ namespace Banzai
         public virtual Task<bool> ShouldExecuteAsync(IExecutionContext<T> context)
         {
             return Task.FromResult(true);
-        }
-
-        /// <summary>
-        /// Used to kick off execution of a node with a default execution context.
-        /// </summary>
-        /// <param name="subject">Subject to be moved through the node.</param>
-        /// <returns>A NodeResult</returns>
-        public async Task<NodeResult> ExecuteAsync(T subject)
-        {
-            return await ExecuteAsync(new ExecutionContext<T>(subject)).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -215,12 +236,15 @@ namespace Banzai
             try
             {
                 nodeTimer.LogStart(LogWriter, this, "ExecuteManySeriallyAsync");
+
+                _processManyMode = true;
+
                 var subjectList = subjects.ToList();
 
-                var aggregateResult = new NodeResult(default(T), Id, FlowId);
+                Result = new NodeResult(default(T), Id, FlowId);
 
                 if (subjectList.Count == 0)
-                    return aggregateResult;
+                    return Result;
 
                 if (options == null)
                     options = new ExecutionOptions();
@@ -231,10 +255,9 @@ namespace Banzai
                     {
                         LogWriter.Debug("Running all subjects asynchronously in a serial manner.");
 
-                        NodeResult result =
-                            await ExecuteAsync(new ExecutionContext<T>(subject, options)).ConfigureAwait(false);
+                        NodeResult result = await ExecuteAsync(new ExecutionContext<T>(subject, options)).ConfigureAwait(false);
 
-                        aggregateResult.AddChildResult(result);
+                        Result.AddChildResult(result);
                     }
                     catch (Exception)
                     {
@@ -249,12 +272,13 @@ namespace Banzai
                     }
                 }
 
-                ProcessExecuteManyResults(options, aggregateResult);
+                ProcessExecuteManyResults(options);
 
-                return aggregateResult;
+                return Result;
             }
             finally
             {
+                _processManyMode = false;
                 nodeTimer.LogStop(LogWriter, this, "ExecuteAsync");
             }
         }
@@ -274,12 +298,13 @@ namespace Banzai
             try
             {
                 nodeTimer.LogStart(LogWriter, this, "ExecuteManyAsync");
-                var aggregateResult = new NodeResult(default(T), Id, FlowId);
+                _processManyMode = true;
+                Result = new NodeResult(default(T), Id, FlowId);
 
                 var subjectList = subjects.ToList();
 
                 if (subjectList.Count == 0)
-                    return aggregateResult;
+                    return Result;
 
                 if (options == null)
                     options = new ExecutionOptions();
@@ -295,7 +320,7 @@ namespace Banzai
 
                     await aggregateTask;
 
-                    aggregateResult.AddChildResults(resultsQueue);
+                    Result.AddChildResults(resultsQueue);
                 }
                 catch
                 {
@@ -308,15 +333,26 @@ namespace Banzai
                     }
                 }
 
-                ProcessExecuteManyResults(options, aggregateResult);
-                return aggregateResult;
+                ProcessExecuteManyResults(options);
+                return Result;
 
             }
             finally
             {
+                _processManyMode = false;
                 nodeTimer.LogStop(LogWriter, this, "ExecuteAsync");
             }
 
+        }
+
+        /// <summary>
+        /// Used to kick off execution of a node with a new default execution context.
+        /// </summary>
+        /// <param name="subject">Subject to be moved through the node.</param>
+        /// <returns>A NodeResult</returns>
+        public async Task<NodeResult> ExecuteAsync(T subject)
+        {
+            return await ExecuteAsync(new ExecutionContext<T>(subject)).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -343,6 +379,8 @@ namespace Banzai
 
                 var subject = sourceContext.Subject;
                 var result = new NodeResult(subject, Id, FlowId);
+                if (!_processManyMode)
+                    Result = result;
 
                 IExecutionContext<T> context = PrepareExecutionContext(sourceContext, result);
 
@@ -350,7 +388,6 @@ namespace Banzai
 
                 if (!context.CancelProcessing)
                 {
-
                     var effectiveOptions = GetEffectiveOptions(context.GlobalOptions);
 
                     if (! await ShouldExecuteInternalAsync(context).ConfigureAwait(false))
@@ -398,28 +435,6 @@ namespace Banzai
         }
 
         /// <summary>
-        /// Gets the current effective options of this node based on the passed execution options and its own local options.
-        /// </summary>
-        /// <param name="globalOptions">Current global options (typically from the current ExecutionContext)</param>
-        /// <returns>Effective options applied to this node when it executes.</returns>
-        public ExecutionOptions GetEffectiveOptions(ExecutionOptions globalOptions)
-        {
-            if (LocalOptions != null)
-            {
-                LogWriter.Debug(
-                    "Local options detected, merging with global settings. Local Options - ContinueOnFailure:{0}, ThrowOnError:{1}",
-                    LocalOptions.ContinueOnFailure, LocalOptions.ThrowOnError);
-                return LocalOptions;
-            }
-            LogWriter.Debug(
-                "Local options not present, defaulting to global settings. Global Options - ContinueOnFailure:{0}, ThrowOnError:{1}",
-                globalOptions.ContinueOnFailure, globalOptions.ThrowOnError);
-
-            return globalOptions;
-        }
-
-
-        /// <summary>
         /// Method to override to provide functionality to the current node.
         /// </summary>
         /// <param name="context">Current execution context.</param>
@@ -433,13 +448,12 @@ namespace Banzai
         /// Prepares the execution context before the current node is run.
         /// </summary>
         /// <param name="context">Source context for preparation.</param>
-        /// <param name="currentResult">A referene to the result of the current node.</param>
+        /// <param name="result">The result reference to add to the current context.</param>
         /// <returns>The execution context to be used in node execution.</returns>
-        protected virtual IExecutionContext<T> PrepareExecutionContext(IExecutionContext<T> context,
-            NodeResult currentResult)
+        protected virtual IExecutionContext<T> PrepareExecutionContext(IExecutionContext<T> context, NodeResult result)
         {
             LogWriter.Debug("Preparing the execution context for execution.");
-            context.AddResult(currentResult);
+            context.AddResult(result);
 
             return context;
         }
@@ -460,6 +474,19 @@ namespace Banzai
         {
         }
 
+        private void ProcessExecuteManyResults(ExecutionOptions options)
+        {
+            Result.Status = Result.ChildResults.AggregateNodeResults(options);
+
+            var exceptions = Result.GetFailExceptions().ToList();
+            if (exceptions.Count > 0)
+            {
+                LogWriter.Info("Child executions returned {0} exceptions.", exceptions.Count);
+                Result.Exception = exceptions.Count == 1 ? exceptions[0] : new AggregateException(exceptions);
+            }
+
+        }
+
         private async Task<bool> ShouldExecuteInternalAsync(IExecutionContext<T> context)
         {
             bool shouldExecute = true;
@@ -474,19 +501,6 @@ namespace Banzai
                 shouldExecute = await ShouldExecuteAsync(context).ConfigureAwait(false);
 
             return shouldExecute;
-        }
-
-        private void ProcessExecuteManyResults(ExecutionOptions options, NodeResult aggregateResult)
-        {
-            aggregateResult.Status = aggregateResult.ChildResults.AggregateNodeResults(options);
-
-            var exceptions = aggregateResult.GetFailExceptions().ToList();
-            if (exceptions.Count > 0)
-            {
-                LogWriter.Info("Child executions returned {0} exceptions.", exceptions.Count);
-                aggregateResult.Exception = exceptions.Count == 1 ? exceptions[0] : new AggregateException(exceptions);
-            }
-
         }
 
     }

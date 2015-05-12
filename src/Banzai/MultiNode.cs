@@ -123,14 +123,14 @@ namespace Banzai
         /// Prepares the execution context before the current node is run.
         /// </summary>
         /// <param name="context">Source context for preparation.</param>
-        /// <param name="currentResult">A referene to the result of the current node.</param>
+        /// <param name="result">The result reference to add to the current context.</param>
         /// <returns>The execution context to be used in node execution.</returns>
-        protected override sealed IExecutionContext<T> PrepareExecutionContext(IExecutionContext<T> context, NodeResult currentResult)
+        protected override sealed IExecutionContext<T> PrepareExecutionContext(IExecutionContext<T> context, NodeResult result)
         {
             LogWriter.Debug("Preparing execution context.");
-            var resultContext = new ExecutionContext<T>(context, currentResult);
+            var resultContext = new ExecutionContext<T>(context, result);
 
-            context.AddResult(currentResult);
+            context.AddResult(result);
 
             return resultContext;
         }

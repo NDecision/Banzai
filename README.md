@@ -1,7 +1,6 @@
 ![Banzai Pipeline Image](http://upload.wikimedia.org/wikipedia/commons/0/03/Empty_wave_at_Banzai_Pipeline.jpeg)
 
-##Banzai!! - Your Simple Pipeline Solution
-
+##Banzai!! - Your Simple Pipeline Solution - 2.0
 [![Build status](https://ci.appveyor.com/api/projects/status/nbwvadetke6kx5ua)](https://ci.appveyor.com/project/eswann/banzai)
 
 Banzai is an easy .Net pipeline solution that contains composable nodes for constructing simple and complex pipelines.  
@@ -12,7 +11,25 @@ Banzai is optimal for setting up business pipelines which have operations that b
 Of course it can be used to organize code regardless of external I/O, but it's performance advantage is primarily based on async and the pipeline pattern is a good way 
 to force some organizational constraints on processing pipelines, such as applying rules or transformations to a subject.
 
-##Basic Concept 
+
+### What's new with 2.0
+The main updates so far to the 2.0 branch are:
+
+- All non-async convenience methods are gone.  These were methods for those that didn't want to work in the async paradigm, 
+but people just need to learn how to handle this on their own.  It's becoming less important with so much server-side code embracing async.
+This is a breaking change, hence the move to 2.0.
+- More information to help with debugging.  
+    - Nodes and flows may now have an assigned ID and FlowID. This helps primarily when 
+    building flows using the fluent interface or via JSON. Logging and debugging of these items can be very tedious when 
+    you can only tell that you're inside of a pipleline node.  Now you should be able to example the Id and FlowId properties of generic nodes
+    to better understand what is currently executing.
+    - Nodes now reference their result using the Result property. Now when debugging a node, you can look at the Result of the 
+    current node to understand the current result status of the node. The result will reflect the current or last time 
+    the node was executed.
+- Although [ShouldExecute blocks](#ShouldExecuteBlocks) were present in the previous version, they were not documented. This documentation has now been added.
+    
+
+##Basic Concepts
 Flows are composed from nodes of which there are a few types explained below.  Nodes are [composed into simple or complex flows](#building-flows) and then 
 [executed on the flow subject](#running-nodes).  All flows accept a Subject Type (T). This the type of the subject that is acted upon by the flow.  
 All Node methods that are either overridden or provided via a function accept an [ExecutionContext](#executioncontext).  
@@ -174,6 +191,24 @@ Or
         TransitionSourceFunc = ctxt => new TestObjectB()
     });
 
+###ShouldExecuteBlock
+In some cases, you would like to create a reusable rule to determine if a node should execute, but keep the logic independent
+of the node itself.  In this case, there is the ShouldExecuteBlock.  This block provides one method to implement, ShouldExecuteAsync, 
+which returns a true or false:
+
+    public class ShouldNotExecuteBlockA : ShouldExecuteBlock<TestObjectA>
+    {
+        public override Task<bool> ShouldExecuteAsync(IExecutionContext<TestObjectA> context)
+        {
+            return Task.FromResult(false);
+        }
+    }
+
+To use the ShouldExecuteBlock, call the AddShouldExecuteBlock method of the Node:
+    
+    var node = new FuncNode<TestObjectA>();
+    node.AddShouldExecuteBlock(new ShouldNotExecuteBlockA());
+
 
 ##Running Nodes
 In order to run a node, you can call one of the following methods, which exist on all nodes:
@@ -216,7 +251,8 @@ Defaults to false.
 <b>DegreeOfParallelism</b> - The maximum number of parallel operations that are used to process the subjects when calling [ExecuteManyAsync](#running-nodes).
 
 ###NodeResult
-When a node executes, it returns a NodeResult.  The NodeResult will contain:
+When a node executes, it returns a NodeResult and also exposes the current or last NodeResult in the Result property.  
+The NodeResult will contain:
 
 <b>NodeResultStatus</b> - Represents the status of this node.  If this is a parent node, it represents a rollup status of all child nodes.
 
@@ -367,7 +403,9 @@ adding both nodes and subflows.  Once a flow is registered, it can be accessed f
 
 <b>ForParent</b> - Changes the FlowComponentBuilder context to the parent of the current node.
 
-<b>SetShouldExecute/SetShouldExecuteAsync</b> - Allows a ShouldExecute function to be set on the fly when building a flow with flowbuilder.
+<b>SetShouldExecuteBlock</b> - Sets the type of the ShouldExecuteBlock to apply to running this node.
+
+<b>SetShouldExecute</b> - Allows a ShouldExecute function to be set on the fly when building a flow with flowbuilder.
 
 <b>Register</b> - Must be called to indicate the flow definition as been completed and to register the flow with the container. 
 
