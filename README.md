@@ -18,6 +18,25 @@ The main updates so far to the 2.0 branch are:
 - All non-async convenience methods are gone.  These were methods for those that didn't want to work in the async paradigm, 
 but people just need to learn how to handle this on their own.  It's becoming less important with so much server-side code embracing async.
 This is a breaking change, hence the move to 2.0.
+- So what do I do if I override a method and my implementation isn't async?  
+The best approach currently is to perform a Task.FromResult(result). Task.Result doesn't incur scheduler overhead.  
+This is what Banzai was previously doing internally.
+    
+ShouldExecute:
+
+    public override Task<bool> ShouldExecuteAsync(IExecutionContext<SubjectA> context)
+    {
+         return Task.FromResult(context.subject.SomeBooleanPropertyToEvaluate);
+    } 
+
+PerformExecute:
+
+    protected override Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<CartSubject> context)
+    {
+        //Do something synchronous here...
+        return Task.FromResult(NodeResultStatus.Succeeded);
+    }
+
 - More information to help with debugging.  
     - Nodes and flows may now have an assigned ID and FlowID. This helps primarily when 
     building flows using the fluent interface or via JSON. Logging and debugging of these items can be very tedious when 
