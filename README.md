@@ -19,7 +19,7 @@ The main updates so far to the 2.0 branch are:
 but people just need to learn how to handle this on their own.  It's becoming less important with so much server-side code embracing async.
 This is a breaking change, hence the move to 2.0.
 - So what do I do if I override a method and my implementation isn't async?  
-The best approach currently is to perform a Task.FromResult(result). Task.Result doesn't incur scheduler overhead.  
+The best approach currently is to perform a Task.FromResult(result). Task.FromResult doesn't incurr scheduler overhead.  
 This is what Banzai was previously doing internally.
     
 ShouldExecute:
