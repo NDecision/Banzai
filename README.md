@@ -26,7 +26,7 @@ This is a breaking change, hence the move to 2.0.
     - Nodes now reference their result using the Result property. Now when debugging a node, you can look at the Result of the 
     current node to understand the current result status of the node. The result will reflect the current or last time 
     the node was executed.
-- Although [ShouldExecute blocks](#ShouldExecuteBlocks) were present in the previous version, they were not documented. This documentation has now been added.
+- Although [ShouldExecute blocks](#should-execute-blocks) were present in the previous version, they were not documented. This documentation has now been added.
     
 
 ##Basic Concepts
@@ -191,7 +191,7 @@ Or
         TransitionSourceFunc = ctxt => new TestObjectB()
     });
 
-###ShouldExecuteBlock
+###Should Execute Blocks
 In some cases, you would like to create a reusable rule to determine if a node should execute, but keep the logic independent
 of the node itself.  In this case, there is the ShouldExecuteBlock.  This block provides one method to implement, ShouldExecuteAsync, 
 which returns a true or false:
