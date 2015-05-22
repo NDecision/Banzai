@@ -94,7 +94,7 @@ namespace Banzai.Autofac.Test
             var flow = factory.BuildFlow("TestFlow1");
             flow.FlowId.ShouldEqual("TestFlow1");
             flow.Id.ShouldEqual("Banzai.Autofac.Test.TestPipelineNode1");
-            ((IMultiNode<object>)flow).Children[0].Id.ShouldEqual("Banzai.Autofac.Test.ITestNode2");
+            ((IMultiNode<object>)flow).Children[0].Id.ShouldEqual("Banzai.Autofac.Test.TestNode2");
         }
 
         [Test]
@@ -138,7 +138,7 @@ namespace Banzai.Autofac.Test
             var flow = factory.BuildFlow(component);
             flow.FlowId.ShouldEqual("TestFlow1");
             flow.Id.ShouldEqual("Banzai.Autofac.Test.TestPipelineNode1");
-            ((IMultiNode<object>)flow).Children[0].Id.ShouldEqual("Banzai.Autofac.Test.ITestNode2");
+            ((IMultiNode<object>)flow).Children[0].Id.ShouldEqual("Banzai.Autofac.Test.TestNode2");
         }
 
         [Test]
@@ -189,7 +189,7 @@ namespace Banzai.Autofac.Test
             var flow = factory.BuildSerializedFlow(serialized);
             flow.FlowId.ShouldEqual("TestFlow1");
             flow.Id.ShouldEqual("Banzai.Autofac.Test.TestPipelineNode1");
-            ((IMultiNode<object>)flow).Children[0].Id.ShouldEqual("Banzai.Autofac.Test.ITestNode2");
+            ((IMultiNode<object>)flow).Children[0].Id.ShouldEqual("Banzai.Autofac.Test.TestNode2");
         }
 
 
@@ -210,12 +210,16 @@ namespace Banzai.Autofac.Test
                 .AddChild<ITestNode2>();
 
             var serialized = flowBuilder.SerializeRootComponent();
+
+            Console.WriteLine(serialized);
+
+
             var component = flowBuilder.DeserializeAndSetRootComponent(serialized);
 
             var flow = factory.BuildFlow(component);
             flow.FlowId.ShouldEqual("TestFlow1");
             flow.Id.ShouldEqual("Banzai.Autofac.Test.TestPipelineNode1");
-            ((IMultiNode<object>)flow).Children[0].Id.ShouldEqual("Banzai.Autofac.Test.ITestNode2");
+            ((IMultiNode<object>)flow).Children[0].Id.ShouldEqual("Banzai.Autofac.Test.TestNode2");
         }
 
 

@@ -1,4 +1,5 @@
-﻿using Banzai.Factories;
+﻿using System;
+using Banzai.Factories;
 using Banzai.Serialization;
 using Ninject;
 using NUnit.Framework;
@@ -93,7 +94,7 @@ namespace Banzai.Ninject.Test
             var flow = factory.BuildFlow("TestFlow1");
             flow.FlowId.ShouldEqual("TestFlow1");
             flow.Id.ShouldEqual("Banzai.Ninject.Test.TestPipelineNode1");
-            ((IMultiNode<object>)flow).Children[0].Id.ShouldEqual("Banzai.Ninject.Test.ITestNode2");
+            ((IMultiNode<object>)flow).Children[0].Id.ShouldEqual("Banzai.Ninject.Test.TestNode2");
         }
 
         [Test]
@@ -136,7 +137,7 @@ namespace Banzai.Ninject.Test
             var flow = factory.BuildFlow(component);
             flow.FlowId.ShouldEqual("TestFlow1");
             flow.Id.ShouldEqual("Banzai.Ninject.Test.TestPipelineNode1");
-            ((IMultiNode<object>)flow).Children[0].Id.ShouldEqual("Banzai.Ninject.Test.ITestNode2");
+            ((IMultiNode<object>)flow).Children[0].Id.ShouldEqual("Banzai.Ninject.Test.TestNode2");
         }
 
         [Test]
@@ -183,7 +184,7 @@ namespace Banzai.Ninject.Test
             var flow = factory.BuildSerializedFlow(serialized);
             flow.FlowId.ShouldEqual("TestFlow1");
             flow.Id.ShouldEqual("Banzai.Ninject.Test.TestPipelineNode1");
-            ((IMultiNode<object>)flow).Children[0].Id.ShouldEqual("Banzai.Ninject.Test.ITestNode2");
+            ((IMultiNode<object>)flow).Children[0].Id.ShouldEqual("Banzai.Ninject.Test.TestNode2");
         }
 
 
@@ -205,12 +206,14 @@ namespace Banzai.Ninject.Test
 
             var serialized = flowBuilder.SerializeRootComponent();
 
+            Console.WriteLine(serialized);
+
             var component = flowBuilder.DeserializeAndSetRootComponent(serialized);
 
             var flow = factory.BuildFlow(component);
             flow.FlowId.ShouldEqual("TestFlow1");
             flow.Id.ShouldEqual("Banzai.Ninject.Test.TestPipelineNode1");
-            ((IMultiNode<object>)flow).Children[0].Id.ShouldEqual("Banzai.Ninject.Test.ITestNode2");
+            ((IMultiNode<object>)flow).Children[0].Id.ShouldEqual("Banzai.Ninject.Test.TestNode2");
         }
   
     }

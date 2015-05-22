@@ -243,14 +243,6 @@ namespace Banzai.Factories
             if (!typeof(IMultiNode<T>).IsAssignableFrom(_component.Type))
                 throw new InvalidOperationException("In order to have children, nodeType must be assignable to IMultiNode<T>.");
 
-            if (string.IsNullOrEmpty(id))
-            {
-                id = nodeType.FullName;
-
-                if (!string.IsNullOrEmpty(name))
-                    id += ":" + name;
-            }
-
             _component.AddChild(new FlowComponent<T> { Type = nodeType, Name = name, Id = id });
             return this;
         }
