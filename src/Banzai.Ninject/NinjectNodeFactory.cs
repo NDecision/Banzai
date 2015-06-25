@@ -90,7 +90,7 @@ namespace Banzai.Ninject
         /// </summary>
         /// <param name="name">Name of flow to return.</param>
         /// <returns>Flow matching the requested criteria.</returns>
-        protected override FlowComponent<T> GetFlowRoot<T>(string name)
+        public override FlowComponent<T> GetFlowRoot<T>(string name)
         {
             return _resolver.Get<FlowComponent<T>>(name);
         }
@@ -222,7 +222,7 @@ namespace Banzai.Ninject
         /// </summary>
         /// <param name="name">Name of flow to return.</param>
         /// <returns>Flow matching the requested criteria.</returns>
-        protected override FlowComponent<T> GetFlowRoot(string name)
+        public override FlowComponent<T> GetFlowRoot(string name)
         {
             return _resolver.Get<FlowComponent<T>>(name);
         }

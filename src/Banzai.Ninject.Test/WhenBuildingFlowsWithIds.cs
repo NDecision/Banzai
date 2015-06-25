@@ -76,7 +76,7 @@ namespace Banzai.Ninject.Test
         }
 
         [Test]
-        public void Flow_Is_Accessed_With_NodeFactory()
+        public void Flow_Is_Built_With_NodeFactory()
         {
             var kernel = new StandardKernel();
             kernel.RegisterBanzaiNodes(GetType().Assembly, true);
@@ -98,7 +98,27 @@ namespace Banzai.Ninject.Test
         }
 
         [Test]
-        public void Flow_Accessed_With_NodeFactory_Has_Custom_Ids()
+        public void Flow_Root_Is_Retrieved_With_NodeFactory()
+        {
+            var kernel = new StandardKernel();
+            kernel.RegisterBanzaiNodes(GetType().Assembly, true);
+
+            var flowBuilder = new FlowBuilder<object>(new NinjectFlowRegistrar(kernel));
+
+            flowBuilder.CreateFlow("TestFlow1")
+                .AddRoot<IPipelineNode<object>>()
+                .AddChild<ITestNode2>();
+
+            flowBuilder.Register();
+
+            var factory = kernel.Get<INodeFactory<object>>();
+
+            var flow = factory.GetFlowRoot("TestFlow1");
+            flow.Id.ShouldEqual("TestFlow1");
+        }
+
+        [Test]
+        public void Flow_Built_With_NodeFactory_Has_Custom_Ids()
         {
             var kernel = new StandardKernel();
             kernel.RegisterBanzaiNodes(GetType().Assembly, true);

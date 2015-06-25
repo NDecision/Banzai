@@ -76,7 +76,7 @@ namespace Banzai.Autofac.Test
         }
 
         [Test]
-        public void Flow_Is_Accessed_With_NodeFactory()
+        public void Flow_Is_Built_With_NodeFactory()
         {
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
@@ -98,7 +98,28 @@ namespace Banzai.Autofac.Test
         }
 
         [Test]
-        public void Flow_Accessed_With_NodeFactory_Has_Custom_Ids()
+        public void Flow_Root_Is_Retrieved_With_NodeFactory()
+        {
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+            var flowBuilder = new FlowBuilder<object>(new AutofacFlowRegistrar(containerBuilder));
+
+            flowBuilder.CreateFlow("TestFlow1")
+                .AddRoot<IPipelineNode<object>>()
+                .AddChild<ITestNode2>();
+
+            flowBuilder.Register();
+
+            var container = containerBuilder.Build();
+            var factory = container.Resolve<INodeFactory<object>>();
+
+            var flow = factory.GetFlowRoot("TestFlow1");
+            flow.ShouldNotBeNull();
+            flow.Id.ShouldEqual("TestFlow1");
+        }
+
+        [Test]
+        public void Flow_Built_With_NodeFactory_Has_Custom_Ids()
         {
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);

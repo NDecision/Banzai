@@ -114,17 +114,17 @@ namespace Banzai.Factories
         /// <summary>
         /// Method overridden to provide a root FlowComponent based on a name.
         /// </summary>
-        /// <param name="type">Type of the flow subject.</param>
         /// <param name="name">Name of the flow root.</param>
         /// <returns>FlowComponent corresponding to the named root.</returns>
-        protected abstract dynamic GetFlowRoot<T>(Type type, string name);
+        public abstract FlowComponent<T> GetFlowRoot<T>(string name);
 
         /// <summary>
         /// Method overridden to provide a root FlowComponent based on a name.
         /// </summary>
+        /// <param name="type">Type of the flow subject.</param>
         /// <param name="name">Name of the flow root.</param>
         /// <returns>FlowComponent corresponding to the named root.</returns>
-        protected abstract FlowComponent<T> GetFlowRoot<T>(string name);
+        protected abstract dynamic GetFlowRoot<T>(Type type, string name);
 
         /// <summary>
         /// Applies metadata to the node during node construction.
@@ -298,7 +298,7 @@ namespace Banzai.Factories
         /// </summary>
         /// <param name="name">Name of the flow root.</param>
         /// <returns>FlowComponent corresponding to the named root.</returns>
-        protected abstract FlowComponent<T> GetFlowRoot(string name);
+        public abstract FlowComponent<T> GetFlowRoot(string name);
 
         /// <summary>
         /// Method overridden to provide a root FlowComponent based on a name.

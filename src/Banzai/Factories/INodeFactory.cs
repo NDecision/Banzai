@@ -49,6 +49,13 @@ namespace Banzai.Factories
         /// <returns>Flow matching the requested flow root.</returns>
         INode<T> BuildFlow<T>(string serializedFlow);
 
+        /// <summary>
+        /// Method overridden to provide a root FlowComponent based on a name.
+        /// </summary>
+        /// <param name="name">Name of the flow root.</param>
+        /// <returns>FlowComponent corresponding to the named root.</returns>
+        FlowComponent<T> GetFlowRoot<T>(string name);
+
     }
 
     /// <summary>
@@ -121,6 +128,13 @@ namespace Banzai.Factories
         /// <param name="serializedFlow">Serialized definition of the flow to build.</param>
         /// <returns>Flow matching the requested flow root.</returns>
         INode<T> BuildSerializedFlow(string serializedFlow);
+
+        /// <summary>
+        /// Method overridden to provide a root FlowComponent based on a name.
+        /// </summary>
+        /// <param name="name">Name of the flow root.</param>
+        /// <returns>FlowComponent corresponding to the named root.</returns>
+        FlowComponent<T> GetFlowRoot(string name);
 
     }
 
