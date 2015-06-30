@@ -24,7 +24,7 @@ namespace Banzai.Test
         {
             var testNode = new SimpleTestNodeA1();
 
-            var testObjectList = GetTestObjects(500);
+            var testObjectList = GetTestObjects(100);
 
             var result = await testNode.ExecuteManyAsync(testObjectList, new ExecutionOptions{ DegreeOfParallelism = 4 });
 

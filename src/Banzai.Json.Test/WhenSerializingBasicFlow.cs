@@ -11,16 +11,17 @@ namespace Banzai.Json.Test
     [TestFixture, Explicit]
     public class WhenSerializingBasicFlow
     {
-        [TestFixtureSetUp]
+        [SetUp]
         public void Setup()
         {
             //TypeAbbreviationCache.Clear();
-            TypeAbbreviationCache.RegisterFromAssembly(GetType().Assembly);
         }
 
         [Test]
         public void Simple_Flow_Is_Serialized()
         {
+            TypeAbbreviationCache.RegisterFromAssembly(GetType().Assembly, failOnCollision:false);
+            
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
 
@@ -46,6 +47,8 @@ namespace Banzai.Json.Test
         [Test]
         public void Simple_Flow_Is_Serialized_With_Abbreviations()
         {
+            TypeAbbreviationCache.RegisterFromAssembly(GetType().Assembly, failOnCollision: false);
+
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
 
@@ -65,11 +68,43 @@ namespace Banzai.Json.Test
             Console.WriteLine(definition);
 
             definition.ShouldNotBeNull().ShouldNotBeEmpty();
+            definition.ShouldNotContain("Banzai.Json.Test");
+
+        }
+
+        [Test]
+        public void Simple_Flow_Is_Serialized_With_Full_Abbreviations()
+        {
+            TypeAbbreviationCache.Clear();
+            TypeAbbreviationCache.RegisterFromAssembly(GetType().Assembly, useFullName:true, failOnCollision: false);
+
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+
+            var flowBuilder = new FlowBuilder<object>(new AutofacFlowRegistrar(containerBuilder));
+
+            flowBuilder.CreateFlow("TestFlow1")
+                .AddRoot<IPipelineNode<object>>()
+                .AddChild<ITestJsNode>()
+                .AddChild<ITestNode2>();
+
+            var rootComponent = flowBuilder.RootComponent;
+
+            var serializer = new JsonComponentSerializer();
+
+            var definition = serializer.Serialize(rootComponent);
+
+            Console.WriteLine(definition);
+
+            definition.ShouldNotBeNull().ShouldNotBeEmpty();
+            definition.ShouldContain("Banzai.Json.Test");
         }
 
         [Test]
         public void Flow_With_ShouldExecuteBlock_Is_Serialized_With_Abbreviations()
         {
+            TypeAbbreviationCache.RegisterFromAssembly(GetType().Assembly, failOnCollision: false);
+
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
 
@@ -93,8 +128,37 @@ namespace Banzai.Json.Test
         }
 
         [Test]
+        public void Flow_With_ShouldExecuteBlock_Is_Serialized_With_Full_Abbreviations()
+        {
+            TypeAbbreviationCache.RegisterFromAssembly(GetType().Assembly, useFullName:true, failOnCollision: false);
+
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+
+            var flowBuilder = new FlowBuilder<object>(new AutofacFlowRegistrar(containerBuilder));
+
+            flowBuilder.CreateFlow("TestFlow1")
+                .AddRoot<IPipelineNode<object>>().SetShouldExecuteBlock<ShouldNotExecuteTestBlock>()
+                .AddChild<ITestJsNode>()
+                .AddChild<ITestNode2>();
+
+            var rootComponent = flowBuilder.RootComponent;
+
+            var serializer = new JsonComponentSerializer();
+
+            var definition = serializer.Serialize(rootComponent);
+
+            Console.WriteLine(definition);
+
+            definition.ShouldNotBeNull().ShouldNotBeEmpty();
+            definition.ShouldContain("\"ShouldExecuteBlockType\":\"Banzai.Json.Test.ShouldNotExecuteTestBlock\"");
+        }
+
+        [Test]
         public void Simple_Flow_Is_Deserialized()
         {
+            TypeAbbreviationCache.RegisterFromAssembly(GetType().Assembly, failOnCollision: false);
+
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
 
@@ -121,6 +185,8 @@ namespace Banzai.Json.Test
         [Test]
         public void Flow_With_ShouldExecuteBlock_Is_Deserialized()
         {
+            TypeAbbreviationCache.RegisterFromAssembly(GetType().Assembly, failOnCollision: false);
+
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
 
@@ -148,6 +214,8 @@ namespace Banzai.Json.Test
         [Test]
         public async void Deserialized_Flow_Component_Can_Be_Built_And_Run()
         {
+            TypeAbbreviationCache.RegisterFromAssembly(GetType().Assembly, failOnCollision: false);
+
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
 
@@ -186,6 +254,8 @@ namespace Banzai.Json.Test
         [Test]
         public async void Deserialized_Flow_Component_With_ShouldExecuteBlock_Can_Be_Built_And_Attempted()
         {
+            TypeAbbreviationCache.RegisterFromAssembly(GetType().Assembly, failOnCollision: false);
+
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
 
