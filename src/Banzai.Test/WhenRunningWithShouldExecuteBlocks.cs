@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
+using FluentAssertions;
 using NUnit.Framework;
-using Should;
 
 namespace Banzai.Test
 {
@@ -8,7 +8,7 @@ namespace Banzai.Test
     public class WhenRunningWithShouldExecuteBlocks
     {
         [Test]
-        public async void Node_With_ShouldExecuteBlock_Should_Run()
+        public async Task Node_With_ShouldExecuteBlock_Should_Run()
         {
             var node = new FuncNode<TestObjectA>();
 
@@ -18,13 +18,13 @@ namespace Banzai.Test
             var testObject = new TestObjectA();
             NodeResult result = await node.ExecuteAsync(testObject);
 
-            node.Status.ShouldEqual(NodeRunStatus.Completed);
-            result.Status.ShouldEqual(NodeResultStatus.Succeeded);
-            result.GetSubjectAs<TestObjectA>().TestValueString.ShouldEqual("Completed");
+            node.Status.Should().Be(NodeRunStatus.Completed);
+            result.Status.Should().Be(NodeResultStatus.Succeeded);
+            result.GetSubjectAs<TestObjectA>().TestValueString.Should().Be("Completed");
         } 
 
         [Test]
-        public async void Node_With_ShouldExecuteBlock_False_Shouldnt_Run()
+        public async Task Node_With_ShouldExecuteBlock_False_Shouldnt_Run()
         {
             var node = new FuncNode<TestObjectA>();
 
@@ -34,9 +34,9 @@ namespace Banzai.Test
             var testObject = new TestObjectA();
             NodeResult result = await node.ExecuteAsync(testObject);
 
-            node.Status.ShouldEqual(NodeRunStatus.NotRun);
-            result.Status.ShouldEqual(NodeResultStatus.NotRun);
-            result.GetSubjectAs<TestObjectA>().TestValueString.ShouldBeNull();
+            node.Status.Should().Be(NodeRunStatus.NotRun);
+            result.Status.Should().Be(NodeResultStatus.NotRun);
+            result.GetSubjectAs<TestObjectA>().TestValueString.Should().BeNull();
         } 
     }
 }

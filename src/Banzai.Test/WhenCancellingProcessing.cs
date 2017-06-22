@@ -1,5 +1,6 @@
-﻿using NUnit.Framework;
-using Should;
+﻿using System.Threading.Tasks;
+using FluentAssertions;
+using NUnit.Framework;
 
 namespace Banzai.Test
 {
@@ -7,7 +8,7 @@ namespace Banzai.Test
     public class WhenCancellingProcessing
     {
         [Test]
-        public async void When_Cancelling_Pipeline_At_First_Node_Then_Status_Is_NotRun()
+        public async Task When_Cancelling_Pipeline_At_First_Node_Then_Status_Is_NotRun()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
 
@@ -21,15 +22,15 @@ namespace Banzai.Test
 
             NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
-            result.Status.ShouldEqual(NodeResultStatus.NotRun);
-            pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
+            result.Status.ShouldBeEquivalentTo(NodeResultStatus.NotRun);
+            pipelineNode.Status.ShouldBeEquivalentTo(NodeRunStatus.Completed);
 
-            testNode1.Status.ShouldEqual(NodeRunStatus.NotRun);
-            testNode2.Status.ShouldEqual(NodeRunStatus.NotRun);
+            testNode1.Status.ShouldBeEquivalentTo(NodeRunStatus.NotRun);
+            testNode2.Status.ShouldBeEquivalentTo(NodeRunStatus.NotRun);
         }
 
         [Test]
-        public async void When_Cancelling_Pipeline_At_Later_Node_Then_Status_Is_Success()
+        public async Task When_Cancelling_Pipeline_At_Later_Node_Then_Status_Is_Success()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
 
@@ -45,16 +46,16 @@ namespace Banzai.Test
 
             NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
-            result.Status.ShouldEqual(NodeResultStatus.Succeeded);
-            pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
+            result.Status.ShouldBeEquivalentTo(NodeResultStatus.Succeeded);
+            pipelineNode.Status.ShouldBeEquivalentTo(NodeRunStatus.Completed);
 
-            testNode1.Status.ShouldEqual(NodeRunStatus.Completed);
-            testNode2.Status.ShouldEqual(NodeRunStatus.NotRun);
-            testNode3.Status.ShouldEqual(NodeRunStatus.NotRun);
+            testNode1.Status.ShouldBeEquivalentTo(NodeRunStatus.Completed);
+            testNode2.Status.ShouldBeEquivalentTo(NodeRunStatus.NotRun);
+            testNode3.Status.ShouldBeEquivalentTo(NodeRunStatus.NotRun);
         }
 
         [Test]
-        public async void Parent_Pipeline_Cancels_Execution_When_Child_Pipeline_Node_Cancelled()
+        public async Task Parent_Pipeline_Cancels_Execution_When_Child_Pipeline_Node_Cancelled()
         {
             var testNode1 = new SimpleTestNodeA1();
             var testNode2 = new SimpleTestNodeA1(true, false, true);
@@ -72,13 +73,13 @@ namespace Banzai.Test
 
             NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
-            result.Status.ShouldEqual(NodeResultStatus.Succeeded);
+            result.Status.Should().Be(NodeResultStatus.Succeeded);
     
-            innerPipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
-            testNode1.Status.ShouldEqual(NodeRunStatus.Completed);
-            testNode2.Status.ShouldEqual(NodeRunStatus.NotRun);
-            pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
-            testNode3.Status.ShouldEqual(NodeRunStatus.NotRun);
+            innerPipelineNode.Status.Should().Be(NodeRunStatus.Completed);
+            testNode1.Status.Should().Be(NodeRunStatus.Completed);
+            testNode2.Status.Should().Be(NodeRunStatus.NotRun);
+            pipelineNode.Status.Should().Be(NodeRunStatus.Completed);
+            testNode3.Status.Should().Be(NodeRunStatus.NotRun);
         }
 
     }

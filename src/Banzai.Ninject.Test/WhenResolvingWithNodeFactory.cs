@@ -1,9 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Ninject;
 using Banzai.Factories;
+using FluentAssertions;
 using NUnit.Framework;
-using Should;
 
 namespace Banzai.Ninject.Test
 {
@@ -20,7 +20,7 @@ namespace Banzai.Ninject.Test
             var nodeFactory = kernel.Get<INodeFactory<object>>();
             var node = nodeFactory.GetNode<TestNode>();
 
-            node.ShouldNotBeNull();
+            node.Should().NotBeNull();
         }
 
         [Test]
@@ -32,7 +32,7 @@ namespace Banzai.Ninject.Test
             var nodeFactory = kernel.Get<INodeFactory<object>>();
             var node = nodeFactory.GetNode<ITestNode<object>>();
 
-            node.ShouldNotBeNull();
+            node.Should().NotBeNull();
         }
 
         [Test]
@@ -44,7 +44,7 @@ namespace Banzai.Ninject.Test
             var nodeFactory = kernel.Get<INodeFactory<object>>();
             var nodes = nodeFactory.GetAllNodes<INode<object>>().ToList();
 
-            nodes.Count.ShouldBeGreaterThan(1);
+            nodes.Count.Should().BeGreaterThan(1);
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace Banzai.Ninject.Test
             var nodeFactory = kernel.Get<INodeFactory<object>>();
             var node = nodeFactory.GetNode<ITestNode<object>>("TestName");
 
-            node.ShouldNotBeNull();
+            node.Should().NotBeNull();
 
             Assert.Throws<ActivationException>(() => nodeFactory.GetNode<ITestNode<object>>("TestName2"));
         }
@@ -71,7 +71,7 @@ namespace Banzai.Ninject.Test
 
             var pipelineNode = kernel.Get<PipelineNode<object>>();
 
-            pipelineNode.NodeFactory.ShouldNotBeNull();
+            pipelineNode.NodeFactory.Should().NotBeNull();
         }
 
         [Test]
@@ -84,11 +84,11 @@ namespace Banzai.Ninject.Test
 
             var retrievedNode = pipelineNode.NodeFactory.GetNode<ITestNode2>();
 
-            retrievedNode.ShouldNotBeNull();
+            retrievedNode.Should().NotBeNull();
         }
 
         [Test]
-        public async void NodeFactory_Is_Available_In_OnBeforeExecute()
+        public async Task NodeFactory_Is_Available_In_OnBeforeExecute()
         {
             var kernel = new StandardKernel();
             kernel.RegisterBanzaiNodes(GetType().Assembly, true);
@@ -97,7 +97,7 @@ namespace Banzai.Ninject.Test
 
             var result = await pipelineNode.ExecuteAsync(new object());
 
-            result.Status.ShouldEqual(NodeResultStatus.Succeeded);
+            result.Status.Should().Be(NodeResultStatus.Succeeded);
         }
 
 
@@ -110,7 +110,7 @@ namespace Banzai.Ninject.Test
             var nodeFactory = kernel.Get<INodeFactory<TestObjectA>>();
             var node = nodeFactory.GetNode<ITestTransitionNode1>();
 
-            node.ShouldNotBeNull();
+            node.Should().NotBeNull();
         }
 
         [Test]
@@ -122,7 +122,7 @@ namespace Banzai.Ninject.Test
             var nodeFactory = kernel.Get<INodeFactory<TestObjectA>>();
             var node = nodeFactory.GetNode<TestTransitionNode1>();
 
-            node.ShouldNotBeNull();
+            node.Should().NotBeNull();
         }
 
         [Test]
@@ -134,7 +134,7 @@ namespace Banzai.Ninject.Test
             var nodeFactory = kernel.Get<INodeFactory<TestObjectA>>();
             var node = nodeFactory.GetNode<ITransitionFuncNode<TestObjectA, TestObjectA>>();
 
-            node.ShouldNotBeNull();
+            node.Should().NotBeNull();
         }
 
         [Test]
@@ -146,7 +146,7 @@ namespace Banzai.Ninject.Test
             var nodeFactory = kernel.Get<INodeFactory<TestObjectA>>();
             var node = nodeFactory.GetNode<TransitionFuncNode<TestObjectA, TestObjectA>>();
 
-            node.ShouldNotBeNull();
+            node.Should().NotBeNull();
         }
 
         [Test]
@@ -160,7 +160,7 @@ namespace Banzai.Ninject.Test
 
             var childNode = node.NodeFactory.GetNode<ITestTransitionNode1>();
 
-            childNode.ShouldNotBeNull();
+            childNode.Should().NotBeNull();
         }
 
         [Test]
@@ -174,7 +174,7 @@ namespace Banzai.Ninject.Test
 
             var childNode = node.NodeFactory.GetNode<ITestTransitionNode1>();
 
-            childNode.NodeFactory.ShouldNotBeNull();
+            childNode.NodeFactory.Should().NotBeNull();
         }
 
 

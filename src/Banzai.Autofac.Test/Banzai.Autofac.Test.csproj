@@ -1,93 +1,36 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D1E838A4-FD05-49AD-9532-EF32DC1A2AB3}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Banzai.Autofac.Test</RootNamespace>
+    <TargetFrameworks>net45;net461;netstandard1.6</TargetFrameworks>
     <AssemblyName>Banzai.Autofac.Test</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <RootNamespace>Banzai.Autofac.Test</RootNamespace>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='net45'">
+    <AssemblyTitle>Banzai.Autofac.Test .NET 4.5</AssemblyTitle>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='net461'">
+    <AssemblyTitle>Banzai.Autofac.Test .NET 4.6.1</AssemblyTitle>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='netstandard1.6'">
+    <AssemblyTitle>Banzai.Autofac.Test .NET Standard 1.6</AssemblyTitle>
+  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Autofac, Version=3.4.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Autofac.3.4.0\lib\net40\Autofac.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Should">
-      <HintPath>..\packages\Should.1.1.20\lib\Should.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
+    <PackageReference Include="fluentassertions" Version="4.19.2" />
+    <PackageReference Include="nunit" Version="3.7.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Banzai.Autofac\Banzai.Autofac.csproj" />
+    <ProjectReference Include="..\Banzai.Json\Banzai.Json.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestClasses.cs" />
-    <Compile Include="WhenBuildingFlows.cs" />
-    <Compile Include="WhenBuildingFlowsWithIds.cs" />
-    <Compile Include="WhenFlowAddsCustomData.cs" />
-    <Compile Include="WhenFlowAddsShouldExecute.cs" />
-    <Compile Include="WhenFlowAddsShouldExecuteBlock.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="WhenResolvingWithNodeFactory.cs" />
-    <Compile Include="WhenResolvingWithUntypedNodeFactory.cs" />
-    <Compile Include="WhenScanningAssemblies.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Banzai.Autofac\Banzai.Autofac.csproj">
-      <Project>{78862a74-4e53-4b6d-8f13-c4d84f0318de}</Project>
-      <Name>Banzai.Autofac</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Banzai.Json\Banzai.Json.csproj">
-      <Project>{18ceb3eb-ba94-411e-bb21-0f2540d7ebf7}</Project>
-      <Name>Banzai.Json</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Banzai\Banzai.csproj">
-      <Project>{A8077697-24C3-4B06-B0F0-3B7F47F5FD0A}</Project>
-      <Name>Banzai</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

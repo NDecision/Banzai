@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
+using FluentAssertions;
 using NUnit.Framework;
-using Should;
 
 namespace Banzai.Test
 {
@@ -8,7 +8,7 @@ namespace Banzai.Test
     public class WhenPassingState
     {
         [Test]
-        public async void Adding_State_To_A_Node_Is_Available_In_Following_Node()
+        public async Task Adding_State_To_A_Node_Is_Available_In_Following_Node()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
 
@@ -18,11 +18,11 @@ namespace Banzai.Test
 
             var testObject = new TestObjectA();
             NodeResult result = await pipelineNode.ExecuteAsync(testObject);
-            result.Status.ShouldEqual(NodeResultStatus.Succeeded);
+            result.Status.Should().Be(NodeResultStatus.Succeeded);
         }
 
         [Test]
-        public async void Adding_State_To_A_Node_Is_Available_In_Global_Context()
+        public async Task Adding_State_To_A_Node_Is_Available_In_Global_Context()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
 
@@ -32,7 +32,7 @@ namespace Banzai.Test
             var testObject = new TestObjectA();
             var context = new ExecutionContext<TestObjectA>(testObject);
             NodeResult result = await pipelineNode.ExecuteAsync(context);
-            result.Status.ShouldEqual(NodeResultStatus.Succeeded);
+            result.Status.Should().Be(NodeResultStatus.Succeeded);
 
             Assert.AreEqual("Bar", context.State.Foo);
         }
@@ -45,8 +45,8 @@ namespace Banzai.Test
 
             object result = context.State.NonexistentProperty;
 
-            result.ShouldBeNull();
-        } 
+            result.Should().BeNull();
+        }
 
     }
 }

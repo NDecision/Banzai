@@ -1,6 +1,7 @@
-﻿using Autofac;
+﻿using System.Reflection;
+using Autofac;
+using FluentAssertions;
 using NUnit.Framework;
-using Should;
 
 namespace Banzai.Autofac.Test
 {
@@ -11,78 +12,78 @@ namespace Banzai.Autofac.Test
         public void Node_Is_Registered_As_Self()
         {
             var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+            containerBuilder.RegisterBanzaiNodes(GetType().GetTypeInfo().Assembly, true);
 
             var container = containerBuilder.Build();
 
             var node = container.Resolve<TestNode>();
-            node.ShouldNotBeNull();
+            node.Should().NotBeNull();
         }
 
         [Test]
         public void Nodes_Are_Registered_As_IClassName()
         {
             var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+            containerBuilder.RegisterBanzaiNodes(GetType().GetTypeInfo().Assembly, true);
 
             var container = containerBuilder.Build();
 
             var node = container.Resolve<ITestNode2>();
-            node.ShouldNotBeNull();
+            node.Should().NotBeNull();
         }
 
         [Test]
         public void Nodes_Are_Registered_As_IClassName_Generic()
         {
             var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+            containerBuilder.RegisterBanzaiNodes(GetType().GetTypeInfo().Assembly, true);
 
             var container = containerBuilder.Build();
 
             var node = container.Resolve<ITestNode<object>>();
-            node.ShouldNotBeNull();
+            node.Should().NotBeNull();
         }
 
         [Test]
         public void Group_Node_Is_Registered_When_Core_Registered()
         {
             var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+            containerBuilder.RegisterBanzaiNodes(GetType().GetTypeInfo().Assembly, true);
 
             var container = containerBuilder.Build();
 
             var node = container.Resolve<IGroupNode<object>>();
-            node.ShouldNotBeNull();
+            node.Should().NotBeNull();
             node = container.Resolve<GroupNode<object>>();
-            node.ShouldNotBeNull();
+            node.Should().NotBeNull();
         }
 
         [Test]
         public void Pipeline_Node_Is_Registered_When_Core_Registered()
         {
             var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+            containerBuilder.RegisterBanzaiNodes(GetType().GetTypeInfo().Assembly, true);
 
             var container = containerBuilder.Build();
 
             var node = container.Resolve<IPipelineNode<object>>();
-            node.ShouldNotBeNull();
+            node.Should().NotBeNull();
             node = container.Resolve<PipelineNode<object>>();
-            node.ShouldNotBeNull();
+            node.Should().NotBeNull();
         }
 
         [Test]
         public void FirstMatch_Node_Is_Registered_When_Core_Registered()
         {
             var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+            containerBuilder.RegisterBanzaiNodes(GetType().GetTypeInfo().Assembly, true);
 
             var container = containerBuilder.Build();
 
             var node = container.Resolve<IFirstMatchNode<object>>();
-            node.ShouldNotBeNull();
+            node.Should().NotBeNull();
             node = container.Resolve<FirstMatchNode<object>>();
-            node.ShouldNotBeNull();
+            node.Should().NotBeNull();
         }
 
     }

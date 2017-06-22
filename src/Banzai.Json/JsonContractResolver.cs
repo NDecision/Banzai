@@ -21,14 +21,14 @@ namespace Banzai.Json
                     property.ShouldSerialize =
                         instance =>
                         {
-                            var prop = property.DeclaringType.GetProperty(property.PropertyName);
+                            var prop = property.DeclaringType.GetTypeInfo().GetProperty(property.PropertyName);
                             var id = (string)prop.GetValue(instance);
 
                             if (string.IsNullOrEmpty(id))
                                 return false;
 
-                            var type = (Type)property.DeclaringType.GetProperty("Type").GetValue(instance);
-                            var name = (string)property.DeclaringType.GetProperty("Name").GetValue(instance);
+                            var type = (Type)property.DeclaringType.GetTypeInfo().GetProperty("Type").GetValue(instance);
+                            var name = (string)property.DeclaringType.GetTypeInfo().GetProperty("Name").GetValue(instance);
 
                             if (type == null)
                                 return false;
@@ -45,7 +45,7 @@ namespace Banzai.Json
                     property.ShouldSerialize =
                         instance =>
                         {
-                            var prop = property.DeclaringType.GetProperty(property.PropertyName);
+                            var prop = property.DeclaringType.GetTypeInfo().GetProperty(property.PropertyName);
                             object data = prop.GetValue(instance);
 
                             return data != null && ((IList) data).Count > 0;
@@ -56,7 +56,7 @@ namespace Banzai.Json
                     property.ShouldSerialize =
                         instance =>
                         {
-                            var prop = property.DeclaringType.GetProperty(property.PropertyName);
+                            var prop = property.DeclaringType.GetTypeInfo().GetProperty(property.PropertyName);
                             object data = prop.GetValue(instance);
 
                             return data != null && ((IDictionary)data).Count > 0;

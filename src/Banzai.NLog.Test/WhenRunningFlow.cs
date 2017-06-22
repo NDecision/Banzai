@@ -1,8 +1,9 @@
-﻿using Banzai.Logging;
+﻿using System.Threading.Tasks;
+using Banzai.Logging;
+using FluentAssertions;
 using NLog;
 using NLog.Config;
 using NUnit.Framework;
-using Should;
 
 namespace Banzai.NLog.Test
 {
@@ -15,7 +16,7 @@ namespace Banzai.NLog.Test
         }
 
         [Test]
-        public async void Logging_Set_With_NLog_Doesnt_Err()
+        public async Task Logging_Set_With_NLog_Doesnt_Err()
         {
             LogWriter.SetFactory(new NLogWriterFactory());
 
@@ -27,7 +28,7 @@ namespace Banzai.NLog.Test
             var testObject = new TestObjectA();
             NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
-            pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
+            pipelineNode.Status.Should().Be(NodeRunStatus.Completed);
         }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Reflection;
 using Autofac;
 using Banzai.Factories;
 using Banzai.Serialization;
+using FluentAssertions;
 using NUnit.Framework;
-using Should;
 
 namespace Banzai.Autofac.Test
 {
@@ -14,7 +15,7 @@ namespace Banzai.Autofac.Test
         public void Flow_Is_Registered_With_Container()
         {
             var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+            containerBuilder.RegisterBanzaiNodes(GetType().GetTypeInfo().Assembly, true);
             var flowBuilder = new FlowBuilder<object>(new AutofacFlowRegistrar(containerBuilder));
 
             flowBuilder.CreateFlow("TestFlow1")
@@ -26,16 +27,16 @@ namespace Banzai.Autofac.Test
             var container = containerBuilder.Build();
             var flow = container.ResolveNamed<FlowComponent<object>>("TestFlow1");
 
-            flow.ShouldNotBeNull();
-            flow.IsFlow.ShouldBeTrue();
-            flow.Id.ShouldEqual("TestFlow1");
+            flow.Should().NotBeNull();
+            flow.IsFlow.Should().BeTrue();
+            flow.Id.Should().Be("TestFlow1");
         }
 
         [Test]
         public void Flow_With_Explicit_Id_Is_Registered_With_Container()
         {
             var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+            containerBuilder.RegisterBanzaiNodes(GetType().GetTypeInfo().Assembly, true);
             var flowBuilder = new FlowBuilder<object>(new AutofacFlowRegistrar(containerBuilder));
 
             flowBuilder.CreateFlow("TestFlow1", "MyTestFlow")
@@ -47,16 +48,16 @@ namespace Banzai.Autofac.Test
             var container = containerBuilder.Build();
             var flow = container.ResolveNamed<FlowComponent<object>>("TestFlow1");
 
-            flow.ShouldNotBeNull();
-            flow.IsFlow.ShouldBeTrue();
-            flow.Id.ShouldEqual("MyTestFlow");
+            flow.Should().NotBeNull();
+            flow.IsFlow.Should().BeTrue();
+            flow.Id.Should().Be("MyTestFlow");
         }
 
         [Test]
         public void Flow_With_Children_With_Explicit_Ids_Are_Registered_With_Container()
         {
             var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+            containerBuilder.RegisterBanzaiNodes(GetType().GetTypeInfo().Assembly, true);
             var flowBuilder = new FlowBuilder<object>(new AutofacFlowRegistrar(containerBuilder));
 
             flowBuilder.CreateFlow("TestFlow1")
@@ -68,18 +69,18 @@ namespace Banzai.Autofac.Test
             var container = containerBuilder.Build();
             var flow = container.ResolveNamed<FlowComponent<object>>("TestFlow1");
 
-            flow.ShouldNotBeNull();
-            flow.IsFlow.ShouldBeTrue();
-            flow.Id.ShouldEqual("TestFlow1");
-            flow.Children[0].Id.ShouldEqual("MyPipeline");
-            flow.Children[0].Children[0].Id.ShouldEqual("MyTestNode");
+            flow.Should().NotBeNull();
+            flow.IsFlow.Should().BeTrue();
+            flow.Id.Should().Be("TestFlow1");
+            flow.Children[0].Id.Should().Be("MyPipeline");
+            flow.Children[0].Children[0].Id.Should().Be("MyTestNode");
         }
 
         [Test]
         public void Flow_Is_Built_With_NodeFactory()
         {
             var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+            containerBuilder.RegisterBanzaiNodes(GetType().GetTypeInfo().Assembly, true);
             var flowBuilder = new FlowBuilder<object>(new AutofacFlowRegistrar(containerBuilder));
 
             flowBuilder.CreateFlow("TestFlow1")
@@ -92,16 +93,16 @@ namespace Banzai.Autofac.Test
             var factory = container.Resolve<INodeFactory<object>>();
 
             var flow = factory.BuildFlow("TestFlow1");
-            flow.FlowId.ShouldEqual("TestFlow1");
-            flow.Id.ShouldEqual("Banzai.Autofac.Test.TestPipelineNode1");
-            ((IMultiNode<object>)flow).Children[0].Id.ShouldEqual("Banzai.Autofac.Test.TestNode2");
+            flow.FlowId.Should().Be("TestFlow1");
+            flow.Id.Should().Be("Banzai.Autofac.Test.TestPipelineNode1");
+            ((IMultiNode<object>)flow).Children[0].Id.Should().Be("Banzai.Autofac.Test.TestNode2");
         }
 
         [Test]
         public void Flow_Root_Is_Retrieved_With_NodeFactory()
         {
             var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+            containerBuilder.RegisterBanzaiNodes(GetType().GetTypeInfo().Assembly, true);
             var flowBuilder = new FlowBuilder<object>(new AutofacFlowRegistrar(containerBuilder));
 
             flowBuilder.CreateFlow("TestFlow1")
@@ -114,15 +115,15 @@ namespace Banzai.Autofac.Test
             var factory = container.Resolve<INodeFactory<object>>();
 
             var flow = factory.GetFlowRoot("TestFlow1");
-            flow.ShouldNotBeNull();
-            flow.Id.ShouldEqual("TestFlow1");
+            flow.Should().NotBeNull();
+            flow.Id.Should().Be("TestFlow1");
         }
 
         [Test]
         public void Flow_Built_With_NodeFactory_Has_Custom_Ids()
         {
             var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+            containerBuilder.RegisterBanzaiNodes(GetType().GetTypeInfo().Assembly, true);
             var flowBuilder = new FlowBuilder<object>(new AutofacFlowRegistrar(containerBuilder));
 
             flowBuilder.CreateFlow("TestFlow1", "MyFlow")
@@ -135,16 +136,16 @@ namespace Banzai.Autofac.Test
             var factory = container.Resolve<INodeFactory<object>>();
 
             var flow = factory.BuildFlow("TestFlow1");
-            flow.FlowId.ShouldEqual("MyFlow");
-            flow.Id.ShouldEqual("MyPipeline");
-            ((IMultiNode<object>)flow).Children[0].Id.ShouldEqual("MyTestNode");
+            flow.FlowId.Should().Be("MyFlow");
+            flow.Id.Should().Be("MyPipeline");
+            ((IMultiNode<object>)flow).Children[0].Id.Should().Be("MyTestNode");
         }
 
         [Test]
         public void Flow_Built_From_FlowComponent_Contains_Default_Ids()
         {
             var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+            containerBuilder.RegisterBanzaiNodes(GetType().GetTypeInfo().Assembly, true);
 
             var container = containerBuilder.Build();
             var factory = container.Resolve<INodeFactory<object>>();
@@ -157,16 +158,16 @@ namespace Banzai.Autofac.Test
             var component = flowBuilder.RootComponent;
 
             var flow = factory.BuildFlow(component);
-            flow.FlowId.ShouldEqual("TestFlow1");
-            flow.Id.ShouldEqual("Banzai.Autofac.Test.TestPipelineNode1");
-            ((IMultiNode<object>)flow).Children[0].Id.ShouldEqual("Banzai.Autofac.Test.TestNode2");
+            flow.FlowId.Should().Be("TestFlow1");
+            flow.Id.Should().Be("Banzai.Autofac.Test.TestPipelineNode1");
+            ((IMultiNode<object>)flow).Children[0].Id.Should().Be("Banzai.Autofac.Test.TestNode2");
         }
 
         [Test]
         public void Built_Pipeline_Contains_Custom_Flow_And_Pipeline_Ids()
         {
             var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+            containerBuilder.RegisterBanzaiNodes(GetType().GetTypeInfo().Assembly, true);
 
             var container = containerBuilder.Build();
             var factory = container.Resolve<INodeFactory<object>>();
@@ -179,9 +180,9 @@ namespace Banzai.Autofac.Test
             var component = flowBuilder.RootComponent;
 
             var flow = factory.BuildFlow(component);
-            flow.FlowId.ShouldEqual("MyCustomFlow");
-            flow.Id.ShouldEqual("MyPipeline");
-            ((IMultiNode<object>)flow).Children[0].Id.ShouldEqual("MyTestNode");
+            flow.FlowId.Should().Be("MyCustomFlow");
+            flow.Id.Should().Be("MyPipeline");
+            ((IMultiNode<object>)flow).Children[0].Id.Should().Be("MyTestNode");
         }
 
 
@@ -191,7 +192,7 @@ namespace Banzai.Autofac.Test
             Json.Registrar.RegisterAsDefault();
 
             var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+            containerBuilder.RegisterBanzaiNodes(GetType().GetTypeInfo().Assembly, true);
 
             var container = containerBuilder.Build();
 
@@ -208,9 +209,9 @@ namespace Banzai.Autofac.Test
             var serialized = SerializerProvider.Serializer.Serialize(component);
 
             var flow = factory.BuildSerializedFlow(serialized);
-            flow.FlowId.ShouldEqual("TestFlow1");
-            flow.Id.ShouldEqual("Banzai.Autofac.Test.TestPipelineNode1");
-            ((IMultiNode<object>)flow).Children[0].Id.ShouldEqual("Banzai.Autofac.Test.TestNode2");
+            flow.FlowId.Should().Be("TestFlow1");
+            flow.Id.Should().Be("Banzai.Autofac.Test.TestPipelineNode1");
+            ((IMultiNode<object>)flow).Children[0].Id.Should().Be("Banzai.Autofac.Test.TestNode2");
         }
 
 
@@ -220,7 +221,7 @@ namespace Banzai.Autofac.Test
             Json.Registrar.RegisterAsDefault();
 
             var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+            containerBuilder.RegisterBanzaiNodes(GetType().GetTypeInfo().Assembly, true);
 
             var container = containerBuilder.Build();
             var factory = container.Resolve<INodeFactory<object>>();
@@ -238,9 +239,9 @@ namespace Banzai.Autofac.Test
             var component = flowBuilder.DeserializeAndSetRootComponent(serialized);
 
             var flow = factory.BuildFlow(component);
-            flow.FlowId.ShouldEqual("TestFlow1");
-            flow.Id.ShouldEqual("Banzai.Autofac.Test.TestPipelineNode1");
-            ((IMultiNode<object>)flow).Children[0].Id.ShouldEqual("Banzai.Autofac.Test.TestNode2");
+            flow.FlowId.Should().Be("TestFlow1");
+            flow.Id.Should().Be("Banzai.Autofac.Test.TestPipelineNode1");
+            ((IMultiNode<object>)flow).Children[0].Id.Should().Be("Banzai.Autofac.Test.TestNode2");
         }
 
 

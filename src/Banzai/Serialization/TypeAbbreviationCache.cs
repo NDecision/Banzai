@@ -20,7 +20,7 @@ namespace Banzai.Serialization
         {
             RegisterType(typeof(Object));
             //AutoRegister the canned node types
-            RegisterFromAssembly(typeof(INode<>).Assembly);
+            RegisterFromAssembly(typeof(INode<>).GetTypeInfo().Assembly);
         }
 
         /// <summary>
@@ -65,9 +65,8 @@ namespace Banzai.Serialization
         /// <param name="failOnCollision">Fail if a key already exists in the dictionary. This will most likely happen when useFullName is false and two different nodes have the same name.</param>
         public static void RegisterFromAssembly(Assembly assembly, bool useFullName = false, bool failOnCollision = true)
         {
-            var types = assembly.GetTypes().Where(x => x.GetInterfaces()
-                .Any(y => y.IsGenericType && (y.GetGenericTypeDefinition() == typeof(INode<>) || y.GetGenericTypeDefinition() == typeof(IShouldExecuteBlock<>))));
-            
+            var types = assembly.GetTypes().Where(x => x.GetTypeInfo().GetInterfaces()
+                .Any(y => y.GetTypeInfo().IsGenericType && (y.GetGenericTypeDefinition() == typeof(INode<>) || y.GetGenericTypeDefinition() == typeof(IShouldExecuteBlock<>))));
             foreach (var type in types)
             {
                 RegisterType(type, useFullName: useFullName, failOnCollision:failOnCollision);

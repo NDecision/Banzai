@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
+using FluentAssertions;
 using NUnit.Framework;
-using Should;
 
 namespace Banzai.Test
 {
@@ -9,7 +9,7 @@ namespace Banzai.Test
     {
 
         [Test]
-        public async void ExecutionContext_Based_On_Inherited_Type_Is_Passed_To_Execute()
+        public async Task ExecutionContext_Based_On_Inherited_Type_Is_Passed_To_Execute()
         {
             var testNode = new SimpleTestNodeA1();
 
@@ -19,12 +19,12 @@ namespace Banzai.Test
 
             var result = await testNode.ExecuteAsync(context);
 
-            testNode.Status.ShouldEqual(NodeRunStatus.Completed);
-            result.Status.ShouldEqual(NodeResultStatus.Succeeded);
+            testNode.Status.Should().Be(NodeRunStatus.Completed);
+            result.Status.Should().Be(NodeResultStatus.Succeeded);
         }
 
         [Test]
-        public async void ExecutionContext_Based_On_Root_Type_Works_With_Inherited_Type()
+        public async Task ExecutionContext_Based_On_Root_Type_Works_With_Inherited_Type()
         {
             var testNode = new SimpleTestNodeA1();
 
@@ -34,12 +34,12 @@ namespace Banzai.Test
 
             var result = await testNode.ExecuteAsync(context);
 
-            testNode.Status.ShouldEqual(NodeRunStatus.Completed);
-            result.Status.ShouldEqual(NodeResultStatus.Succeeded);
+            testNode.Status.Should().Be(NodeRunStatus.Completed);
+            result.Status.Should().Be(NodeResultStatus.Succeeded);
         }
 
         [Test]
-        public async void Subject_Of_Inherited_Type_Is_Passed_To_Execute()
+        public async Task Subject_Of_Inherited_Type_Is_Passed_To_Execute()
         {
             var testNode = new SimpleTestNodeA1();
 
@@ -47,12 +47,12 @@ namespace Banzai.Test
 
             var result = await testNode.ExecuteAsync(testObject);
 
-            testNode.Status.ShouldEqual(NodeRunStatus.Completed);
-            result.Status.ShouldEqual(NodeResultStatus.Succeeded);
+            testNode.Status.Should().Be(NodeRunStatus.Completed);
+            result.Status.Should().Be(NodeResultStatus.Succeeded);
         }
 
         [Test]
-        public async void Subject_Of_Inherited_Type_Works_With_Func_Node()
+        public async Task Subject_Of_Inherited_Type_Works_With_Func_Node()
         {
             var node = new FuncNode<TestObjectA>();
 
@@ -62,9 +62,9 @@ namespace Banzai.Test
             var testObject = new TestObjectASub();
             NodeResult result = await node.ExecuteAsync(testObject);
 
-            node.Status.ShouldEqual(NodeRunStatus.Completed);
-            result.Status.ShouldEqual(NodeResultStatus.Succeeded);
-            result.GetSubjectAs<TestObjectA>().TestValueString.ShouldEqual("Completed");
+            node.Status.Should().Be(NodeRunStatus.Completed);
+            result.Status.Should().Be(NodeResultStatus.Succeeded);
+            result.GetSubjectAs<TestObjectA>().TestValueString.Should().Be("Completed");
         }
 
     }

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using FluentAssertions;
 using NUnit.Framework;
-using Should;
 
 namespace Banzai.Test
 {
@@ -10,7 +11,7 @@ namespace Banzai.Test
     public class WhenRequestingNodeResultErrors
     {
         [Test]
-        public async void Pipeline_Run_With_Initial_Failure_Returns_Failed_Status()
+        public async Task Pipeline_Run_With_Initial_Failure_Returns_Failed_Status()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
 
@@ -22,12 +23,12 @@ namespace Banzai.Test
 
             IEnumerable<Exception> exceptions = result.GetFailExceptions();
 
-            exceptions.ShouldNotBeNull();
-            exceptions.Count().ShouldEqual(1);
+            exceptions.Should().NotBeNull();
+            exceptions.Count().Should().Be(1);
         }
 
         [Test]
-        public async void Pipeline_With_ContinueOnError_Excludes_Initial_Exception()
+        public async Task Pipeline_With_ContinueOnError_Excludes_Initial_Exception()
         {
             var pipelineNode = new PipelineNode<TestObjectA>
             {
@@ -42,12 +43,12 @@ namespace Banzai.Test
 
             IEnumerable<Exception> exceptions = result.GetFailExceptions();
 
-            exceptions.ShouldNotBeNull();
-            exceptions.Count().ShouldEqual(0);
+            exceptions.Should().NotBeNull();
+            exceptions.Count().Should().Be(0);
         }
 
         [Test]
-        public async void Pipeline_With_ContinueOnError_Returns_Exceptions_On_All_Failures()
+        public async Task Pipeline_With_ContinueOnError_Returns_Exceptions_On_All_Failures()
         {
             var pipelineNode = new PipelineNode<TestObjectA>
             {
@@ -62,12 +63,12 @@ namespace Banzai.Test
 
             IEnumerable<Exception> exceptions = result.GetFailExceptions();
 
-            exceptions.ShouldNotBeNull();
-            exceptions.Count().ShouldEqual(2);
+            exceptions.Should().NotBeNull();
+            exceptions.Count().Should().Be(2);
         }
 
         [Test]
-        public async void Nested_Exception_Is_Included_In_Collection()
+        public async Task Nested_Exception_Is_Included_In_Collection()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
 
@@ -82,12 +83,12 @@ namespace Banzai.Test
 
             IEnumerable<Exception> exceptions = result.GetFailExceptions();
 
-            exceptions.ShouldNotBeNull();
-            exceptions.Count().ShouldEqual(1);
+            exceptions.Should().NotBeNull();
+            exceptions.Count().Should().Be(1);
         }
 
         [Test]
-        public async void Group_Run_With_Multiple_Failures_Returns_Failed_Statuses()
+        public async Task Group_Run_With_Multiple_Failures_Returns_Failed_Statuses()
         {
             var pipelineNode = new GroupNode<TestObjectA>();
 
@@ -102,8 +103,8 @@ namespace Banzai.Test
 
             IEnumerable<Exception> exceptions = result.GetFailExceptions();
 
-            exceptions.ShouldNotBeNull();
-            exceptions.Count().ShouldBeGreaterThan(0);
+            exceptions.Should().NotBeNull();
+            exceptions.Count().Should().BeGreaterThan(0);
         } 
     }
 }

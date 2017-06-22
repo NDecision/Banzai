@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Ninject;
 using Banzai.Factories;
+using FluentAssertions;
 using NUnit.Framework;
-using Should;
 
 namespace Banzai.Ninject.Test
 {
@@ -26,8 +26,8 @@ namespace Banzai.Ninject.Test
             var factory = kernel.Get<INodeFactory<object>>();
 
             var flowRootNode = factory.BuildFlow("TestFlow1");
-            flowRootNode.ShouldExecuteFunc.ShouldNotBeNull();
-            flowRootNode.ShouldExecuteFunc(new ExecutionContext<object>(new object())).Result.ShouldBeFalse();
+            flowRootNode.ShouldExecuteFunc.Should().NotBeNull();
+            flowRootNode.ShouldExecuteFunc(new ExecutionContext<object>(new object())).Result.Should().BeFalse();
         }
 
         [Test]
@@ -51,12 +51,12 @@ namespace Banzai.Ninject.Test
             var flow = (IPipelineNode<object>)factory.BuildFlow("TestFlow1");
 
             var subflow = flow.Children[0];
-            subflow.ShouldExecuteFunc.ShouldNotBeNull();
-            subflow.ShouldExecuteFunc(new ExecutionContext<object>(new object())).Result.ShouldBeFalse();
+            subflow.ShouldExecuteFunc.Should().NotBeNull();
+            subflow.ShouldExecuteFunc(new ExecutionContext<object>(new object())).Result.Should().BeFalse();
         }
 
         [Test]
-        public async void ShouldExecuteAsync_Is_Added_To_Root_Node()
+        public async Task ShouldExecuteAsync_Is_Added_To_Root_Node()
         {
             var kernel = new StandardKernel();
             kernel.RegisterBanzaiNodes(GetType().Assembly, true);
@@ -72,12 +72,12 @@ namespace Banzai.Ninject.Test
             var factory = kernel.Get<INodeFactory<object>>();
 
             var flowRootNode = factory.BuildFlow("TestFlow1");
-            flowRootNode.ShouldExecuteFunc.ShouldNotBeNull();
-            (await flowRootNode.ShouldExecuteFunc(new ExecutionContext<object>(new object()))).ShouldBeFalse();
+            flowRootNode.ShouldExecuteFunc.Should().NotBeNull();
+            (await flowRootNode.ShouldExecuteFunc(new ExecutionContext<object>(new object()))).Should().BeFalse();
         }
 
         [Test]
-        public async void ShouldExecuteAsync_Is_Added_To_Child_Node()
+        public async Task ShouldExecuteAsync_Is_Added_To_Child_Node()
         {
             var kernel = new StandardKernel();
             kernel.RegisterBanzaiNodes(GetType().Assembly, true);
@@ -96,8 +96,8 @@ namespace Banzai.Ninject.Test
             var flow = (IPipelineNode<object>)factory.BuildFlow("TestFlow1");
 
             var subflow = flow.Children[0];
-            subflow.ShouldExecuteFunc.ShouldNotBeNull();
-            (await subflow.ShouldExecuteFunc(new ExecutionContext<object>(new object()))).ShouldBeFalse();
+            subflow.ShouldExecuteFunc.Should().NotBeNull();
+            (await subflow.ShouldExecuteFunc(new ExecutionContext<object>(new object()))).Should().BeFalse();
         }
 
         [Test]
@@ -129,8 +129,8 @@ namespace Banzai.Ninject.Test
             var flow = (IPipelineNode<object>)factory.BuildFlow("TestFlow1");
 
             var subflowRoot = (IPipelineNode<object>)flow.Children[1];
-            subflowRoot.ShouldExecuteFunc.ShouldNotBeNull();
-            subflowRoot.ShouldExecuteFunc(new ExecutionContext<object>(new object())).Result.ShouldBeFalse();
+            subflowRoot.ShouldExecuteFunc.Should().NotBeNull();
+            subflowRoot.ShouldExecuteFunc(new ExecutionContext<object>(new object())).Result.Should().BeFalse();
         }
 
     }

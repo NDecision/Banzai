@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Autofac;
 using Banzai.Autofac;
 using Banzai.Factories;
 using Banzai.JavaScript.Factories;
+using FluentAssertions;
 using NUnit.Framework;
-using Should;
 
 namespace Banzai.Json.Test
 {
@@ -30,7 +31,8 @@ namespace Banzai.Json.Test
 
             var definition = serializer.Serialize(rootComponent);
 
-            definition.ShouldNotBeNull().ShouldNotBeEmpty();
+            definition.Should().NotBeNull();
+            definition.Should().NotBeEmpty();
            
         }
 
@@ -57,13 +59,13 @@ namespace Banzai.Json.Test
 
             FlowComponent<object> deserializedComponent = serializer.Deserialize<object>(definition);
 
-            deserializedComponent.ShouldNotBeNull();
+            deserializedComponent.Should().NotBeNull();
 
             var pipelineComponent = deserializedComponent.Children[0];
-            pipelineComponent.Children.Count.ShouldEqual(2);
+            pipelineComponent.Children.Count.Should().Be(2);
 
             var jsNode = pipelineComponent.Children[0];
-            jsNode.GetExecutedJavaScript().ShouldEqual("var x = 1;");
+            jsNode.GetExecutedJavaScript().Should().Be("var x = 1;");
         }
 
         [Test]
@@ -89,17 +91,17 @@ namespace Banzai.Json.Test
 
             FlowComponent<object> deserializedComponent = serializer.Deserialize<object>(definition);
 
-            deserializedComponent.ShouldNotBeNull();
+            deserializedComponent.Should().NotBeNull();
 
             var pipelineComponent = deserializedComponent.Children[0];
-            pipelineComponent.Children.Count.ShouldEqual(2);
+            pipelineComponent.Children.Count.Should().Be(2);
 
             var jsNode = pipelineComponent.Children[0];
-            jsNode.GetShouldExecuteJavaScript().ShouldEqual("var x = 1;");
+            jsNode.GetShouldExecuteJavaScript().Should().Be("var x = 1;");
         }
 
         [Test]
-        public async void Deserialized_Flow_Component_Can_Be_Built_And_Run()
+        public async Task Deserialized_Flow_Component_Can_Be_Built_And_Run()
         {
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
@@ -124,7 +126,7 @@ namespace Banzai.Json.Test
 
             FlowComponent<TestObjectA> deserializedComponent = serializer.Deserialize<TestObjectA>(definition);
 
-            deserializedComponent.ShouldNotBeNull();
+            deserializedComponent.Should().NotBeNull();
 
             flowBuilder.RootComponent = deserializedComponent;
 
@@ -138,11 +140,11 @@ namespace Banzai.Json.Test
 
             NodeResult result = await flowRootNode.ExecuteAsync(new TestObjectA());
 
-            result.Status.ShouldEqual(NodeResultStatus.Succeeded);
+            result.Status.Should().Be(NodeResultStatus.Succeeded);
 
             var subject = result.GetSubjectAs<TestObjectA>();
 
-            subject.TestValueString.ShouldEqual("Hello JavaScript");
+            subject.TestValueString.Should().Be("Hello JavaScript");
 
         }
 

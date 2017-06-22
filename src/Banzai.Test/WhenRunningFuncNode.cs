@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
+using FluentAssertions;
 using NUnit.Framework;
-using Should;
 
 namespace Banzai.Test
 {
@@ -8,7 +8,7 @@ namespace Banzai.Test
     public class WhenRunningFuncNode
     {
         [Test]
-        public async void Successful_FuncNode_Values_Match_Expected()
+        public async Task Successful_FuncNode_Values_Match_Expected()
         {
             var node = new FuncNode<TestObjectA>();
 
@@ -18,13 +18,13 @@ namespace Banzai.Test
             var testObject = new TestObjectA();
             NodeResult result = await node.ExecuteAsync(testObject);
 
-            node.Status.ShouldEqual(NodeRunStatus.Completed);
-            result.Status.ShouldEqual(NodeResultStatus.Succeeded);
-            result.GetSubjectAs<TestObjectA>().TestValueString.ShouldEqual("Completed");
+            node.Status.Should().Be(NodeRunStatus.Completed);
+            result.Status.Should().Be(NodeResultStatus.Succeeded);
+            result.GetSubjectAs<TestObjectA>().TestValueString.Should().Be("Completed");
         }
 
         [Test]
-        public async void FuncNode_With_ShouldExecute_False_Shouldnt_Run()
+        public async Task FuncNode_With_ShouldExecute_False_Shouldnt_Run()
         {
             var node = new FuncNode<TestObjectA>();
 
@@ -34,14 +34,14 @@ namespace Banzai.Test
             var testObject = new TestObjectA();
             NodeResult result = await node.ExecuteAsync(testObject);
 
-            node.Status.ShouldEqual(NodeRunStatus.NotRun);
-            result.Status.ShouldEqual(NodeResultStatus.NotRun);
-            result.GetSubjectAs<TestObjectA>().TestValueString.ShouldBeNull();
+            node.Status.Should().Be(NodeRunStatus.NotRun);
+            result.Status.Should().Be(NodeResultStatus.NotRun);
+            result.GetSubjectAs<TestObjectA>().TestValueString.Should().BeNull();
         }
 
 
         [Test]
-        public async void Can_Run_Func_Node_On_Inherited_Type()
+        public async Task Can_Run_Func_Node_On_Inherited_Type()
         {
             var node = new FuncNode<TestObjectA>();
 
@@ -51,9 +51,9 @@ namespace Banzai.Test
             var testObject = new TestObjectASub();
             NodeResult result = await node.ExecuteAsync(testObject);
 
-            node.Status.ShouldEqual(NodeRunStatus.Completed);
-            result.Status.ShouldEqual(NodeResultStatus.Succeeded);
-            result.GetSubjectAs<TestObjectA>().TestValueString.ShouldEqual("Completed");
+            node.Status.Should().Be(NodeRunStatus.Completed);
+            result.Status.Should().Be(NodeResultStatus.Succeeded);
+            result.GetSubjectAs<TestObjectA>().TestValueString.Should().Be("Completed");
         }
 
 

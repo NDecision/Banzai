@@ -1,9 +1,9 @@
 ﻿using System;
 using Banzai.Factories;
 using Banzai.Json;
+using FluentAssertions;
 using Ninject;
 using NUnit.Framework;
-using Should;
 
 namespace Banzai.Ninject.Test
 {
@@ -26,8 +26,8 @@ namespace Banzai.Ninject.Test
 
             var flow = kernel.Get<FlowComponent<object>>("TestFlow1");
 
-            flow.ShouldNotBeNull();
-            flow.IsFlow.ShouldBeTrue();
+            flow.Should().NotBeNull();
+            flow.IsFlow.Should().BeTrue();
         }
 
         [Test]
@@ -48,7 +48,7 @@ namespace Banzai.Ninject.Test
 
             var flow = factory.BuildFlow("TestFlow1");
 
-            flow.ShouldNotBeNull();
+            flow.Should().NotBeNull();
         }
 
         [Test]
@@ -69,7 +69,7 @@ namespace Banzai.Ninject.Test
 
             var flow = factory.BuildFlow(component);
 
-            flow.ShouldNotBeNull();
+            flow.Should().NotBeNull();
         }
 
         [Test]
@@ -91,7 +91,7 @@ namespace Banzai.Ninject.Test
 
             var flow = factory.BuildSerializedFlow(serialized);
 
-            flow.ShouldNotBeNull();
+            flow.Should().NotBeNull();
         }
 
         [Test]
@@ -115,7 +115,7 @@ namespace Banzai.Ninject.Test
 
             var flow = factory.BuildFlow(component);
 
-            flow.ShouldNotBeNull();
+            flow.Should().NotBeNull();
         }
 
         [Test]
@@ -143,11 +143,11 @@ namespace Banzai.Ninject.Test
 
             var flow = (IPipelineNode<object>)factory.BuildFlow("TestFlow1");
 
-            flow.ShouldBeType<PipelineNode<object>>();
-            flow.Children.Count.ShouldEqual(3);
+            flow.Should().BeOfType<PipelineNode<object>>();
+            flow.Children.Count.Should().Be(3);
             var subflow = (IPipelineNode<object>)flow.Children[1];
-            subflow.Children.Count.ShouldEqual(3);
-            subflow.Children[1].ShouldBeType<TestNode3>();
+            subflow.Children.Count.Should().Be(3);
+            subflow.Children[1].Should().BeOfType<TestNode3>();
         }
 
         [Test]
@@ -175,10 +175,10 @@ namespace Banzai.Ninject.Test
             var factory = kernel.Get<INodeFactory<object>>();
 
             var flow = factory.BuildFlow("TestFlow1");
-            flow.ShouldNotBeNull();
+            flow.Should().NotBeNull();
 
             flow = factory.BuildFlow("TestFlow2");
-            flow.ShouldNotBeNull();
+            flow.Should().NotBeNull();
         }
 
         [Test]
@@ -208,11 +208,11 @@ namespace Banzai.Ninject.Test
 
             var flow = (IPipelineNode<object>)factory.BuildFlow("TestFlow1");
 
-            flow.ShouldBeType<PipelineNode<object>>();
-            flow.Children.Count.ShouldEqual(2);
+            flow.Should().BeOfType<PipelineNode<object>>();
+            flow.Children.Count.Should().Be(2);
             var subflow = (IPipelineNode<object>)flow.Children[1];
-            subflow.Children.Count.ShouldEqual(3);
-            subflow.Children[1].ShouldBeType<TestNode3>();
+            subflow.Children.Count.Should().Be(3);
+            subflow.Children[1].Should().BeOfType<TestNode3>();
         }
 
         [Test]

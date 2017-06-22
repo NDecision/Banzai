@@ -1,7 +1,7 @@
 ﻿using Ninject;
 using Banzai.Factories;
+using FluentAssertions;
 using NUnit.Framework;
-using Should;
 
 namespace Banzai.Ninject.Test
 {
@@ -25,8 +25,8 @@ namespace Banzai.Ninject.Test
             var factory = kernel.Get<INodeFactory<object>>();
 
             var flowRootNode = factory.BuildFlow("TestFlow1");
-            flowRootNode.ShouldExecuteBlock.ShouldNotBeNull();
-            ((IShouldExecuteBlock<object>)flowRootNode.ShouldExecuteBlock).ShouldExecuteAsync(new ExecutionContext<object>(new object())).Result.ShouldBeFalse();
+            flowRootNode.ShouldExecuteBlock.Should().NotBeNull();
+            ((IShouldExecuteBlock<object>)flowRootNode.ShouldExecuteBlock).ShouldExecuteAsync(new ExecutionContext<object>(new object())).Result.Should().BeFalse();
         }
 
         [Test]
@@ -50,8 +50,8 @@ namespace Banzai.Ninject.Test
             var flow = (IPipelineNode<object>) factory.BuildFlow("TestFlow1");
 
             var subflow = flow.Children[0];
-            subflow.ShouldExecuteBlock.ShouldNotBeNull();
-            ((IShouldExecuteBlock<object>)subflow.ShouldExecuteBlock).ShouldExecuteAsync(new ExecutionContext<object>(new object())).Result.ShouldBeFalse();
+            subflow.ShouldExecuteBlock.Should().NotBeNull();
+            ((IShouldExecuteBlock<object>)subflow.ShouldExecuteBlock).ShouldExecuteAsync(new ExecutionContext<object>(new object())).Result.Should().BeFalse();
         }
 
         [Test]
@@ -83,8 +83,8 @@ namespace Banzai.Ninject.Test
             var flow = (IPipelineNode<object>) factory.BuildFlow("TestFlow1");
 
             var subflowRoot = (IPipelineNode<object>) flow.Children[1];
-            subflowRoot.ShouldExecuteBlock.ShouldNotBeNull();
-            ((IShouldExecuteBlock<object>)subflowRoot.ShouldExecuteBlock).ShouldExecuteAsync(new ExecutionContext<object>(new object())).Result.ShouldBeFalse();
+            subflowRoot.ShouldExecuteBlock.Should().NotBeNull();
+            ((IShouldExecuteBlock<object>)subflowRoot.ShouldExecuteBlock).ShouldExecuteAsync(new ExecutionContext<object>(new object())).Result.Should().BeFalse();
         }
     }
 }

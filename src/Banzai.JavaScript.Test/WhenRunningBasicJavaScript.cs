@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
+using FluentAssertions;
 using NUnit.Framework;
-using Should;
 
 namespace Banzai.JavaScript.Test
 {
@@ -13,11 +13,11 @@ namespace Banzai.JavaScript.Test
         {
             var testNode = new JavaScriptNode<TestObjectA>();
 
-            testNode.Status.ShouldEqual(NodeRunStatus.NotRun);
+            testNode.Status.Should().Be(NodeRunStatus.NotRun);
         }
 
         [Test]
-        public async void Successful_Node_Run_Matches_Expectations()
+        public async Task Successful_Node_Run_Matches_Expectations()
         {
             var testNode = new JavaScriptNode<TestObjectA>
             {
@@ -30,14 +30,14 @@ namespace Banzai.JavaScript.Test
 
             var result = await testNode.ExecuteAsync(context);
 
-            result.GetSubjectAs<TestObjectA>().TestValueString.ShouldEqual("Hello JavaScript!");
+            result.GetSubjectAs<TestObjectA>().TestValueString.Should().Be("Hello JavaScript!");
 
-            result.Status.ShouldEqual(NodeResultStatus.Succeeded);
-            testNode.Status.ShouldEqual(NodeRunStatus.Completed);
+            result.Status.Should().Be(NodeResultStatus.Succeeded);
+            testNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
         [Test]
-        public async void Failed_Node_Run_Status_Is_Failed()
+        public async Task Failed_Node_Run_Status_Is_Failed()
         {
             var testNode = new JavaScriptNode<TestObjectA>
             {
@@ -50,14 +50,14 @@ namespace Banzai.JavaScript.Test
 
             var result = await testNode.ExecuteAsync(context);
 
-            result.GetSubjectAs<TestObjectA>().TestValueString.ShouldEqual("Hello JavaScript!");
+            result.GetSubjectAs<TestObjectA>().TestValueString.Should().Be("Hello JavaScript!");
 
-            testNode.Status.ShouldEqual(NodeRunStatus.Completed);
-            result.Status.ShouldEqual(NodeResultStatus.Failed);
+            testNode.Status.Should().Be(NodeRunStatus.Completed);
+            result.Status.Should().Be(NodeResultStatus.Failed);
         }
 
         [Test]
-        public async void Errant_Node_Run_Status_Is_Faulted()
+        public async Task Errant_Node_Run_Status_Is_Faulted()
         {
             var testNode = new JavaScriptNode<TestObjectA>
             {
@@ -69,11 +69,11 @@ namespace Banzai.JavaScript.Test
             var context = new ExecutionContext<TestObjectA>(testObject);
 
             var result = await testNode.ExecuteAsync(context);
-            result.Exception.ShouldNotBeNull();
+            result.Exception.Should().NotBeNull();
 
-            result.Status.ShouldEqual(NodeResultStatus.Failed);
+            result.Status.Should().Be(NodeResultStatus.Failed);
 
-            testNode.Status.ShouldEqual(NodeRunStatus.Faulted);
+            testNode.Status.Should().Be(NodeRunStatus.Faulted);
         }
 
 
@@ -89,12 +89,12 @@ namespace Banzai.JavaScript.Test
 
             var context = new ExecutionContext<TestObjectA>(testObject) { GlobalOptions = { ThrowOnError = true } };
 
-            Assert.Throws<Microsoft.ClearScript.ScriptEngineException>(async () => await testNode.ExecuteAsync(context));
+            Assert.ThrowsAsync<Microsoft.ClearScript.ScriptEngineException>(async () => await testNode.ExecuteAsync(context));
         }
 
 
         [Test]
-        public async void Node_Is_Not_Run_If_ShouldExecute_False()
+        public async Task Node_Is_Not_Run_If_ShouldExecute_False()
         {
             var testNode = new JavaScriptNode<TestObjectA>
             {
@@ -108,13 +108,13 @@ namespace Banzai.JavaScript.Test
 
             var result = await testNode.ExecuteAsync(context);
 
-            result.Status.ShouldEqual(NodeResultStatus.NotRun);
+            result.Status.Should().Be(NodeResultStatus.NotRun);
 
-            context.Subject.TestValueString.ShouldBeNull();
+            context.Subject.TestValueString.Should().BeNull();
         }
 
         [Test]
-        public async void Node_Is_Not_Run_If_ShouldExecuteScript_False()
+        public async Task Node_Is_Not_Run_If_ShouldExecuteScript_False()
         {
             var testNode = new JavaScriptNode<TestObjectA>
             {
@@ -128,9 +128,9 @@ namespace Banzai.JavaScript.Test
 
             var result = await testNode.ExecuteAsync(context);
 
-            result.Status.ShouldEqual(NodeResultStatus.NotRun);
+            result.Status.Should().Be(NodeResultStatus.NotRun);
 
-            context.Subject.TestValueString.ShouldBeNull();
+            context.Subject.TestValueString.Should().BeNull();
         }
 
     }

@@ -1,7 +1,8 @@
-﻿using Autofac;
+﻿using System.Reflection;
+using Autofac;
 using Banzai.Factories;
+using FluentAssertions;
 using NUnit.Framework;
-using Should;
 
 namespace Banzai.Autofac.Test
 {
@@ -13,7 +14,7 @@ namespace Banzai.Autofac.Test
         public void Custom_String_Data_Is_Set_On_Node()
         {
             var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+            containerBuilder.RegisterBanzaiNodes(GetType().GetTypeInfo().Assembly, true);
 
             var flowBuilder = new FlowBuilder<object>(new AutofacFlowRegistrar(containerBuilder));
 
@@ -28,14 +29,15 @@ namespace Banzai.Autofac.Test
             var factory = container.Resolve<INodeFactory<object>>();
 
             var flowRootNode = factory.BuildFlow("TestFlow1");
-            ObjectAssertExtensions.ShouldEqual(flowRootNode.CustomData, "TestData");
+            var testData = flowRootNode.CustomData as string;
+            testData.Should().Be("TestData");
         }
 
         [Test]
         public void Custom_Anonymous_Object_Is_Set_On_Node()
         {
             var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
+            containerBuilder.RegisterBanzaiNodes(GetType().GetTypeInfo().Assembly, true);
 
             var flowBuilder = new FlowBuilder<object>(new AutofacFlowRegistrar(containerBuilder));
 
@@ -50,8 +52,10 @@ namespace Banzai.Autofac.Test
             var factory = container.Resolve<INodeFactory<object>>();
 
             var flowRootNode = factory.BuildFlow("TestFlow1");
-            ObjectAssertExtensions.ShouldEqual(flowRootNode.CustomData.Test, "Test");
-            ObjectAssertExtensions.ShouldEqual(flowRootNode.CustomData.Thang, "Thang");
+            var test = flowRootNode.CustomData.Test as string;
+            test.Should().Be("Test");
+            var thang = flowRootNode.CustomData.Thang as string;
+            thang.Should().Be("Thang");
         }
 
     }

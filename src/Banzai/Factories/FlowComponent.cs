@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
@@ -110,7 +111,7 @@ namespace Banzai.Factories
         /// <returns>The current FlowComponent instance.</returns>
         protected internal FlowComponent<T> SetShouldExecute(Type blockType)
         {
-            if (!typeof(IShouldExecuteBlock<T>).IsAssignableFrom(blockType))
+            if (!typeof(IShouldExecuteBlock<T>).GetTypeInfo().IsAssignableFrom(blockType))
                 throw new ArgumentException("blockType must be assignable to IShouldExecuteBlock<T>.", "blockType");
 
             ShouldExecuteBlockType = blockType;

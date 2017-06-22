@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Autofac;
 using Banzai.Autofac;
 using Banzai.Factories;
 using Banzai.Serialization;
+using FluentAssertions;
 using NUnit.Framework;
-using Should;
 
 namespace Banzai.Json.Test
 {
@@ -40,7 +41,8 @@ namespace Banzai.Json.Test
 
             Console.WriteLine(definition);
 
-            definition.ShouldNotBeNull().ShouldNotBeEmpty();
+            definition.Should().NotBeNull();
+            definition.Should().NotBeEmpty();
            
         }
 
@@ -67,8 +69,9 @@ namespace Banzai.Json.Test
 
             Console.WriteLine(definition);
 
-            definition.ShouldNotBeNull().ShouldNotBeEmpty();
-            definition.ShouldNotContain("Banzai.Json.Test");
+            definition.Should().NotBeNull();
+            definition.Should().NotBeEmpty();
+            definition.Should().NotContain("Banzai.Json.Test");
 
         }
 
@@ -96,8 +99,9 @@ namespace Banzai.Json.Test
 
             Console.WriteLine(definition);
 
-            definition.ShouldNotBeNull().ShouldNotBeEmpty();
-            definition.ShouldContain("Banzai.Json.Test");
+            definition.Should().NotBeNull();
+            definition.Should().NotBeEmpty();
+            definition.Should().Contain("Banzai.Json.Test");
         }
 
         [Test]
@@ -123,8 +127,9 @@ namespace Banzai.Json.Test
 
             Console.WriteLine(definition);
 
-            definition.ShouldNotBeNull().ShouldNotBeEmpty();
-            definition.ShouldContain("\"ShouldExecuteBlockType\":\"ShouldNotExecuteTestBlock\"");
+            definition.Should().NotBeNull();
+            definition.Should().NotBeEmpty();
+            definition.Should().Contain("\"ShouldExecuteBlockType\":\"ShouldNotExecuteTestBlock\"");
         }
 
         [Test]
@@ -150,8 +155,9 @@ namespace Banzai.Json.Test
 
             Console.WriteLine(definition);
 
-            definition.ShouldNotBeNull().ShouldNotBeEmpty();
-            definition.ShouldContain("\"ShouldExecuteBlockType\":\"Banzai.Json.Test.ShouldNotExecuteTestBlock\"");
+            definition.Should().NotBeNull();
+            definition.Should().NotBeEmpty();
+            definition.Should().Contain("\"ShouldExecuteBlockType\":\"Banzai.Json.Test.ShouldNotExecuteTestBlock\"");
         }
 
         [Test]
@@ -177,9 +183,9 @@ namespace Banzai.Json.Test
 
             FlowComponent<object> deserializedComponent = serializer.Deserialize<object>(definition);
 
-            deserializedComponent.ShouldNotBeNull();
+            deserializedComponent.Should().NotBeNull();
 
-            deserializedComponent.Children[0].Children.Count.ShouldEqual(2);
+            deserializedComponent.Children[0].Children.Count.Should().Be(2);
         }
 
         [Test]
@@ -205,14 +211,14 @@ namespace Banzai.Json.Test
 
             FlowComponent<object> deserializedComponent = serializer.Deserialize<object>(definition);
 
-            deserializedComponent.ShouldNotBeNull();
+            deserializedComponent.Should().NotBeNull();
 
-            deserializedComponent.Children[0].ShouldExecuteBlockType.ShouldEqual(typeof(ShouldNotExecuteTestBlock));
+            deserializedComponent.Children[0].ShouldExecuteBlockType.Should().Be(typeof(ShouldNotExecuteTestBlock));
 
         }
 
         [Test]
-        public async void Deserialized_Flow_Component_Can_Be_Built_And_Run()
+        public async Task Deserialized_Flow_Component_Can_Be_Built_And_Run()
         {
             TypeAbbreviationCache.RegisterFromAssembly(GetType().Assembly, failOnCollision: false);
 
@@ -247,12 +253,12 @@ namespace Banzai.Json.Test
 
             NodeResult result = await flowRootNode.ExecuteAsync(new object());
 
-            result.Status.ShouldEqual(NodeResultStatus.Succeeded);
+            result.Status.Should().Be(NodeResultStatus.Succeeded);
         }
 
 
         [Test]
-        public async void Deserialized_Flow_Component_With_ShouldExecuteBlock_Can_Be_Built_And_Attempted()
+        public async Task Deserialized_Flow_Component_With_ShouldExecuteBlock_Can_Be_Built_And_Attempted()
         {
             TypeAbbreviationCache.RegisterFromAssembly(GetType().Assembly, failOnCollision: false);
 
@@ -285,7 +291,7 @@ namespace Banzai.Json.Test
 
             NodeResult result = await flowRootNode.ExecuteAsync(new object());
 
-            result.Status.ShouldEqual(NodeResultStatus.NotRun);
+            result.Status.Should().Be(NodeResultStatus.NotRun);
         }
 
     }

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
+using FluentAssertions;
 using NUnit.Framework;
-using Should;
 
 namespace Banzai.Test
 {
@@ -8,7 +9,7 @@ namespace Banzai.Test
     public class WhenChangingTheSubject
     {
         [Test]
-        public async void Node_May_Change_Context_Subject()
+        public async Task Node_May_Change_Context_Subject()
         {
             var testNode = new SubjectChangingNode1();
             var testObject = new TestObjectA();
@@ -16,15 +17,15 @@ namespace Banzai.Test
 
             var result = await testNode.ExecuteAsync(context);
 
-            result.Status.ShouldEqual(NodeResultStatus.Succeeded);
+            result.Status.Should().Be(NodeResultStatus.Succeeded);
 
-            result.Subject.ShouldBeSameAs(context.Subject);
-            result.Subject.ShouldNotBeSameAs(testObject);
-            result.GetSubjectAs<TestObjectA>().TestValueString.ShouldEqual("New Instance");
+            result.Subject.Should().BeSameAs(context.Subject);
+            result.Subject.Should().NotBeSameAs(testObject);
+            result.GetSubjectAs<TestObjectA>().TestValueString.Should().Be("New Instance");
         }
 
         [Test]
-        public async void Pipeline_Node_Results_Following_Subject_Change_Node_Return_Changed_Subject()
+        public async Task Pipeline_Node_Results_Following_Subject_Change_Node_Return_Changed_Subject()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
 
@@ -39,18 +40,18 @@ namespace Banzai.Test
             var testObject = new TestObjectA();
             NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
-            pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
+            pipelineNode.Status.Should().Be(NodeRunStatus.Completed);
 
             var childResults = result.ChildResults.ToList();
 
-            childResults[0].Subject.ShouldBeSameAs(testObject);
-            childResults[1].Subject.ShouldNotBeSameAs(testObject);
-            childResults[2].Subject.ShouldNotBeSameAs(testObject);
-            childResults[1].Subject.ShouldEqual(childResults[2].Subject);
+            childResults[0].Subject.Should().BeSameAs(testObject);
+            childResults[1].Subject.Should().NotBeSameAs(testObject);
+            childResults[2].Subject.Should().NotBeSameAs(testObject);
+            childResults[1].Subject.Should().Be(childResults[2].Subject);
         }
 
         [Test]
-        public async void Pipeline_Overall_Result_Subject_Equals_Changed_Subject()
+        public async Task Pipeline_Overall_Result_Subject_Equals_Changed_Subject()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
 
@@ -65,16 +66,16 @@ namespace Banzai.Test
             var testObject = new TestObjectA();
             NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
-            pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
+            pipelineNode.Status.Should().Be(NodeRunStatus.Completed);
 
             var childResults = result.ChildResults.ToList();
 
-            result.Subject.ShouldNotBeSameAs(testObject);
-            result.Subject.ShouldBeSameAs(childResults[1].Subject);
+            result.Subject.Should().NotBeSameAs(testObject);
+            result.Subject.Should().BeSameAs(childResults[1].Subject);
         }
 
         [Test]
-        public async void Pipeline_Overall_Result_Subject_Equals_Last_Changed_Subject()
+        public async Task Pipeline_Overall_Result_Subject_Equals_Last_Changed_Subject()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
 
@@ -91,19 +92,19 @@ namespace Banzai.Test
             var testObject = new TestObjectA();
             NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
-            pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
+            pipelineNode.Status.Should().Be(NodeRunStatus.Completed);
 
             var childResults = result.ChildResults.ToList();
 
-            result.Subject.ShouldNotBeSameAs(testObject);
-            result.Subject.ShouldNotBeSameAs(childResults[1].Subject);
-            result.Subject.ShouldNotBeSameAs(childResults[2].Subject);
-            result.Subject.ShouldBeSameAs(childResults[3].Subject);
+            result.Subject.Should().NotBeSameAs(testObject);
+            result.Subject.Should().NotBeSameAs(childResults[1].Subject);
+            result.Subject.Should().NotBeSameAs(childResults[2].Subject);
+            result.Subject.Should().BeSameAs(childResults[3].Subject);
         }
 
 
         [Test]
-        public async void Group_Overall_Result_Subject_Equals_Changed_Subject()
+        public async Task Group_Overall_Result_Subject_Equals_Changed_Subject()
         {
             var groupNode = new GroupNode<TestObjectA>();
 
@@ -118,16 +119,16 @@ namespace Banzai.Test
             var testObject = new TestObjectA();
             NodeResult result = await groupNode.ExecuteAsync(testObject);
 
-            groupNode.Status.ShouldEqual(NodeRunStatus.Completed);
+            groupNode.Status.Should().Be(NodeRunStatus.Completed);
 
             var childResults = result.ChildResults.ToList();
 
-            result.Subject.ShouldNotBeSameAs(testObject);
-            result.Subject.ShouldBeSameAs(childResults[1].Subject);
+            result.Subject.Should().NotBeSameAs(testObject);
+            result.Subject.Should().BeSameAs(childResults[1].Subject);
         }
 
         [Test]
-        public async void Group_Overall_Result_Subject_Equals_Last_Changed_Subject()
+        public async Task Group_Overall_Result_Subject_Equals_Last_Changed_Subject()
         {
             var groupNode = new GroupNode<TestObjectA>();
 
@@ -144,14 +145,14 @@ namespace Banzai.Test
             var testObject = new TestObjectA();
             NodeResult result = await groupNode.ExecuteAsync(testObject);
 
-            groupNode.Status.ShouldEqual(NodeRunStatus.Completed);
+            groupNode.Status.Should().Be(NodeRunStatus.Completed);
 
             var childResults = result.ChildResults.ToList();
 
-            result.Subject.ShouldNotBeSameAs(testObject);
-            result.Subject.ShouldNotBeSameAs(childResults[1].Subject);
-            result.Subject.ShouldNotBeSameAs(childResults[2].Subject);
-            result.Subject.ShouldBeSameAs(childResults[3].Subject);
+            result.Subject.Should().NotBeSameAs(testObject);
+            result.Subject.Should().NotBeSameAs(childResults[1].Subject);
+            result.Subject.Should().NotBeSameAs(childResults[2].Subject);
+            result.Subject.Should().BeSameAs(childResults[3].Subject);
         }
 
     }

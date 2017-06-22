@@ -1,7 +1,7 @@
 ﻿using Banzai.Factories;
+using FluentAssertions;
 using Ninject;
 using NUnit.Framework;
-using Should;
 
 namespace Banzai.Ninject.Test
 {
@@ -26,7 +26,8 @@ namespace Banzai.Ninject.Test
             var factory = kernel.Get<INodeFactory<object>>();
 
             var flowRootNode = factory.BuildFlow("TestFlow1");
-            ObjectAssertExtensions.ShouldEqual(flowRootNode.CustomData, "TestData");
+            var testData = flowRootNode.CustomData as string;
+            testData.Should().Be("TestData");
         }
 
         [Test]
@@ -46,8 +47,10 @@ namespace Banzai.Ninject.Test
             var factory = kernel.Get<INodeFactory<object>>();
 
             var flowRootNode = factory.BuildFlow("TestFlow1");
-            ObjectAssertExtensions.ShouldEqual(flowRootNode.CustomData.Test, "Test");
-            ObjectAssertExtensions.ShouldEqual(flowRootNode.CustomData.Thang, "Thang");
+            var test = flowRootNode.CustomData.Test as string;
+            var thang = flowRootNode.CustomData.Thang as string;
+            test.Should().Be("Test");
+            thang.Should().Be("Thang");
         }
 
     }

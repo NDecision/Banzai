@@ -1,5 +1,6 @@
-﻿using NUnit.Framework;
-using Should;
+﻿using System.Threading.Tasks;
+using FluentAssertions;
+using NUnit.Framework;
 
 namespace Banzai.Test
 {
@@ -7,7 +8,7 @@ namespace Banzai.Test
     public class WhenRunningGroupNode
     {
         [Test]
-        public async void Successful_Group_Run_Status_Is_Succeeded()
+        public async Task Successful_Group_Run_Status_Is_Succeeded()
         {
             var groupNode = new GroupNode<TestObjectA>();
 
@@ -17,11 +18,11 @@ namespace Banzai.Test
             var testObject = new TestObjectA();
             NodeResult result =  await groupNode.ExecuteAsync(testObject);
 
-            groupNode.Status.ShouldEqual(NodeRunStatus.Completed);
+            groupNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
         [Test]
-        public async void Group_Run_With_Failure_Returns_Failed_Status()
+        public async Task Group_Run_With_Failure_Returns_Failed_Status()
         {
             var groupNode = new GroupNode<TestObjectA>();
 
@@ -31,12 +32,12 @@ namespace Banzai.Test
             var testObject = new TestObjectA();
             NodeResult result = await groupNode.ExecuteAsync(testObject);
 
-            result.Status.ShouldEqual(NodeResultStatus.Failed);
-            groupNode.Status.ShouldEqual(NodeRunStatus.Completed);
+            result.Status.Should().Be(NodeResultStatus.Failed);
+            groupNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
         [Test]
-        public async void Group_Run_With_Failure_And_ContinueOnError_Returns_SucceededWithErrors_Status()
+        public async Task Group_Run_With_Failure_And_ContinueOnError_Returns_SucceededWithErrors_Status()
         {
             var groupNode = new GroupNode<TestObjectA> {LocalOptions = new ExecutionOptions {ContinueOnFailure = true}};
 
@@ -46,12 +47,12 @@ namespace Banzai.Test
             var testObject = new TestObjectA();
             NodeResult result = await groupNode.ExecuteAsync(testObject);
 
-            result.Status.ShouldEqual(NodeResultStatus.SucceededWithErrors);
-            groupNode.Status.ShouldEqual(NodeRunStatus.Completed);
+            result.Status.Should().Be(NodeResultStatus.SucceededWithErrors);
+            groupNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
         [Test]
-        public async void Group_Run_With_Fault_Returns_Failed_Status()
+        public async Task Group_Run_With_Fault_Returns_Failed_Status()
         {
             var groupNode = new GroupNode<TestObjectA>();
 
@@ -61,12 +62,12 @@ namespace Banzai.Test
             var testObject = new TestObjectA();
             NodeResult result = await groupNode.ExecuteAsync(testObject);
 
-            result.Status.ShouldEqual(NodeResultStatus.Failed);
-            groupNode.Status.ShouldEqual(NodeRunStatus.Completed);
+            result.Status.Should().Be(NodeResultStatus.Failed);
+            groupNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
         [Test]
-        public async void Group_Run_With_Fault_And_ContinueOnError_Returns_SucceededWithErrors_Status()
+        public async Task Group_Run_With_Fault_And_ContinueOnError_Returns_SucceededWithErrors_Status()
         {
             var groupNode = new GroupNode<TestObjectA> { LocalOptions = new ExecutionOptions { ContinueOnFailure = true } };
 
@@ -76,12 +77,12 @@ namespace Banzai.Test
             var testObject = new TestObjectA();
             NodeResult result = await groupNode.ExecuteAsync(testObject);
 
-            result.Status.ShouldEqual(NodeResultStatus.SucceededWithErrors);
-            groupNode.Status.ShouldEqual(NodeRunStatus.Completed);
+            result.Status.Should().Be(NodeResultStatus.SucceededWithErrors);
+            groupNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
         [Test]
-        public async void Failed_Group_Run_Returns_Failed_Status()
+        public async Task Failed_Group_Run_Returns_Failed_Status()
         {
             var groupNode = new GroupNode<TestObjectA>();
 
@@ -91,12 +92,12 @@ namespace Banzai.Test
             var testObject = new TestObjectA();
             NodeResult result = await groupNode.ExecuteAsync(testObject);
 
-            result.Status.ShouldEqual(NodeResultStatus.Failed);
-            groupNode.Status.ShouldEqual(NodeRunStatus.Completed);
+            result.Status.Should().Be(NodeResultStatus.Failed);
+            groupNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
         [Test]
-        public async void Faulted_Group_Run_Returns_Failed_Status()
+        public async Task Faulted_Group_Run_Returns_Failed_Status()
         {
             var groupNode = new GroupNode<TestObjectA>();
 
@@ -106,12 +107,12 @@ namespace Banzai.Test
             var testObject = new TestObjectA();
             NodeResult result = await groupNode.ExecuteAsync(testObject);
 
-            result.Status.ShouldEqual(NodeResultStatus.Failed);
-            groupNode.Status.ShouldEqual(NodeRunStatus.Completed);
+            result.Status.Should().Be(NodeResultStatus.Failed);
+            groupNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
         [Test]
-        public async void Successful_Group_Result_Matches_Expectations()
+        public async Task Successful_Group_Result_Matches_Expectations()
         {
             var groupNode = new GroupNode<TestObjectA>();
 
@@ -121,9 +122,9 @@ namespace Banzai.Test
             var testObject = new TestObjectA();
             NodeResult result = await groupNode.ExecuteAsync(testObject);
 
-            result.Status.ShouldEqual(NodeResultStatus.Succeeded);
-            testObject.TestValueString.ShouldEqual("Completed");
-            testObject.TestValueInt.ShouldEqual(100);
+            result.Status.Should().Be(NodeResultStatus.Succeeded);
+            testObject.TestValueString.Should().Be("Completed");
+            testObject.TestValueInt.Should().Be(100);
         }
 
     }

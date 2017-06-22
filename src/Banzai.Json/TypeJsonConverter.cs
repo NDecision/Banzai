@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using Banzai.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -13,10 +14,10 @@ namespace Banzai.Json
             var aggregateType = (Type)value;
             string serializationString;
             
-            if (aggregateType.IsGenericType)
+            if (aggregateType.GetTypeInfo().IsGenericType)
             {
                 Type nodeType = aggregateType.GetGenericTypeDefinition();
-                Type argType = aggregateType.GetGenericArguments()[0];
+                Type argType = aggregateType.GetTypeInfo().GetGenericArguments()[0];
 
                 var argString = GetTypeName(argType);
                 var nodeString = GetTypeName(nodeType);
@@ -71,7 +72,7 @@ namespace Banzai.Json
 
         public override bool CanConvert(Type objectType)
         {
-            return objectType.IsAssignableFrom(typeof(Type));
+            return objectType.GetTypeInfo().IsAssignableFrom(typeof(Type));
         }
 
         private static string GetTypeName(Type type)

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using Banzai.Logging;
+using FluentAssertions;
 using log4net.Appender;
 using log4net.Config;
 using log4net.Core;
 using NUnit.Framework;
-using Should;
 
 namespace Banzai.Log4Net.Test
 {
@@ -28,7 +28,7 @@ namespace Banzai.Log4Net.Test
 
             LogWriter.GetLogger(this).Fatal("Testing Fatal with exception.", new Exception("Test Exception"));
 
-            _memoryAppender.GetEvents().Any(le => le.Level == Level.Fatal).ShouldBeTrue();
+            _memoryAppender.GetEvents().Any(le => le.Level == Level.Fatal).Should().BeTrue();
             
         }
 
@@ -38,7 +38,7 @@ namespace Banzai.Log4Net.Test
             LogWriter.SetFactory(new Log4NetWriterFactory());
 
             LogWriter.GetLogger(this).Fatal("Testing Fatal without exception.");
-            _memoryAppender.GetEvents().Any(le => le.Level == Level.Fatal).ShouldBeTrue();
+            _memoryAppender.GetEvents().Any(le => le.Level == Level.Fatal).Should().BeTrue();
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace Banzai.Log4Net.Test
             LogWriter.SetFactory(new Log4NetWriterFactory());
 
             LogWriter.GetLogger(this).Error("Testing Error with exception.", new Exception("Test Exception"));
-            _memoryAppender.GetEvents().Any(le => le.Level == Level.Error).ShouldBeTrue();
+            _memoryAppender.GetEvents().Any(le => le.Level == Level.Error).Should().BeTrue();
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace Banzai.Log4Net.Test
             LogWriter.SetFactory(new Log4NetWriterFactory());
 
             LogWriter.GetLogger(this).Error("Testing Error without exception.");
-            _memoryAppender.GetEvents().Any(le => le.Level == Level.Error).ShouldBeTrue();
+            _memoryAppender.GetEvents().Any(le => le.Level == Level.Error).Should().BeTrue();
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace Banzai.Log4Net.Test
             LogWriter.SetFactory(new Log4NetWriterFactory());
 
             LogWriter.GetLogger(this).Warn("Testing Warn with exception.", new Exception("Test Exception"));
-            _memoryAppender.GetEvents().Any(le => le.Level == Level.Warn).ShouldBeTrue();
+            _memoryAppender.GetEvents().Any(le => le.Level == Level.Warn).Should().BeTrue();
         }
 
         [Test]
@@ -74,7 +74,7 @@ namespace Banzai.Log4Net.Test
             LogWriter.SetFactory(new Log4NetWriterFactory());
 
             LogWriter.GetLogger(this).Warn("Testing Warn without exception.");
-            _memoryAppender.GetEvents().Any(le => le.Level == Level.Warn).ShouldBeTrue();
+            _memoryAppender.GetEvents().Any(le => le.Level == Level.Warn).Should().BeTrue();
         }
 
         [Test]
@@ -83,7 +83,7 @@ namespace Banzai.Log4Net.Test
             LogWriter.SetFactory(new Log4NetWriterFactory());
 
             LogWriter.GetLogger(this).Info("Testing Info with exception.", new Exception("Test Exception"));
-            _memoryAppender.GetEvents().Any(le => le.Level == Level.Info).ShouldBeTrue();
+            _memoryAppender.GetEvents().Any(le => le.Level == Level.Info).Should().BeTrue();
         }
 
         [Test]
@@ -92,7 +92,7 @@ namespace Banzai.Log4Net.Test
             LogWriter.SetFactory(new Log4NetWriterFactory());
 
             LogWriter.GetLogger(this).Info("Testing Info without exception.");
-            _memoryAppender.GetEvents().Any(le => le.Level == Level.Info).ShouldBeTrue();
+            _memoryAppender.GetEvents().Any(le => le.Level == Level.Info).Should().BeTrue();
         }
 
         [Test]
@@ -101,7 +101,7 @@ namespace Banzai.Log4Net.Test
             LogWriter.SetFactory(new Log4NetWriterFactory());
 
             LogWriter.GetLogger(this).Debug("Testing Debug with exception.", new Exception("Test Exception"));
-            _memoryAppender.GetEvents().Any(le => le.Level == Level.Debug).ShouldBeTrue();
+            _memoryAppender.GetEvents().Any(le => le.Level == Level.Debug).Should().BeTrue();
         }
 
         [Test]
@@ -110,7 +110,7 @@ namespace Banzai.Log4Net.Test
             LogWriter.SetFactory(new Log4NetWriterFactory());
 
             LogWriter.GetLogger(this).Debug("Testing Debug without exception.");
-            _memoryAppender.GetEvents().Any(le => le.Level == Level.Debug).ShouldBeTrue();
+            _memoryAppender.GetEvents().Any(le => le.Level == Level.Debug).Should().BeTrue();
         }
 
     }

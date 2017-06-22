@@ -231,7 +231,7 @@ namespace Banzai
         {
             Guard.AgainstNullArgument("subjects", subjects);
 
-            var nodeTimer = new NodeTimer();
+            var nodeTimer = new NodeTimer<T>();
 
             try
             {
@@ -293,7 +293,7 @@ namespace Banzai
         {
             Guard.AgainstNullArgument("subjects", subjects);
 
-            var nodeTimer = new NodeTimer();
+            var nodeTimer = new NodeTimer<T>();
 
             try
             {
@@ -365,7 +365,7 @@ namespace Banzai
             Guard.AgainstNullArgument("context", sourceContext);
             Guard.AgainstNullArgumentProperty("context", "Subject", sourceContext.Subject);
 
-            var nodeTimer = new NodeTimer();
+            var nodeTimer = new NodeTimer<T>();
 
             try
             {
