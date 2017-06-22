@@ -75,7 +75,7 @@ namespace Banzai.Autofac
         /// <returns>Builder including added nodes.</returns>
         public static ContainerBuilder RegisterBanzaiNodes<T>(this ContainerBuilder builder, bool includeCore = false)
         {
-            return builder.RegisterBanzaiNodes(typeof(T).Assembly, includeCore);
+            return builder.RegisterBanzaiNodes(typeof(T).GetTypeInfo().Assembly, includeCore);
         }
 
         /// <summary>
@@ -147,11 +147,10 @@ namespace Banzai.Autofac
 
         private static void RegisterNodes(ContainerBuilder builder, Assembly assembly)
         {
-            var types = assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract && t.IsClosedTypeOf(typeof(INode<>)));
-
+            var types = assembly.GetTypes().Where(t => t.GetTypeInfo().IsClass && !t.GetTypeInfo().IsAbstract && t.IsClosedTypeOf(typeof(INode<>)));
             foreach (var type in types)
             {
-                if (type.IsGenericTypeDefinition)
+                if (type.GetTypeInfo().IsGenericTypeDefinition)
                 {
                     var registrationBuilder = builder.RegisterGeneric(type)
                         .AsSelf()
@@ -186,11 +185,10 @@ namespace Banzai.Autofac
 
         private static void RegisterShouldExecuteBlocks(ContainerBuilder builder, Assembly assembly)
         {
-            var types = assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract && t.IsClosedTypeOf(typeof(IShouldExecuteBlock<>)));
-
+            var types = assembly.GetTypes().Where(t => t.GetTypeInfo().IsClass && !t.GetTypeInfo().IsAbstract && t.IsClosedTypeOf(typeof(IShouldExecuteBlock<>)));
             foreach (var type in types)
             {
-                if (type.IsGenericTypeDefinition)
+                if (type.GetTypeInfo().IsGenericTypeDefinition)
                 {
                     builder.RegisterGeneric(type)
                         .AsSelf()
@@ -209,7 +207,7 @@ namespace Banzai.Autofac
 
         private static void RegisterMetaDataBuilders(ContainerBuilder builder, Assembly assembly)
         {
-            IEnumerable<Type> types = assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract && (typeof(IMetaDataBuilder)).IsAssignableFrom(t));
+            IEnumerable<Type> types = assembly.GetTypes().Where(t => t.GetTypeInfo().IsClass && !t.GetTypeInfo().IsAbstract && (typeof(IMetaDataBuilder)).GetTypeInfo().IsAssignableFrom(t));
             foreach (var type in types)
             {
                 builder.RegisterType(type).As<IMetaDataBuilder>();

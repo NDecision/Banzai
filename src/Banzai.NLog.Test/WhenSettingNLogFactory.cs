@@ -1,6 +1,6 @@
 ﻿using Banzai.Logging;
+using FluentAssertions;
 using NUnit.Framework;
-using Should;
 
 namespace Banzai.NLog.Test
 {
@@ -15,7 +15,7 @@ namespace Banzai.NLog.Test
 
             var writer = LogWriter.GetLogger(typeof(object));
 
-            writer.ShouldBeType<NLogWriter>();
+            writer.Should().BeOfType<NLogWriter>();
         }
 
     }

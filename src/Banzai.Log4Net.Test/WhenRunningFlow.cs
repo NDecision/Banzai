@@ -1,7 +1,8 @@
-﻿using Banzai.Logging;
+﻿using System.Threading.Tasks;
+using Banzai.Logging;
+using FluentAssertions;
 using log4net.Config;
 using NUnit.Framework;
-using Should;
 
 namespace Banzai.Log4Net.Test
 {
@@ -14,7 +15,7 @@ namespace Banzai.Log4Net.Test
         }
 
         [Test]
-        public async void Logging_Set_With_Log4Net_Doesnt_Err()
+        public async Task Logging_Set_With_Log4Net_Doesnt_Err()
         {
             LogWriter.SetFactory(new Log4NetWriterFactory());
 
@@ -26,7 +27,7 @@ namespace Banzai.Log4Net.Test
             var testObject = new TestObjectA();
             NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
-            pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
+            pipelineNode.Status.Should().Be(NodeRunStatus.Completed);
         }
     }
 }

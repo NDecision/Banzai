@@ -1,6 +1,6 @@
-﻿using Ninject;
+﻿using FluentAssertions;
+using Ninject;
 using NUnit.Framework;
-using Should;
 
 namespace Banzai.Ninject.Test
 {
@@ -14,7 +14,7 @@ namespace Banzai.Ninject.Test
             kernel.RegisterBanzaiNodes(GetType().Assembly, true);
 
             var node = kernel.Get<TestNode>();
-            node.ShouldNotBeNull();
+            node.Should().NotBeNull();
         }
 
         [Test]
@@ -24,7 +24,7 @@ namespace Banzai.Ninject.Test
             kernel.RegisterBanzaiNodes(GetType().Assembly, true);
 
             var node = kernel.Get<ITestNode2>();
-            node.ShouldNotBeNull();
+            node.Should().NotBeNull();
         }
 
         [Test]
@@ -34,7 +34,7 @@ namespace Banzai.Ninject.Test
             kernel.RegisterBanzaiNodes(GetType().Assembly, true);
 
             var node = kernel.Get<ITestNode<object>>();
-            node.ShouldNotBeNull();
+            node.Should().NotBeNull();
         }
 
         [Test]
@@ -44,9 +44,9 @@ namespace Banzai.Ninject.Test
             kernel.RegisterBanzaiNodes(GetType().Assembly, true);
 
             var node = kernel.Get<IGroupNode<object>>();
-            node.ShouldNotBeNull();
+            node.Should().NotBeNull();
             node = kernel.Get<GroupNode<object>>();
-            node.ShouldNotBeNull();
+            node.Should().NotBeNull();
         }
 
         [Test]
@@ -56,9 +56,9 @@ namespace Banzai.Ninject.Test
             kernel.RegisterBanzaiNodes(GetType().Assembly, true);
 
             var node = kernel.Get<IPipelineNode<object>>();
-            node.ShouldNotBeNull();
+            node.Should().NotBeNull();
             node = kernel.Get<PipelineNode<object>>();
-            node.ShouldNotBeNull();
+            node.Should().NotBeNull();
         }
 
         [Test]
@@ -68,9 +68,9 @@ namespace Banzai.Ninject.Test
             kernel.RegisterBanzaiNodes(GetType().Assembly, true);
 
             var node = kernel.Get<IFirstMatchNode<object>>();
-            node.ShouldNotBeNull();
+            node.Should().NotBeNull();
             node = kernel.Get<FirstMatchNode<object>>();
-            node.ShouldNotBeNull();
+            node.Should().NotBeNull();
         }
 
     }

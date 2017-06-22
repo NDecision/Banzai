@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using FluentAssertions;
 using NUnit.Framework;
-using Should;
 
 namespace Banzai.Test
 {
@@ -20,7 +21,7 @@ namespace Banzai.Test
         }
 
         [Test]
-        public async void Successful_Node_Run_Status_Is_Completed()
+        public async Task Successful_Node_Run_Status_Is_Completed()
         {
             var testNode = new SimpleTestNodeA1();
 
@@ -28,13 +29,13 @@ namespace Banzai.Test
 
             var result = await testNode.ExecuteManyAsync(testObjectList, new ExecutionOptions{ DegreeOfParallelism = 4 });
 
-            result.Status.ShouldEqual(NodeResultStatus.Succeeded);
-            result.Exception.ShouldBeNull();
-            testNode.Status.ShouldEqual(NodeRunStatus.Completed);
+            result.Status.Should().Be(NodeResultStatus.Succeeded);
+            result.Exception.Should().BeNull();
+            testNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
         [Test]
-        public async void Successful_Node_Run_Status_Is_Completed_When_Fewer_Subjects_Than_DegreeOfParallelism()
+        public async Task Successful_Node_Run_Status_Is_Completed_When_Fewer_Subjects_Than_DegreeOfParallelism()
         {
             var testNode = new SimpleTestNodeA1();
 
@@ -42,13 +43,13 @@ namespace Banzai.Test
 
             var result = await testNode.ExecuteManyAsync(testObjectList, new ExecutionOptions { DegreeOfParallelism = 4 });
 
-            result.Status.ShouldEqual(NodeResultStatus.Succeeded);
-            result.Exception.ShouldBeNull();
-            testNode.Status.ShouldEqual(NodeRunStatus.Completed);
+            result.Status.Should().Be(NodeResultStatus.Succeeded);
+            result.Exception.Should().BeNull();
+            testNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
         [Test]
-        public async void Failed_Node_Run_Status_Is_Failed()
+        public async Task Failed_Node_Run_Status_Is_Failed()
         {
             var testNode = new FailingTestNodeA();
 
@@ -56,9 +57,9 @@ namespace Banzai.Test
 
             var result = await testNode.ExecuteManyAsync(testObjectList, new ExecutionOptions { DegreeOfParallelism = 4 });
 
-            result.Status.ShouldEqual(NodeResultStatus.Failed);
-            result.Exception.ShouldBeNull();
-            testNode.Status.ShouldEqual(NodeRunStatus.Completed);
+            result.Status.Should().Be(NodeResultStatus.Failed);
+            result.Exception.Should().BeNull();
+            testNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
         [Test]
@@ -68,11 +69,11 @@ namespace Banzai.Test
 
             var testObjectList = GetTestObjects();
 
-            Assert.Throws<AggregateException>(async () => await testNode.ExecuteManyAsync(testObjectList, new ExecutionOptions { ThrowOnError = true, DegreeOfParallelism = 4 }));
+            Assert.ThrowsAsync<AggregateException>(() => testNode.ExecuteManyAsync(testObjectList, new ExecutionOptions { ThrowOnError = true, DegreeOfParallelism = 4 }));
         }
 
         [Test]
-        public async void Faulted_Node_Run_Status_Is_Failed_If_Continue_On_Failure_True()
+        public async Task Faulted_Node_Run_Status_Is_Failed_If_Continue_On_Failure_True()
         {
             var testNode = new FaultingTestNodeA();
 
@@ -80,9 +81,9 @@ namespace Banzai.Test
 
             var result = await testNode.ExecuteManyAsync(testObjectList, new ExecutionOptions { ContinueOnFailure = true, DegreeOfParallelism = 4 });
 
-            result.Status.ShouldEqual(NodeResultStatus.Failed);
-            result.Exception.ShouldNotBeNull();
-            testNode.Status.ShouldEqual(NodeRunStatus.Faulted);
+            result.Status.Should().Be(NodeResultStatus.Failed);
+            result.Exception.Should().NotBeNull();
+            testNode.Status.Should().Be(NodeRunStatus.Faulted);
         }
 
 

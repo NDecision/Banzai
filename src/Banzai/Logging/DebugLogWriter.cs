@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 
 namespace Banzai.Logging
 {
@@ -18,7 +19,7 @@ namespace Banzai.Logging
         {
             _typeName = type.Name;
 
-            Type[] genericArgs = type.GetGenericArguments();
+            Type[] genericArgs = type.GetTypeInfo().GetGenericArguments();
             if (genericArgs.Length > 0)
             {
                 string argsString = string.Join(", ", genericArgs.Select(x => x.Name));

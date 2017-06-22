@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
+using FluentAssertions;
 using NUnit.Framework;
-using Should;
 
 namespace Banzai.Test
 {
@@ -8,7 +8,7 @@ namespace Banzai.Test
     public class WhenRunningTransitionNode
     {
         [Test]
-        public async void Successful_Transition_Run_Status_Is_Succeeded()
+        public async Task Successful_Transition_Run_Status_Is_Succeeded()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
 
@@ -19,12 +19,12 @@ namespace Banzai.Test
             var testObject = new TestObjectA();
             NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
-            result.Status.ShouldEqual(NodeResultStatus.Succeeded);
-            pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
+            result.Status.Should().Be(NodeResultStatus.Succeeded);
+            pipelineNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
         [Test]
-        public async void Failed_Transition_Node_Child_Results_In_Failed_Parent()
+        public async Task Failed_Transition_Node_Child_Results_In_Failed_Parent()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
 
@@ -35,12 +35,12 @@ namespace Banzai.Test
             var testObject = new TestObjectA();
             NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
-            result.Status.ShouldEqual(NodeResultStatus.Failed);
-            pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
+            result.Status.Should().Be(NodeResultStatus.Failed);
+            pipelineNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
         [Test]
-        public async void Faulted_Transition_Node_Child_Results_In_Failed_Parent_With_Exception()
+        public async Task Faulted_Transition_Node_Child_Results_In_Failed_Parent_With_Exception()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
 
@@ -51,9 +51,9 @@ namespace Banzai.Test
             var testObject = new TestObjectA();
             NodeResult result = await pipelineNode.ExecuteAsync(testObject);
 
-            result.Status.ShouldEqual(NodeResultStatus.Failed);
-            pipelineNode.Status.ShouldEqual(NodeRunStatus.Completed);
-            result.Exception.ShouldNotBeNull();
+            result.Status.Should().Be(NodeResultStatus.Failed);
+            pipelineNode.Status.Should().Be(NodeRunStatus.Completed);
+            result.Exception.Should().NotBeNull();
         }
 
         public class SimpleTransitionNode : TransitionNode<TestObjectA, TestObjectB>

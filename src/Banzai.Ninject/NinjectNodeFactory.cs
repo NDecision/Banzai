@@ -101,10 +101,10 @@ namespace Banzai.Ninject
         /// <param name="type">Type of the flow subject.</param>
         /// <param name="name">Name of flow to return.</param>
         /// <returns>Flow matching the requested criteria.</returns>
-        protected override dynamic GetFlowRoot<T>(Type type, string name)
+        protected override FlowComponent<T> GetFlowRoot<T>(Type type, string name)
         {
             Type componentType = typeof(FlowComponent<>).MakeGenericType(type);
-            return _resolver.Get(componentType, name);
+            return _resolver.Get(componentType, name) as FlowComponent<T>;
         }
 
         /// <summary>
@@ -233,10 +233,10 @@ namespace Banzai.Ninject
         /// <param name="type">Type of the flow subject.</param>
         /// <param name="name">Name of flow to return.</param>
         /// <returns>Flow matching the requested criteria.</returns>
-        protected override dynamic GetFlowRoot(Type type, string name)
+        protected override FlowComponent<T> GetFlowRoot(Type type, string name)
         {
             Type componentType = typeof(FlowComponent<>).MakeGenericType(type);
-            return _resolver.Get(componentType, name);
+            return _resolver.Get(componentType, name) as FlowComponent<T>;
         }
 
         /// <summary>

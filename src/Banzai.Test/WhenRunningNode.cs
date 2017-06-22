@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Threading.Tasks;
+using FluentAssertions;
 using NUnit.Framework;
-using Should;
 
 namespace Banzai.Test
 {
@@ -13,11 +14,11 @@ namespace Banzai.Test
         {
             var testNode = new SimpleTestNodeA1();
 
-            testNode.Status.ShouldEqual(NodeRunStatus.NotRun);
+            testNode.Status.Should().Be(NodeRunStatus.NotRun);
         }
 
         [Test]
-        public async void Errant_Node_Run_Status_Is_Faulted()
+        public async Task Errant_Node_Run_Status_Is_Faulted()
         {
             var testNode = new FaultingTestNodeA();
 
@@ -26,13 +27,13 @@ namespace Banzai.Test
             var context = new ExecutionContext<TestObjectA>(testObject);
 
             var result = await testNode.ExecuteAsync(context);
-            result.Exception.ShouldNotBeNull();
+            result.Exception.Should().NotBeNull();
 
-            testNode.Status.ShouldEqual(NodeRunStatus.Faulted);
+            testNode.Status.Should().Be(NodeRunStatus.Faulted);
         }
 
         [Test]
-        public async void Failed_Node_Run_Status_Is_Completed_With_Failed_Result()
+        public async Task Failed_Node_Run_Status_Is_Completed_With_Failed_Result()
         {
             var testNode = new FailingTestNodeA();
 
@@ -42,8 +43,8 @@ namespace Banzai.Test
 
             var result = await testNode.ExecuteAsync(context);
 
-            testNode.Status.ShouldEqual(NodeRunStatus.Completed);
-            result.Status.ShouldEqual(NodeResultStatus.Failed);
+            testNode.Status.Should().Be(NodeRunStatus.Completed);
+            result.Status.Should().Be(NodeResultStatus.Failed);
         }
 
         [Test]
@@ -55,11 +56,11 @@ namespace Banzai.Test
 
             var context = new ExecutionContext<TestObjectA>(testObject) {GlobalOptions = {ThrowOnError = true}};
 
-            Assert.Throws<Exception>(async () => await testNode.ExecuteAsync(context));
+            Assert.ThrowsAsync<Exception>(() => testNode.ExecuteAsync(context));
         }
         
         [Test]
-        public async void Successful_Node_Run_Status_Is_Completed()
+        public async Task Successful_Node_Run_Status_Is_Completed()
         {
             var testNode = new SimpleTestNodeA1();
 
@@ -69,11 +70,11 @@ namespace Banzai.Test
 
             var result = await testNode.ExecuteAsync(context);
 
-            testNode.Status.ShouldEqual(NodeRunStatus.Completed);
+            testNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
         [Test]
-        public async void Successful_Node_Result_Matches_Expectations()
+        public async Task Successful_Node_Result_Matches_Expectations()
         {
             var testNode = new SimpleTestNodeA1();
 
@@ -83,15 +84,15 @@ namespace Banzai.Test
 
             var result = await testNode.ExecuteAsync(context);
 
-            result.Status.ShouldEqual(NodeResultStatus.Succeeded);
-            result.Exception.ShouldEqual(null);
-            result.Id.ShouldEqual(testNode.Id);
+            result.Status.Should().Be(NodeResultStatus.Succeeded);
+            result.Exception.Should().Be(null);
+            result.Id.Should().Be(testNode.Id);
            
-            context.Subject.TestValueString.ShouldEqual("Completed");
+            context.Subject.TestValueString.Should().Be("Completed");
         }
 
         [Test]
-        public async void Node_Is_Not_Run_If_ShouldExecute_False()
+        public async Task Node_Is_Not_Run_If_ShouldExecute_False()
         {
             var testNode = new SimpleTestNodeA1(false);
 
@@ -101,9 +102,9 @@ namespace Banzai.Test
 
             var result = await testNode.ExecuteAsync(context);
 
-            result.Status.ShouldEqual(NodeResultStatus.NotRun);
+            result.Status.Should().Be(NodeResultStatus.NotRun);
 
-            context.Subject.TestValueString.ShouldBeNull();
+            context.Subject.TestValueString.Should().BeNull();
         }
 
         [Test]
@@ -117,11 +118,11 @@ namespace Banzai.Test
 
             testNode.LocalOptions = new ExecutionOptions {ThrowOnError = true};
 
-            testNode.GetEffectiveOptions(context.GlobalOptions).ThrowOnError.ShouldEqual(true);
+            testNode.GetEffectiveOptions(context.GlobalOptions).ThrowOnError.Should().Be(true);
         }
 
         [Test]
-        public async void Global_Options_Are_Reflected_In_Effective_Options()
+        public async Task Global_Options_Are_Reflected_In_Effective_Options()
         {
             var testNode = new SimpleTestNodeA1();
 
@@ -131,7 +132,7 @@ namespace Banzai.Test
 
             var result = await testNode.ExecuteAsync(context);
 
-            testNode.GetEffectiveOptions(context.GlobalOptions).ThrowOnError.ShouldEqual(true);
+            testNode.GetEffectiveOptions(context.GlobalOptions).ThrowOnError.Should().Be(true);
         }
 
 

@@ -1,9 +1,9 @@
 ﻿using System;
 using Banzai.Factories;
 using Banzai.Serialization;
+using FluentAssertions;
 using Ninject;
 using NUnit.Framework;
-using Should;
 
 namespace Banzai.Ninject.Test
 {
@@ -26,9 +26,9 @@ namespace Banzai.Ninject.Test
 
             var flow = kernel.Get<FlowComponent<object>>("TestFlow1");
 
-            flow.ShouldNotBeNull();
-            flow.IsFlow.ShouldBeTrue();
-            flow.Id.ShouldEqual("TestFlow1");
+            flow.Should().NotBeNull();
+            flow.IsFlow.Should().BeTrue();
+            flow.Id.Should().Be("TestFlow1");
         }
 
         [Test]
@@ -47,9 +47,9 @@ namespace Banzai.Ninject.Test
 
             var flow = kernel.Get<FlowComponent<object>>("TestFlow1");
 
-            flow.ShouldNotBeNull();
-            flow.IsFlow.ShouldBeTrue();
-            flow.Id.ShouldEqual("MyTestFlow");
+            flow.Should().NotBeNull();
+            flow.IsFlow.Should().BeTrue();
+            flow.Id.Should().Be("MyTestFlow");
         }
 
         [Test]
@@ -68,11 +68,11 @@ namespace Banzai.Ninject.Test
 
             var flow = kernel.Get<FlowComponent<object>>("TestFlow1");
 
-            flow.ShouldNotBeNull();
-            flow.IsFlow.ShouldBeTrue();
-            flow.Id.ShouldEqual("MyTestFlow");
-            flow.Children[0].Id.ShouldEqual("MyPipeline");
-            flow.Children[0].Children[0].Id.ShouldEqual("MyTestNode");
+            flow.Should().NotBeNull();
+            flow.IsFlow.Should().BeTrue();
+            flow.Id.Should().Be("MyTestFlow");
+            flow.Children[0].Id.Should().Be("MyPipeline");
+            flow.Children[0].Children[0].Id.Should().Be("MyTestNode");
         }
 
         [Test]
@@ -92,9 +92,9 @@ namespace Banzai.Ninject.Test
             var factory = kernel.Get<INodeFactory<object>>();
 
             var flow = factory.BuildFlow("TestFlow1");
-            flow.FlowId.ShouldEqual("TestFlow1");
-            flow.Id.ShouldEqual("Banzai.Ninject.Test.TestPipelineNode1");
-            ((IMultiNode<object>)flow).Children[0].Id.ShouldEqual("Banzai.Ninject.Test.TestNode2");
+            flow.FlowId.Should().Be("TestFlow1");
+            flow.Id.Should().Be("Banzai.Ninject.Test.TestPipelineNode1");
+            ((IMultiNode<object>)flow).Children[0].Id.Should().Be("Banzai.Ninject.Test.TestNode2");
         }
 
         [Test]
@@ -114,7 +114,7 @@ namespace Banzai.Ninject.Test
             var factory = kernel.Get<INodeFactory<object>>();
 
             var flow = factory.GetFlowRoot("TestFlow1");
-            flow.Id.ShouldEqual("TestFlow1");
+            flow.Id.Should().Be("TestFlow1");
         }
 
         [Test]
@@ -134,9 +134,9 @@ namespace Banzai.Ninject.Test
             var factory = kernel.Get<INodeFactory<object>>();
 
             var flow = factory.BuildFlow("TestFlow1");
-            flow.FlowId.ShouldEqual("MyFlow");
-            flow.Id.ShouldEqual("MyPipeline");
-            ((IMultiNode<object>)flow).Children[0].Id.ShouldEqual("MyTestNode");
+            flow.FlowId.Should().Be("MyFlow");
+            flow.Id.Should().Be("MyPipeline");
+            ((IMultiNode<object>)flow).Children[0].Id.Should().Be("MyTestNode");
         }
 
         [Test]
@@ -155,9 +155,9 @@ namespace Banzai.Ninject.Test
             var factory = kernel.Get<INodeFactory<object>>();
 
             var flow = factory.BuildFlow(component);
-            flow.FlowId.ShouldEqual("TestFlow1");
-            flow.Id.ShouldEqual("Banzai.Ninject.Test.TestPipelineNode1");
-            ((IMultiNode<object>)flow).Children[0].Id.ShouldEqual("Banzai.Ninject.Test.TestNode2");
+            flow.FlowId.Should().Be("TestFlow1");
+            flow.Id.Should().Be("Banzai.Ninject.Test.TestPipelineNode1");
+            ((IMultiNode<object>)flow).Children[0].Id.Should().Be("Banzai.Ninject.Test.TestNode2");
         }
 
         [Test]
@@ -176,9 +176,9 @@ namespace Banzai.Ninject.Test
             var factory = kernel.Get<INodeFactory<object>>();
 
             var flow = factory.BuildFlow(component);
-            flow.FlowId.ShouldEqual("MyCustomFlow");
-            flow.Id.ShouldEqual("MyPipeline");
-            ((IMultiNode<object>)flow).Children[0].Id.ShouldEqual("MyTestNode");
+            flow.FlowId.Should().Be("MyCustomFlow");
+            flow.Id.Should().Be("MyPipeline");
+            ((IMultiNode<object>)flow).Children[0].Id.Should().Be("MyTestNode");
         }
 
 
@@ -202,9 +202,9 @@ namespace Banzai.Ninject.Test
             var serialized = SerializerProvider.Serializer.Serialize(component);
 
             var flow = factory.BuildSerializedFlow(serialized);
-            flow.FlowId.ShouldEqual("TestFlow1");
-            flow.Id.ShouldEqual("Banzai.Ninject.Test.TestPipelineNode1");
-            ((IMultiNode<object>)flow).Children[0].Id.ShouldEqual("Banzai.Ninject.Test.TestNode2");
+            flow.FlowId.Should().Be("TestFlow1");
+            flow.Id.Should().Be("Banzai.Ninject.Test.TestPipelineNode1");
+            ((IMultiNode<object>)flow).Children[0].Id.Should().Be("Banzai.Ninject.Test.TestNode2");
         }
 
 
@@ -231,9 +231,9 @@ namespace Banzai.Ninject.Test
             var component = flowBuilder.DeserializeAndSetRootComponent(serialized);
 
             var flow = factory.BuildFlow(component);
-            flow.FlowId.ShouldEqual("TestFlow1");
-            flow.Id.ShouldEqual("Banzai.Ninject.Test.TestPipelineNode1");
-            ((IMultiNode<object>)flow).Children[0].Id.ShouldEqual("Banzai.Ninject.Test.TestNode2");
+            flow.FlowId.Should().Be("TestFlow1");
+            flow.Id.Should().Be("Banzai.Ninject.Test.TestPipelineNode1");
+            ((IMultiNode<object>)flow).Children[0].Id.Should().Be("Banzai.Ninject.Test.TestNode2");
         }
   
     }

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
+using FluentAssertions;
 using NUnit.Framework;
-using Should;
 
 namespace Banzai.Test
 {
@@ -8,7 +8,7 @@ namespace Banzai.Test
     public class WhenAddingInheritedSubjectNodes
     {
         [Test]
-        public async void Can_Add_Base_Type_Nodes_To_Inherited_Type_Pipeline()
+        public async Task Can_Add_Base_Type_Nodes_To_Inherited_Type_Pipeline()
         {
             var testNode = new SimpleTestNodeA1();
             var testNode2 = new SimpleTestNodeASub1();
@@ -22,12 +22,12 @@ namespace Banzai.Test
 
             var result = await pipeline.ExecuteAsync(testObject);
 
-            testNode.Status.ShouldEqual(NodeRunStatus.Completed);
-            result.Status.ShouldEqual(NodeResultStatus.Succeeded);
+            testNode.Status.Should().Be(NodeRunStatus.Completed);
+            result.Status.Should().Be(NodeResultStatus.Succeeded);
         }
 
         [Test]
-        public async void Can_Add_Base_Type_Pipeline_Node_To_Inherited_Type_Pipeline()
+        public async Task Can_Add_Base_Type_Pipeline_Node_To_Inherited_Type_Pipeline()
         {
             var testNode = new SimpleTestNodeA1();
 
@@ -44,12 +44,12 @@ namespace Banzai.Test
 
             var result = await pipeline.ExecuteAsync(testObject);
 
-            testNode.Status.ShouldEqual(NodeRunStatus.Completed);
-            result.Status.ShouldEqual(NodeResultStatus.Succeeded);
+            testNode.Status.Should().Be(NodeRunStatus.Completed);
+            result.Status.Should().Be(NodeResultStatus.Succeeded);
         }
 
         [Test]
-        public async void ShouldExecuteFunc_On_Test_Object_Is_Evaluated()
+        public async Task ShouldExecuteFunc_On_Test_Object_Is_Evaluated()
         {
             var testNode = new SimpleTestNodeA1();
             var testNode2 = new SimpleTestNodeASub1();
@@ -65,12 +65,12 @@ namespace Banzai.Test
 
             var result = await pipeline.ExecuteAsync(testObject);
 
-            testNode.Status.ShouldEqual(NodeRunStatus.Completed);
-            testNode2.Status.ShouldEqual(NodeRunStatus.NotRun);
+            testNode.Status.Should().Be(NodeRunStatus.Completed);
+            testNode2.Status.Should().Be(NodeRunStatus.NotRun);
         }
 
         [Test]
-        public async void Can_Add_Inherited_Func_Node_To_Pipleline()
+        public async Task Can_Add_Inherited_Func_Node_To_Pipleline()
         {
             var testNode = new FuncNode<TestObjectA>();
 
@@ -84,8 +84,8 @@ namespace Banzai.Test
 
             var result = await pipeline.ExecuteAsync(testObject);
 
-            testNode.Status.ShouldEqual(NodeRunStatus.Completed);
-            result.Status.ShouldEqual(NodeResultStatus.Succeeded);
+            testNode.Status.Should().Be(NodeRunStatus.Completed);
+            result.Status.Should().Be(NodeResultStatus.Succeeded);
         }
 
     }

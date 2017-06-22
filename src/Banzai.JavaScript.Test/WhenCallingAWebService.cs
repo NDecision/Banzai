@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
+using System.Threading.Tasks;
+using FluentAssertions;
 using NUnit.Framework;
-using Should;
 
 namespace Banzai.JavaScript.Test
 {
@@ -14,11 +15,11 @@ namespace Banzai.JavaScript.Test
             var result = client.GetAsync("http://www.google.com/").Result;
             var content = result.Content.ReadAsStringAsync().Result;
 
-            content.ShouldNotBeEmpty();
+            content.Should().NotBeEmpty();
         }
 
         [Test]
-        public async void Basic_Web_Call_Succeeds()
+        public async Task Basic_Web_Call_Succeeds()
         {
             string script = @"
                 var client = new httpClient();
@@ -42,13 +43,13 @@ namespace Banzai.JavaScript.Test
 
             testObject = result.GetSubjectAs<TestObjectA>();
 
-            testObject.TestValueObject.ShouldNotBeNull();
+            testObject.TestValueObject.Should().NotBeNull();
 
-            testObject.TestValueString.ShouldNotBeNull();
-            testObject.TestValueString.ShouldNotBeEmpty();
+            testObject.TestValueString.Should().NotBeNull();
+            testObject.TestValueString.Should().NotBeEmpty();
 
-            result.Status.ShouldEqual(NodeResultStatus.Succeeded);
-            testNode.Status.ShouldEqual(NodeRunStatus.Completed);
+            result.Status.Should().Be(NodeResultStatus.Succeeded);
+            testNode.Status.Should().Be(NodeRunStatus.Completed);
         } 
     }
 }
