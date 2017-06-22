@@ -75,11 +75,7 @@ namespace Banzai.Autofac
         /// <returns>Builder including added nodes.</returns>
         public static ContainerBuilder RegisterBanzaiNodes<T>(this ContainerBuilder builder, bool includeCore = false)
         {
-#if NETSTANDARD1_6
             return builder.RegisterBanzaiNodes(typeof(T).GetTypeInfo().Assembly, includeCore);
-#else
-            return builder.RegisterBanzaiNodes(typeof(T).Assembly, includeCore);
-#endif
         }
 
         /// <summary>
@@ -151,18 +147,10 @@ namespace Banzai.Autofac
 
         private static void RegisterNodes(ContainerBuilder builder, Assembly assembly)
         {
-#if NETSTANDARD1_6
             var types = assembly.GetTypes().Where(t => t.GetTypeInfo().IsClass && !t.GetTypeInfo().IsAbstract && t.IsClosedTypeOf(typeof(INode<>)));
-#else
-            var types = assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract && t.IsClosedTypeOf(typeof(INode<>)));
-#endif
             foreach (var type in types)
             {
-#if NETSTANDARD1_6
                 if (type.GetTypeInfo().IsGenericTypeDefinition)
-#else
-                if (type.IsGenericTypeDefinition)
-#endif
                 {
                     var registrationBuilder = builder.RegisterGeneric(type)
                         .AsSelf()
@@ -197,18 +185,10 @@ namespace Banzai.Autofac
 
         private static void RegisterShouldExecuteBlocks(ContainerBuilder builder, Assembly assembly)
         {
-#if NETSTANDARD1_6
             var types = assembly.GetTypes().Where(t => t.GetTypeInfo().IsClass && !t.GetTypeInfo().IsAbstract && t.IsClosedTypeOf(typeof(IShouldExecuteBlock<>)));
-#else
-            var types = assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract && t.IsClosedTypeOf(typeof(IShouldExecuteBlock<>)));
-#endif
             foreach (var type in types)
             {
-#if NETSTANDARD1_6
                 if (type.GetTypeInfo().IsGenericTypeDefinition)
-#else
-                if (type.IsGenericTypeDefinition)
-#endif
                 {
                     builder.RegisterGeneric(type)
                         .AsSelf()
@@ -227,11 +207,7 @@ namespace Banzai.Autofac
 
         private static void RegisterMetaDataBuilders(ContainerBuilder builder, Assembly assembly)
         {
-#if NETSTANDARD1_6
             IEnumerable<Type> types = assembly.GetTypes().Where(t => t.GetTypeInfo().IsClass && !t.GetTypeInfo().IsAbstract && (typeof(IMetaDataBuilder)).GetTypeInfo().IsAssignableFrom(t));
-#else
-            IEnumerable<Type> types = assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract && (typeof(IMetaDataBuilder)).IsAssignableFrom(t));
-#endif
             foreach (var type in types)
             {
                 builder.RegisterType(type).As<IMetaDataBuilder>();
