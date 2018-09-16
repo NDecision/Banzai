@@ -1,6 +1,6 @@
 ![Banzai Pipeline Image](http://upload.wikimedia.org/wikipedia/commons/0/03/Empty_wave_at_Banzai_Pipeline.jpeg)
 
-##Banzai!! - Your Simple Pipeline Solution - 2.0
+## Banzai!! - Your Simple Pipeline Solution - 2.0
 [![Build status](https://ci.appveyor.com/api/projects/status/nbwvadetke6kx5ua)](https://ci.appveyor.com/project/eswann/banzai)
 
 Banzai is an easy .Net pipeline solution that contains composable nodes for constructing simple and complex pipelines.  
@@ -513,23 +513,6 @@ If you have a MultiNode (Pipeline/Group/FirstMatch) that has a subject Type of T
 Create an envelope for your subject and use this as the subject passed to the flow instead of passing the naked subject.  This envelope can contain the subject
 but can also contain other properties or data that is necessary for the workflow.  Favor this over sending information in the State property of the ExecutionContext.
 
-
-
-##Banzai.JavaScript
-Banzai.JavaScript allows you to create nodes that accept javascript as the language of use.
-The JavaScript is executed using the ClearScript.V8 engine (wrapper around V8) by way of ClearScript.Manager.
-For more information about using ClearScript Manager, please check out it's [Project Page](https://github.com/eswann/clearscript.manager).
-
-Adding Banzai.JavaScript also adds extensions for configuring the flow to dynamically add JavaScript to both the Execution and ShouldExecute functionalities.
-
-Execution:
-
-    flowBuilder.CreateFlow("TestFlow1")
-      .AddRoot<ITestJsNode>()
-          .SetExecutedJavaScript("context.Subject.TestValueString = 'Hello JavaScript!';")
-          .SetShouldExecuteJavaScript("result.ShouldExecute = true;");
-
-For several other examples, look at the Banzai.JavaScript.Test and Banzai.Json.Test projects.
 
 ##Banzai.Json
 Banzai.Json allow Banzai flows to be serialized as JSON strings so that they can be stored and rehydrated.  Alternately, a flow can be

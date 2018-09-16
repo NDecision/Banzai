@@ -22,7 +22,7 @@ namespace Banzai.Json
                 var nodeString = GetTypeName(nodeType);
                 nodeString = nodeString.Substring(0, nodeString.IndexOf("`", StringComparison.Ordinal));
 
-                serializationString = string.Format("{0}[{1}]", nodeString, argString);
+                serializationString = $"{nodeString}[{argString}]";
             }
             else
             {
@@ -76,8 +76,7 @@ namespace Banzai.Json
 
         private static string GetTypeName(Type type)
         {
-            string retrievedName;
-            if (!TypeAbbreviationCache.TryGetName(type, out retrievedName))
+            if (!TypeAbbreviationCache.TryGetName(type, out var retrievedName))
             {
                 retrievedName = type.AssemblyQualifiedName;
             }
@@ -87,8 +86,7 @@ namespace Banzai.Json
 
         private static Type GetType(string typeName)
         {
-            Type retrievedType;
-            if (!TypeAbbreviationCache.TryGetType(typeName, out retrievedType))
+            if (!TypeAbbreviationCache.TryGetType(typeName, out var retrievedType))
             {
                 retrievedType = Type.GetType(typeName);
             }

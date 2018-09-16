@@ -5,13 +5,15 @@
 *.suo
 *.user
 *.sln.docstates
+.vs/
+.vscode/
 
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
-x64/
+x64/s
 x86/
 build/
 bld/

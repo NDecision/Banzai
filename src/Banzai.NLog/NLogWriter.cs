@@ -27,7 +27,7 @@ namespace Banzai.NLog
         /// <param name="exception">Exception associated with the error.</param>
         public void Fatal(string message, Exception exception = null)
         {
-            _logger.Fatal(message, exception);
+            _logger.Fatal(exception, message);
         }
          
         /// <summary>
@@ -50,7 +50,7 @@ namespace Banzai.NLog
         {
             if (_logger.IsFatalEnabled)
             {
-                _logger.Fatal(deferredWrite(), exception);
+                _logger.Fatal(exception, deferredWrite());
             }
         }
 
@@ -61,7 +61,7 @@ namespace Banzai.NLog
         /// <param name="exception">Exception associated with the error.</param>
         public void Error(string message, Exception exception = null)
         {
-            _logger.Error(message, exception);
+            _logger.Error(exception, message);
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace Banzai.NLog
         {
             if (_logger.IsErrorEnabled)
             {
-                _logger.Error(deferredWrite(), exception);
+                _logger.Error(exception, deferredWrite());
             }
         }
 
@@ -95,7 +95,7 @@ namespace Banzai.NLog
         /// <param name="exception">Exception associated with the error.</param>
         public void Warn(string message, Exception exception = null)
         {
-            _logger.Warn(message, exception);
+            _logger.Warn(exception, message);
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace Banzai.NLog
         {
             if (_logger.IsWarnEnabled)
             {
-                _logger.Warn(deferredWrite(), exception);
+                _logger.Warn(exception, deferredWrite());
             }
         }
 
@@ -129,7 +129,7 @@ namespace Banzai.NLog
         /// <param name="exception">Exception associated with the error.</param>
         public void Info(string message, Exception exception = null)
         {
-            _logger.Info(message, exception);
+            _logger.Info(exception, message);
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace Banzai.NLog
         {
             if (_logger.IsInfoEnabled)
             {
-                _logger.Info(deferredWrite(), exception);
+                _logger.Info(exception, deferredWrite());
             }
         }
 
@@ -163,7 +163,7 @@ namespace Banzai.NLog
         /// <param name="exception">Exception associated with the error.</param>
         public void Debug(string message, Exception exception = null)
         {
-            _logger.Debug(message, exception);
+            _logger.Debug(exception, message);
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace Banzai.NLog
         {
             if (_logger.IsDebugEnabled)
             {
-                _logger.Debug(deferredWrite(), exception);
+                _logger.Debug(exception, deferredWrite());
             }
         }
 
@@ -197,7 +197,7 @@ namespace Banzai.NLog
         /// <param name="exception">Exception associated with the error.</param>
         public void Trace(string message, Exception exception = null)
         {
-            _logger.Trace(message, exception);
+            _logger.Trace(exception, message);
         }
 
         /// <summary>
@@ -220,7 +220,7 @@ namespace Banzai.NLog
         {
             if (_logger.IsTraceEnabled)
             {
-                _logger.Trace(deferredWrite(), exception);
+                _logger.Trace(exception, deferredWrite());
             }
         }
 
