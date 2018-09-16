@@ -1,6 +1,6 @@
 ![Banzai Pipeline Image](http://upload.wikimedia.org/wikipedia/commons/0/03/Empty_wave_at_Banzai_Pipeline.jpeg)
 
-## Banzai!! - Your Simple Pipeline Solution - 2.0
+## Banzai!! - Your Simple Pipeline Solution - 3.0
 [![Build status](https://ci.appveyor.com/api/projects/status/nbwvadetke6kx5ua)](https://ci.appveyor.com/project/eswann/banzai)
 
 Banzai is an easy .Net pipeline solution that contains composable nodes for constructing simple and complex pipelines.  
@@ -10,6 +10,10 @@ a DegreeOfParallelism when executing against an enumerable of subjects.
 Banzai is optimal for setting up business pipelines which have operations that benfit from async, such as external web service calls or Database/file I/O operations.
 Of course it can be used to organize code regardless of external I/O, but it's performance advantage is primarily based on async and the pipeline pattern is a good way 
 to force some organizational constraints on processing pipelines, such as applying rules or transformations to a subject.
+
+### Whats's new with 3.0
+- All projects have been updated to .Net Standard 2.0.  This makes them compatible with .Net 4.6.1 / .Net Core 2.0 or later.
+- Banzai.JavaScript has been removed as the ClearScript project is now defunct.
 
 
 ### What's new with 2.0
