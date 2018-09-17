@@ -37,6 +37,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banzai.Log4Net", "Banzai.Lo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banzai.Log4Net.Test", "..\test\Banzai.Log4Net.Test\Banzai.Log4Net.Test.csproj", "{033C1BDB-400C-40CC-B94F-7432A764E444}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banzai.Serilog", "Banzai.Serilog\Banzai.Serilog.csproj", "{FB1907F6-0D90-40EE-9A0F-BE80EC8EDA93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banzai.Serilog.Test", "..\test\Banzai.Serilog.Test\Banzai.Serilog.Test.csproj", "{7C15CACC-1460-458F-8BE0-15706768F767}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +95,14 @@ Global
 		{033C1BDB-400C-40CC-B94F-7432A764E444}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{033C1BDB-400C-40CC-B94F-7432A764E444}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{033C1BDB-400C-40CC-B94F-7432A764E444}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB1907F6-0D90-40EE-9A0F-BE80EC8EDA93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB1907F6-0D90-40EE-9A0F-BE80EC8EDA93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB1907F6-0D90-40EE-9A0F-BE80EC8EDA93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB1907F6-0D90-40EE-9A0F-BE80EC8EDA93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C15CACC-1460-458F-8BE0-15706768F767}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C15CACC-1460-458F-8BE0-15706768F767}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C15CACC-1460-458F-8BE0-15706768F767}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C15CACC-1460-458F-8BE0-15706768F767}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -102,6 +114,7 @@ Global
 		{BBA09C6E-AC29-4CEF-AF74-A1BB09B8BFE1} = {6F9CD8FF-CF79-4010-BF8B-1C677579A828}
 		{D7DC126B-9D73-4785-951F-942C4F714241} = {6F9CD8FF-CF79-4010-BF8B-1C677579A828}
 		{033C1BDB-400C-40CC-B94F-7432A764E444} = {6F9CD8FF-CF79-4010-BF8B-1C677579A828}
+		{7C15CACC-1460-458F-8BE0-15706768F767} = {6F9CD8FF-CF79-4010-BF8B-1C677579A828}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9F9F6D33-5F75-4250-B17C-69B96C24762C}

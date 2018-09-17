@@ -9,7 +9,7 @@ using FluentAssertions;
 
 namespace Banzai.Json.Test
 {
-    [TestFixture, Explicit]
+    [TestFixture]
     public class WhenSerializingBasicFlow
     {
         [SetUp]

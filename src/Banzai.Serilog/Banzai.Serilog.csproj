@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Serilog Library for Banzai</Description>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <NoWarn>NU1603</NoWarn>
+    <AssemblyName>Banzai.Serilog</AssemblyName>
+    <PackageId>Banzai.Serilog</PackageId>
+    <PackageTags>Banzai Pipeline Dataflow Workflow Serilog</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Serilog" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Banzai\Banzai.csproj" />
+  </ItemGroup>
+
+</Project>
