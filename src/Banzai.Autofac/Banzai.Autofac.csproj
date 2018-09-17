@@ -2,18 +2,12 @@
 
   <PropertyGroup>
     <Description>An easy Autofac extension for registering nodes in Banzai</Description>
-    <VersionPrefix>3.0.0</VersionPrefix>
-    <Authors>Eric Swann</Authors>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <NoWarn>NU1603</NoWarn>
     <AssemblyName>Banzai.Autofac</AssemblyName>
     <PackageId>Banzai.Autofac</PackageId>
     <PackageTags>Banzai Pipeline Dataflow Workflow Autofac</PackageTags>
-    <PackageProjectUrl>https://github.com/eswann/Banzai</PackageProjectUrl>
-    <PackageIconUrl>http://upload.wikimedia.org/wikipedia/commons/0/03/Empty_wave_at_Banzai_Pipeline.jpeg</PackageIconUrl>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/eswann/Banzai/master/LICENSE</PackageLicenseUrl>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

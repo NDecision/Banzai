@@ -2,18 +2,12 @@
 
   <PropertyGroup>
     <Description>NLog Library for Banzai</Description>
-    <VersionPrefix>3.0.0</VersionPrefix>
-    <Authors>Eric Swann</Authors>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <NoWarn>NU1603</NoWarn>
     <AssemblyName>Banzai.NLog</AssemblyName>
     <PackageId>Banzai.NLog</PackageId>
     <PackageTags>Banzai Pipeline Dataflow Workflow NLog</PackageTags>
-    <PackageProjectUrl>https://github.com/eswann/Banzai</PackageProjectUrl>
-    <PackageIconUrl>http://upload.wikimedia.org/wikipedia/commons/0/03/Empty_wave_at_Banzai_Pipeline.jpeg</PackageIconUrl>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/eswann/Banzai/master/LICENSE</PackageLicenseUrl>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

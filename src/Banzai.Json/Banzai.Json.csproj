@@ -2,18 +2,12 @@
 
   <PropertyGroup>
     <Description>A Banzai extension for serializing workflows to JSON</Description>
-    <VersionPrefix>3.0.0</VersionPrefix>
-    <Authors>Eric Swann</Authors>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <NoWarn>NU1603</NoWarn>
     <AssemblyName>Banzai.Json</AssemblyName>
     <PackageId>Banzai.Json</PackageId>
     <PackageTags>Banzai Pipeline Dataflow Workflow Json Json.Net</PackageTags>
-    <PackageProjectUrl>https://github.com/eswann/Banzai</PackageProjectUrl>
-    <PackageIconUrl>http://upload.wikimedia.org/wikipedia/commons/0/03/Empty_wave_at_Banzai_Pipeline.jpeg</PackageIconUrl>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/eswann/Banzai/master/LICENSE</PackageLicenseUrl>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
