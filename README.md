@@ -150,11 +150,13 @@ The aggregate result and any exceptions are passed back to the source node that 
 
 <b>ChildNode</b> - Assigns a child node that is executed after the transition to the destination type occurs.
 
-<b>TransitionSource/Async</b> - Transitions the source to the destination type.
-<b>TransitionResult/Async</b> - Transitions the source after node execution based on the destination node results.
+<b>TransitionSourceAsync</b> - Transitions the source to the destination type.
 
-<b>TransitionSourceFunc/Async</b> - In TransitionFuncNode, allows assignment of source to destination transition function.
-<b>TransitionResultFunc/Async</b> - In TransitionFuncNode, allows assignment of post-run source transition function.
+<b>TransitionResultAsync</b> - Transitions the source after node execution based on the destination node results.
+
+<b>TransitionSourceFuncAsync</b> - In TransitionFuncNode, allows assignment of source to destination transition function.
+
+<b>TransitionResultFuncAsync</b> - In TransitionFuncNode, allows assignment of post-run source transition function.
 
     public class SimpleTransitionNode : TransitionNode<TestObjectA, TestObjectB>
     {

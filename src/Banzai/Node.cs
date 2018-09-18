@@ -133,8 +133,8 @@ namespace Banzai
         /// </summary>
         public virtual string Id
         {
-            get { return _id; }
-            set { _id = value; }
+            get => _id;
+            set => _id = value;
         }
 
         /// <summary>
@@ -165,10 +165,7 @@ namespace Banzai
         /// <summary>
         /// LogWriter used to write to the log from this node.
         /// </summary>
-        public ILogWriter LogWriter
-        {
-            get { return Logging.LogWriter.GetLogger(this); }
-        }
+        public ILogWriter LogWriter => Logging.LogWriter.GetLogger(this);
 
         /// <summary>
         /// Resets the current node to unrun state.
@@ -326,7 +323,7 @@ namespace Banzai
                 {
                     if (options.ThrowOnError)
                     {
-                        if (aggregateTask != null && aggregateTask.Exception != null)
+                        if (aggregateTask?.Exception != null)
                             throw aggregateTask.Exception;
 
                         throw;

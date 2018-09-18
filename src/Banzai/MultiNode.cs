@@ -57,7 +57,7 @@ namespace Banzai
         /// <summary>
         /// Gets the children of this node.
         /// </summary>
-        public IReadOnlyList<INode<T>> Children { get { return _children; } }
+        public IReadOnlyList<INode<T>> Children => _children;
 
         /// <summary>
         /// Adds a child node to this node.
@@ -92,7 +92,7 @@ namespace Banzai
         /// <summary>
         /// Resets this node and all its children to an unrun state.
         /// </summary>
-        public override sealed void Reset()
+        public sealed override void Reset()
         {
             base.Reset();
             foreach (var child in Children)
@@ -106,7 +106,7 @@ namespace Banzai
         /// </summary>
         /// <param name="context">Current ExecutionContext.</param>
         /// <returns>NodeResultStatus representing the current node result.</returns>
-        protected override sealed async Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<T> context)
+        protected sealed override async Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<T> context)
         {
             if (Children == null || Children.Count == 0)
             {
@@ -125,7 +125,7 @@ namespace Banzai
         /// <param name="context">Source context for preparation.</param>
         /// <param name="result">The result reference to add to the current context.</param>
         /// <returns>The execution context to be used in node execution.</returns>
-        protected override sealed IExecutionContext<T> PrepareExecutionContext(IExecutionContext<T> context, NodeResult result)
+        protected sealed override IExecutionContext<T> PrepareExecutionContext(IExecutionContext<T> context, NodeResult result)
         {
             LogWriter.Debug("Preparing execution context.");
             var resultContext = new ExecutionContext<T>(context, result);

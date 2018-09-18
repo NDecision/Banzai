@@ -62,7 +62,7 @@ namespace Banzai
         /// <summary>
         /// Child results if the node contained child nodes.
         /// </summary>
-        public IEnumerable<NodeResult> ChildResults { get { return _childResults; } }
+        public IEnumerable<NodeResult> ChildResults => _childResults;
 
         /// <summary>
         /// If the node was a failure, aggregates execptions along the failure path.

@@ -45,7 +45,7 @@ namespace Banzai
         /// </summary>
         /// <param name="sourceContext">The source execution context, including the subject.</param>
         /// <returns></returns>
-        protected async override sealed Task<TDestination> TransitionSourceAsync(IExecutionContext<TSource> sourceContext)
+        protected sealed override async Task<TDestination> TransitionSourceAsync(IExecutionContext<TSource> sourceContext)
         {
             if (TransitionSourceFuncAsync != null)
             {
@@ -63,7 +63,7 @@ namespace Banzai
         /// <param name="sourceContext">Context including the source subject.</param>
         /// <param name="result">The result of the destination node.</param>
         /// <returns>The transitioned subject.</returns>
-        protected async override sealed Task<TSource> TransitionResultAsync(IExecutionContext<TSource> sourceContext, NodeResult result)
+        protected sealed override async Task<TSource> TransitionResultAsync(IExecutionContext<TSource> sourceContext, NodeResult result)
         {
             if (TransitionResultFuncAsync != null)
             {

@@ -33,7 +33,7 @@ namespace Banzai
         /// </summary>
         /// <param name="context">Current execution context.</param>
         /// <returns>Final result execution status of the node.</returns>
-        protected async override Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<T> context)
+        protected override async Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<T> context)
         {
             if (ExecutedFunc != null)
             {

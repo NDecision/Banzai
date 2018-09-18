@@ -14,8 +14,7 @@ namespace Banzai.Factories
             if (metaData == null || node == null)
                 return;
 
-            object result;
-            if (metaData.TryGetValue(MetaDataKeys.CustomData, out result))
+            if (metaData.TryGetValue(MetaDataKeys.CustomData, out var result))
             {
                 node.CustomData = result;
             }

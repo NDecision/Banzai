@@ -10,13 +10,7 @@ namespace Banzai.Utility
     {
         private readonly ConcurrentDictionary<string, object> _dictionary = new ConcurrentDictionary<string, object>();
 
-        public int Count
-        {
-            get
-            {
-                return _dictionary.Count;
-            }
-        }
+        public int Count => _dictionary.Count;
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {

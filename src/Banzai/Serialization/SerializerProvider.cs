@@ -14,7 +14,7 @@ namespace Banzai.Serialization
                     throw new NullReferenceException("The Serializer has not been set...did you install a serializer package (like Banzai.JSON) and call RegisterAsDefault?");
                 return _serializer;
             }
-            set { _serializer = value; }
+            set => _serializer = value;
         } 
     }
 }

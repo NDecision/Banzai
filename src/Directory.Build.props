@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-	<VersionPrefix>3.0.2</VersionPrefix>
+	<VersionPrefix>3.0.3</VersionPrefix>
 	<Authors>Eric Swann</Authors>
 	<PackageProjectUrl>https://github.com/eswann/Banzai</PackageProjectUrl>
     <PackageIconUrl>http://upload.wikimedia.org/wikipedia/commons/0/03/Empty_wave_at_Banzai_Pipeline.jpeg</PackageIconUrl>

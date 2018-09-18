@@ -2,7 +2,11 @@
 
 namespace Banzai
 {
-
+    /// <summary>
+    /// This execution context is passed down the chain during execution so that child nodes can base decisions on 
+    /// context created globally or mutated by previous nodes.
+    /// </summary>
+    /// <typeparam name="T">Type of the subject that the nodes operate on.</typeparam>
     public interface IExecutionContext<out T>
     {
         /// <summary>
@@ -93,13 +97,13 @@ namespace Banzai
         /// <summary>
         /// A dynamic object of additional state that must be passed through the workflow.
         /// </summary>
-        public dynamic State { get; private set; }
+        public dynamic State { get; }
 
         /// <summary>
         /// The global options that this node is using for execution
         /// </summary>
         /// <remarks>This uses the global options if no node-specific options are specified.</remarks>
-        public ExecutionOptions GlobalOptions { get; private set; }
+        public ExecutionOptions GlobalOptions { get; }
 
         /// <summary>
         /// Rollup of this result and all results under this result

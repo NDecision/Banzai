@@ -46,8 +46,7 @@ namespace Banzai
         public override void Reset()
         {
             base.Reset();
-            if(ChildNode != null)
-                ChildNode.Reset();
+            ChildNode?.Reset();
         }
 
         /// <summary>
@@ -55,7 +54,7 @@ namespace Banzai
         /// </summary>
         /// <param name="context">Current ExecutionContext.</param>
         /// <returns>NodeResultStatus representing the current node result.</returns>
-        protected override sealed async Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<TSource> context)
+        protected sealed override async Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<TSource> context)
         {
             if (ChildNode == null)
             {

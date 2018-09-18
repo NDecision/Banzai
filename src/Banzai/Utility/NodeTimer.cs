@@ -13,7 +13,7 @@ namespace Banzai.Utility
         public string StartTimer(dynamic instance, string methodName)
         {
             _stopwatch = Stopwatch.StartNew();
-            return string.Format("Starting stopwatch for methodName {0} of class {1} with nodeId {2} from flowId {3}.", methodName, instance.GetType().FullName, instance.Id, instance.FlowId);
+            return $"Starting stopwatch for methodName {methodName} of class {instance.GetType().FullName} with nodeId {instance.Id} from flowId {instance.FlowId}.";
         }
 
         public string StopTimer(dynamic instance, string methodName)
@@ -22,9 +22,9 @@ namespace Banzai.Utility
             {
                 _stopwatch.Stop();
                 var elapsed = _stopwatch.Elapsed.TotalMilliseconds;
-                return string.Format("Stopping stopwatch for methodName {0} of class {1} with nodeId {2} from flowId {3}. Elapsed ms: {4}", methodName, instance.GetType().FullName, instance.Id, instance.FlowId, elapsed);
+                return $"Stopping stopwatch for methodName {methodName} of class {instance.GetType().FullName} with nodeId {instance.Id} from flowId {instance.FlowId}. Elapsed ms: {elapsed}";
             }
-            return string.Format("Call to stop occurred, but stopwatch not started. Class {0}, Method {1}, NodeId {2}, FlowId {3}. ", instance.GetType().FullName, methodName, instance.Id, instance.FlowId);
+            return $"Call to stop occurred, but stopwatch not started. Class {instance.GetType().FullName}, Method {methodName}, NodeId {instance.Id}, FlowId {instance.FlowId}. ";
         }
 
         public void LogStart(ILogWriter logWriter, dynamic node, string methodName)

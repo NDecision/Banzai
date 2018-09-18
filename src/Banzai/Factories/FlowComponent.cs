@@ -14,7 +14,6 @@ namespace Banzai.Factories
     public class FlowComponent<T>
     {
         private List<FlowComponent<T>> _children = new List<FlowComponent<T>>();
-        private IDictionary<string, object> _metaData = new Dictionary<string, object>();
 
         /// <summary>
         /// Type of the node if this represents a node or in a flow the subject type.
@@ -51,8 +50,8 @@ namespace Banzai.Factories
         [DataMember]
         public IReadOnlyList<FlowComponent<T>> Children
         {
-            get { return _children; }
-            set { _children = value.ToList(); }
+            get => _children;
+            set => _children = value.ToList();
         }
 
         /// <summary>
@@ -70,11 +69,7 @@ namespace Banzai.Factories
         /// Allows metadata about this node to be set.
         /// </summary>
         [DataMember]
-        public IDictionary<string, object> MetaData
-        {
-            get { return _metaData; }
-            set { _metaData = value; }
-        }
+        public IDictionary<string, object> MetaData { get; set; } = new Dictionary<string, object>();
 
         /// <summary>
         /// Adds a child to this FlowComponent.
@@ -111,7 +106,7 @@ namespace Banzai.Factories
         protected internal FlowComponent<T> SetShouldExecute(Type blockType)
         {
             if (!typeof(IShouldExecuteBlock<T>).IsAssignableFrom(blockType))
-                throw new ArgumentException("blockType must be assignable to IShouldExecuteBlock<T>.", "blockType");
+                throw new ArgumentException("blockType must be assignable to IShouldExecuteBlock<T>.", nameof(blockType));
 
             ShouldExecuteBlockType = blockType;
             return this;
