@@ -47,9 +47,9 @@ These are the nodes that contain functionality that runs against the subject of 
 
   * Override ShouldExecute to determine if the node should execute.
 
-  * <b>PerformExecuteFunc/Async</b> - Property that accepts a function to perform on the subject.
+  * <b>PerformExecuteFuncAsync</b> - Property that accepts a function to perform on the subject.
 
-  * <b>ShouldExecuteFunc/Async</b> - Property that accepts a function to determine if the node should be executed.  Not strongly typed.
+  * <b>ShouldExecuteFuncAsync</b> - Property that accepts a function to determine if the node should be executed.  Not strongly typed.
 
   * <b>AddShouldExecute</b> - Extension method to set ShouldExecuteFunc in a strongly typed manner. Has to be done this way to enable variance.
 
