@@ -4,7 +4,6 @@ using Banzai.Logging;
 using Serilog;
 using NUnit.Framework;
 using FluentAssertions;
-using Serilog.Events;
 using Serilog.Formatting.Display;
 
 namespace Banzai.Serilog.Test
@@ -20,7 +19,8 @@ namespace Banzai.Serilog.Test
             _target = new TestSink(new MessageTemplateTextFormatter("${message}", null));
 
             Log.Logger = new LoggerConfiguration()
-                .WriteTo.Sink(_target, LogEventLevel.Verbose)
+                .MinimumLevel.Verbose()
+                .WriteTo.Sink(_target)
                 .CreateLogger();
 
             LogWriter.SetFactory(new SerilogWriterFactory());
