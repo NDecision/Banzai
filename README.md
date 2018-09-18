@@ -13,6 +13,7 @@ to force some organizational constraints on processing pipelines, such as applyi
 
 ### Whats's new with 3.0
 - All projects have been updated to .Net Standard 2.0.  This makes them compatible with .Net 4.6.1 / .Net Core 2.0 or later.
+- Banzai.Serilog has been added!
 - Banzai.JavaScript has been removed as the ClearScript project is now defunct.
 
 
