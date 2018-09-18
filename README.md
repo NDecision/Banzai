@@ -431,7 +431,7 @@ The [Banzai.Log4Net package](https://www.nuget.org/packages/Banzai.Log4Net/) wil
 
 The [Banzai.NLog package](https://www.nuget.org/packages/Banzai.NLog/) will allow you to log to NLog. 
 
-The [Banzai.Serilog package](https://www.nuget.org/packages/Banzai.Serilog/) will allow you to log to NLog. 
+The [Banzai.Serilog package](https://www.nuget.org/packages/Banzai.Serilog/) will allow you to log to Serilog. 
 
 Obviously, you must configure Log4Net or NLog as you normally would.
 
