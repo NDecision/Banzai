@@ -17,42 +17,6 @@ to force some organizational constraints on processing pipelines, such as applyi
 - Banzai.JavaScript has been removed as the ClearScript project is now defunct.
 
 
-### What's new with 2.0
-The main updates so far to the 2.0 branch are:
-
-- All non-async convenience methods are gone.  These were methods for those that didn't want to work in the async paradigm, 
-but people just need to learn how to handle this on their own.  It's becoming less important with so much server-side code embracing async.
-This is a breaking change, hence the move to 2.0.
-- So what do I do if I override a method and my implementation isn't async?  
-The best approach currently is to perform a Task.FromResult(result). Task.FromResult doesn't incurr scheduler overhead.  
-This is what Banzai was previously doing internally.
-    
-ShouldExecute:
-
-    public override Task<bool> ShouldExecuteAsync(IExecutionContext<SubjectA> context)
-    {
-         return Task.FromResult(context.subject.SomeBooleanPropertyToEvaluate);
-    } 
-
-PerformExecute:
-
-    protected override Task<NodeResultStatus> PerformExecuteAsync(IExecutionContext<CartSubject> context)
-    {
-        //Do something synchronous here...
-        return Task.FromResult(NodeResultStatus.Succeeded);
-    }
-
-- More information to help with debugging.  
-    - Nodes and flows may now have an assigned ID and FlowID. This helps primarily when 
-    building flows using the fluent interface or via JSON. Logging and debugging of these items can be very tedious when 
-    you can only tell that you're inside of a pipleline node.  Now you should be able to example the Id and FlowId properties of generic nodes
-    to better understand what is currently executing.
-    - Nodes now reference their result using the Result property. Now when debugging a node, you can look at the Result of the 
-    current node to understand the current result status of the node. The result will reflect the current or last time 
-    the node was executed.
-- Although [ShouldExecute blocks](#should-execute-blocks) were present in the previous version, they were not documented. This documentation has now been added.
-    
-
 ##Basic Concepts
 Flows are composed from nodes of which there are a few types explained below.  Nodes are [composed into simple or complex flows](#building-flows) and then 
 [executed on the flow subject](#running-nodes).  All flows accept a Subject Type (T). This the type of the subject that is acted upon by the flow.  
@@ -483,7 +447,7 @@ service within a node and it returns a different subject reference back to you. 
 current node to recieve the new subject.  This can be accomplished by calling the ExecutionContext.ChangeSubject() method.
 
 ###Inheritance and Variance
-Changes have been made recently (1.2.0) that allow both ExecutionContexts and Nodes to vary.  In short, subjects can covary with the flow argument type, while
+Both ExecutionContexts and Nodes allow variance.  In short, subjects can covary with the flow argument type, while
 nodes can contravary with node argument types.  What does this mean?  The examples below clarify this a little, but I believe it works as you would logically
 expect inheritance to work.
 
