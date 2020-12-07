@@ -1,13 +1,13 @@
 ﻿using System.Threading.Tasks;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 
 namespace Banzai.Test
 {
-    [TestFixture]
+    
     public class WhenAddingInheritedSubjectNodes
     {
-        [Test]
+        [Fact]
         public async Task Can_Add_Base_Type_Nodes_To_Inherited_Type_Pipeline()
         {
             var testNode = new SimpleTestNodeA1();
@@ -26,7 +26,7 @@ namespace Banzai.Test
             result.Status.Should().Be(NodeResultStatus.Succeeded);
         }
 
-        [Test]
+        [Fact]
         public async Task Can_Add_Base_Type_Pipeline_Node_To_Inherited_Type_Pipeline()
         {
             var testNode = new SimpleTestNodeA1();
@@ -48,7 +48,7 @@ namespace Banzai.Test
             result.Status.Should().Be(NodeResultStatus.Succeeded);
         }
 
-        [Test]
+        [Fact]
         public async Task ShouldExecuteFunc_On_Test_Object_Is_Evaluated()
         {
             var testNode = new SimpleTestNodeA1();
@@ -69,7 +69,7 @@ namespace Banzai.Test
             testNode2.Status.Should().Be(NodeRunStatus.NotRun);
         }
 
-        [Test]
+        [Fact]
         public async Task Can_Add_Inherited_Func_Node_To_Pipleline()
         {
             var testNode = new FuncNode<TestObjectA>();

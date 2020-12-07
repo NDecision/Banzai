@@ -1,13 +1,13 @@
 ﻿using System.Threading.Tasks;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 
 namespace Banzai.Test
 {
-    [TestFixture]
+    
     public class WhenRunningGroupNode
     {
-        [Test]
+        [Fact]
         public async Task Successful_Group_Run_Status_Is_Succeeded()
         {
             var groupNode = new GroupNode<TestObjectA>();
@@ -21,7 +21,7 @@ namespace Banzai.Test
             groupNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
-        [Test]
+        [Fact]
         public async Task Group_Run_With_Failure_Returns_Failed_Status()
         {
             var groupNode = new GroupNode<TestObjectA>();
@@ -36,7 +36,7 @@ namespace Banzai.Test
             groupNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
-        [Test]
+        [Fact]
         public async Task Group_Run_With_Failure_And_ContinueOnError_Returns_SucceededWithErrors_Status()
         {
             var groupNode = new GroupNode<TestObjectA> {LocalOptions = new ExecutionOptions {ContinueOnFailure = true}};
@@ -51,7 +51,7 @@ namespace Banzai.Test
             groupNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
-        [Test]
+        [Fact]
         public async Task Group_Run_With_Fault_Returns_Failed_Status()
         {
             var groupNode = new GroupNode<TestObjectA>();
@@ -66,7 +66,7 @@ namespace Banzai.Test
             groupNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
-        [Test]
+        [Fact]
         public async Task Group_Run_With_Fault_And_ContinueOnError_Returns_SucceededWithErrors_Status()
         {
             var groupNode = new GroupNode<TestObjectA> { LocalOptions = new ExecutionOptions { ContinueOnFailure = true } };
@@ -81,7 +81,7 @@ namespace Banzai.Test
             groupNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
-        [Test]
+        [Fact]
         public async Task Failed_Group_Run_Returns_Failed_Status()
         {
             var groupNode = new GroupNode<TestObjectA>();
@@ -96,7 +96,7 @@ namespace Banzai.Test
             groupNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
-        [Test]
+        [Fact]
         public async Task Faulted_Group_Run_Returns_Failed_Status()
         {
             var groupNode = new GroupNode<TestObjectA>();
@@ -111,7 +111,7 @@ namespace Banzai.Test
             groupNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
-        [Test]
+        [Fact]
         public async Task Successful_Group_Result_Matches_Expectations()
         {
             var groupNode = new GroupNode<TestObjectA>();

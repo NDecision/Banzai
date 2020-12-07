@@ -1,13 +1,13 @@
 ﻿using System.Threading.Tasks;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 
 namespace Banzai.Test
 {
-    [TestFixture]
+    
     public class WhenRunningFuncNode
     {
-        [Test]
+        [Fact]
         public async Task Successful_FuncNode_Values_Match_Expected()
         {
             var node = new FuncNode<TestObjectA>();
@@ -23,7 +23,7 @@ namespace Banzai.Test
             result.GetSubjectAs<TestObjectA>().TestValueString.Should().Be("Completed");
         }
 
-        [Test]
+        [Fact]
         public async Task FuncNode_With_ShouldExecute_False_Shouldnt_Run()
         {
             var node = new FuncNode<TestObjectA>();
@@ -40,7 +40,7 @@ namespace Banzai.Test
         }
 
 
-        [Test]
+        [Fact]
         public async Task Can_Run_Func_Node_On_Inherited_Type()
         {
             var node = new FuncNode<TestObjectA>();

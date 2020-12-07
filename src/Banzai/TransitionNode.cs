@@ -2,27 +2,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Banzai.Factories;
+using Microsoft.Extensions.Logging;
 
 namespace Banzai
 {
-    /// <summary>
-    /// Interface for a Node that allows a transition to another node type.
-    /// </summary>
-    /// <typeparam name="TSource">Source node type.</typeparam>
-    /// <typeparam name="TDestination">Destination node type.</typeparam>
-    public interface ITransitionNode<in TSource, TDestination> : INode<TSource>
-    {
-        /// <summary>
-        /// Gets or sets the destionation child node to execute.
-        /// </summary>
-        INode<TDestination> ChildNode { get; set; }
-
-        /// <summary>
-        /// Gets or sets an injected NodeFactory to use when constructing this node.
-        /// </summary>
-        INodeFactory<TDestination> NodeFactory { get; set; }
-    }
-
     /// <summary>
     /// Interface for a Node that allows a transition to another node type.
     /// </summary>
@@ -58,30 +41,30 @@ namespace Banzai
         {
             if (ChildNode == null)
             {
-                LogWriter.Warn("Child node of TransitionNode doesn't exist, node will be skipped.");
+                Logger.LogWarning("Child node of TransitionNode doesn't exist, node will be skipped.");
                 return NodeResultStatus.NotRun;
             }
 
-            LogWriter.Debug("Creating the TransitionNode destination subject.");
+            Logger.LogDebug("Creating the TransitionNode destination subject.");
             TDestination destSubject = await TransitionSourceAsync(context).ConfigureAwait(false);
 
             var destContext = new ExecutionContext<TDestination>(destSubject, context.GlobalOptions);
 
-            LogWriter.Debug("Preparing to execute TransitionNode child.");
+            Logger.LogDebug("Preparing to execute TransitionNode child.");
             NodeResult destResult = await ChildNode.ExecuteAsync(destContext).ConfigureAwait(false);
 
             var exceptions = destResult.GetFailExceptions().ToList();
             if (exceptions.Count > 0)
             {
-                LogWriter.Info("TransitionNode child returned {0} exceptions.", exceptions.Count);
+                Logger.LogInformation("TransitionNode child returned {0} exceptions.", exceptions.Count);
                 context.ParentResult.Exception = exceptions.Count == 1 ? exceptions[0] : new AggregateException(exceptions);
             }
-            LogWriter.Debug("Creating the TransitionNode destination result.");
+            Logger.LogDebug("Creating the TransitionNode destination result.");
             var resultSubject = await TransitionResultAsync(context, destResult).ConfigureAwait(false);
             
             if (!context.Subject.Equals(resultSubject))
             {
-                LogWriter.Debug("Source subject has changed, calling ChangeSubject.");
+                Logger.LogDebug("Source subject has changed, calling ChangeSubject.");
                 context.ChangeSubject(resultSubject);
             }
 

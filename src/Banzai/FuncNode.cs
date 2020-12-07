@@ -1,21 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Banzai
 {
-    /// <summary>
-    /// A node that exposes functions to set to perform node execution.
-    /// </summary>
-    /// <typeparam name="T">Type of the subject that the node operates on.</typeparam>
-    public interface IFuncNode<T> : INode<T>
-    {
-        /// <summary>
-        /// Method that defines the async function to execute on the subject for this node.
-        /// </summary>
-        Func<IExecutionContext<T>, Task<NodeResultStatus>> ExecutedFunc { get; set; }
-    }
-
-
     /// <summary>
     /// A node that exposes functions to set to perform node execution.
     /// </summary>
@@ -37,10 +25,10 @@ namespace Banzai
         {
             if (ExecutedFunc != null)
             {
-                LogWriter.Debug("ExecutedFuncAsync exists, running this function.");
+                Logger.LogDebug("ExecutedFuncAsync exists, running this function.");
                 return await ExecutedFunc(context).ConfigureAwait(false);
             }
-            LogWriter.Debug("ExecutedFuncAsync doesn't exist, defaulting to base class PerformExecute.");
+            Logger.LogDebug("ExecutedFuncAsync doesn't exist, defaulting to base class PerformExecute.");
             return await base.PerformExecuteAsync(context).ConfigureAwait(false);
         }
 

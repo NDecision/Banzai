@@ -1,14 +1,14 @@
 ﻿using System.Threading.Tasks;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 
 namespace Banzai.Test
 {
-    [TestFixture]
+    
     public class WhenPassingInheritedSubject
     {
 
-        [Test]
+        [Fact]
         public async Task ExecutionContext_Based_On_Inherited_Type_Is_Passed_To_Execute()
         {
             var testNode = new SimpleTestNodeA1();
@@ -23,7 +23,7 @@ namespace Banzai.Test
             result.Status.Should().Be(NodeResultStatus.Succeeded);
         }
 
-        [Test]
+        [Fact]
         public async Task ExecutionContext_Based_On_Root_Type_Works_With_Inherited_Type()
         {
             var testNode = new SimpleTestNodeA1();
@@ -38,7 +38,7 @@ namespace Banzai.Test
             result.Status.Should().Be(NodeResultStatus.Succeeded);
         }
 
-        [Test]
+        [Fact]
         public async Task Subject_Of_Inherited_Type_Is_Passed_To_Execute()
         {
             var testNode = new SimpleTestNodeA1();
@@ -51,7 +51,7 @@ namespace Banzai.Test
             result.Status.Should().Be(NodeResultStatus.Succeeded);
         }
 
-        [Test]
+        [Fact]
         public async Task Subject_Of_Inherited_Type_Works_With_Func_Node()
         {
             var node = new FuncNode<TestObjectA>();

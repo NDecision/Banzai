@@ -1,6 +1,6 @@
 ![Banzai Pipeline Image](http://upload.wikimedia.org/wikipedia/commons/0/03/Empty_wave_at_Banzai_Pipeline.jpeg)
 
-## Banzai!! - Your Simple Pipeline Solution - 3.0
+## Banzai!! - Your Simple Pipeline Solution - 4.0
 [![Build status](https://ci.appveyor.com/api/projects/status/nbwvadetke6kx5ua)](https://ci.appveyor.com/project/eswann/banzai)
 
 Banzai is an easy .Net pipeline solution that contains composable nodes for constructing simple and complex pipelines.  
@@ -11,10 +11,11 @@ Banzai is optimal for setting up business pipelines which have operations that b
 Of course it can be used to organize code regardless of external I/O, but it's performance advantage is primarily based on async and the pipeline pattern is a good way 
 to force some organizational constraints on processing pipelines, such as applying rules or transformations to a subject.
 
-### Whats's new with 3.0
+### Whats's new with 4.0
 - All projects have been updated to .Net Standard 2.0.  This makes them compatible with .Net 4.6.1 / .Net Core 2.0 or later.
-- Banzai.Serilog has been added!
-- Banzai.JavaScript has been removed as the ClearScript project is now defunct.
+- All logging providers have been removed in favor of the Microsoft.Extensions.Logging approach.
+- Support for System.Text.Json has been added as an alternative to Json.NET
+- All References (Autofac, Ninject, Json.NET) have been updated in their respective libraries
 
 
 ## Basic Concepts
@@ -425,22 +426,12 @@ Or via the nodefactory:
 
 
 ## Logging
-By default, Banzai will log to the Debug console in debug mode and will not log in release mode.  
+By default, Banzai will log to the Debug console in debug mode and will not log in release mode.
 
-The [Banzai.Log4Net package](https://www.nuget.org/packages/Banzai.Log4Net/) will allow you to log to Log4Net.  
+You must configure the logger of your choice using Microsoft.Extensions.Logging
 
-The [Banzai.NLog package](https://www.nuget.org/packages/Banzai.NLog/) will allow you to log to NLog. 
-
-The [Banzai.Serilog package](https://www.nuget.org/packages/Banzai.Serilog/) will allow you to log to Serilog. 
-
-Obviously, you must configure Log4Net or NLog as you normally would.
-
-Banzai will log a number of Error/Info/Debug operations to the log by default.  From any INode (v1.0.7 or greater), a LogWriter
+Banzai will log a number of Error/Info/Debug operations to the log by default.  From any INode (v1.0.7 or greater), a Logger
 will be exposed for your own custom logging.  At the DEBUG logging level, node stopwatch timings for every node run will also be logged.
-
-Setting up Log4Net (after installing the package)
-
-    LogWriter.SetFactory(new Log4NetWriterFactory());
 
 
 ## Advanced Scenarios
@@ -521,6 +512,4 @@ To add additional types to the abbreviations:
 
 
 ## Lots of examples present in the unit tests...
-
-#### See the [Wiki for release notes](https://github.com/eswann/Banzai/wiki).
 

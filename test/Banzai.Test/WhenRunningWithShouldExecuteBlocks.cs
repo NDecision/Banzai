@@ -1,13 +1,13 @@
 ﻿using System.Threading.Tasks;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 
 namespace Banzai.Test
 {
-    [TestFixture]
+    
     public class WhenRunningWithShouldExecuteBlocks
     {
-        [Test]
+        [Fact]
         public async Task Node_With_ShouldExecuteBlock_Should_Run()
         {
             var node = new FuncNode<TestObjectA>();
@@ -23,7 +23,7 @@ namespace Banzai.Test
             result.GetSubjectAs<TestObjectA>().TestValueString.Should().Be("Completed");
         } 
 
-        [Test]
+        [Fact]
         public async Task Node_With_ShouldExecuteBlock_False_Shouldnt_Run()
         {
             var node = new FuncNode<TestObjectA>();

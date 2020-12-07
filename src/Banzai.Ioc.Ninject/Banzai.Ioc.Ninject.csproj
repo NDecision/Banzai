@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>An easy Ninject extension for registering nodes in Banzai</Description>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <NoWarn>NU1603</NoWarn>
+    <PackageId>Banzai.Ninject</PackageId>
+    <PackageTags>Banzai Pipeline Dataflow Workflow Ninject</PackageTags>
+    <LangVersion>default</LangVersion>
+    <AssemblyVersion>4.0.0</AssemblyVersion>
+    <FileVersion>4.0.0</FileVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Ninject" Version="3.*" />
+    <PackageReference Include="ninject.extensions.conventions" Version="3.*" />
+    
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Banzai\Banzai.csproj" />
+  </ItemGroup>
+
+</Project>

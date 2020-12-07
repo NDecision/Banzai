@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 
 namespace Banzai.Test
 {
-    [TestFixture]
+    
     public class WhenRunningNode
     {
 
-        [Test]
+        [Fact]
         public void Initial_Node_Run_Status_Is_NotRun()
         {
             var testNode = new SimpleTestNodeA1();
@@ -17,7 +17,7 @@ namespace Banzai.Test
             testNode.Status.Should().Be(NodeRunStatus.NotRun);
         }
 
-        [Test]
+        [Fact]
         public async Task Errant_Node_Run_Status_Is_Faulted()
         {
             var testNode = new FaultingTestNodeA();
@@ -32,7 +32,7 @@ namespace Banzai.Test
             testNode.Status.Should().Be(NodeRunStatus.Faulted);
         }
 
-        [Test]
+        [Fact]
         public async Task Failed_Node_Run_Status_Is_Completed_With_Failed_Result()
         {
             var testNode = new FailingTestNodeA();
@@ -47,7 +47,7 @@ namespace Banzai.Test
             result.Status.Should().Be(NodeResultStatus.Failed);
         }
 
-        [Test]
+        [Fact]
         public void Errant_Node_Run_With_ThrowOnError_True_Throws()
         {
             var testNode = new FaultingTestNodeA();
@@ -59,7 +59,7 @@ namespace Banzai.Test
             Assert.ThrowsAsync<Exception>(() => testNode.ExecuteAsync(context));
         }
         
-        [Test]
+        [Fact]
         public async Task Successful_Node_Run_Status_Is_Completed()
         {
             var testNode = new SimpleTestNodeA1();
@@ -73,7 +73,7 @@ namespace Banzai.Test
             testNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
-        [Test]
+        [Fact]
         public async Task Successful_Node_Result_Matches_Expectations()
         {
             var testNode = new SimpleTestNodeA1();
@@ -91,7 +91,7 @@ namespace Banzai.Test
             context.Subject.TestValueString.Should().Be("Completed");
         }
 
-        [Test]
+        [Fact]
         public async Task Node_Is_Not_Run_If_ShouldExecute_False()
         {
             var testNode = new SimpleTestNodeA1(false);
@@ -107,7 +107,7 @@ namespace Banzai.Test
             context.Subject.TestValueString.Should().BeNull();
         }
 
-        [Test]
+        [Fact]
         public void Node_Specific_Options_Override_Global_Options()
         {
             var testNode = new SimpleTestNodeA1();
@@ -121,7 +121,7 @@ namespace Banzai.Test
             testNode.GetEffectiveOptions(context.GlobalOptions).ThrowOnError.Should().Be(true);
         }
 
-        [Test]
+        [Fact]
         public async Task Global_Options_Are_Reflected_In_Effective_Options()
         {
             var testNode = new SimpleTestNodeA1();

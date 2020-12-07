@@ -1,13 +1,13 @@
 ﻿using System.Threading.Tasks;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 
 namespace Banzai.Test
 {
-    [TestFixture]
+    
     public class WhenRunningTransitionNode
     {
-        [Test]
+        [Fact]
         public async Task Successful_Transition_Run_Status_Is_Succeeded()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
@@ -23,7 +23,7 @@ namespace Banzai.Test
             pipelineNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
-        [Test]
+        [Fact]
         public async Task Failed_Transition_Node_Child_Results_In_Failed_Parent()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
@@ -39,7 +39,7 @@ namespace Banzai.Test
             pipelineNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
-        [Test]
+        [Fact]
         public async Task Faulted_Transition_Node_Child_Results_In_Failed_Parent_With_Exception()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
