@@ -5,7 +5,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <NoWarn>NU1603</NoWarn>
-    <PackageId>Banzai.SysJson</PackageId>
+    <PackageId>Banzai.Serialization.JsonNet</PackageId>
     <PackageTags>Banzai Pipeline Dataflow Workflow Json System.Text.Json</PackageTags>
     <LangVersion>default</LangVersion>
     <AssemblyVersion>4.0.0</AssemblyVersion>

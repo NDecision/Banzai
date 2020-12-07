@@ -5,7 +5,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <NoWarn>NU1603</NoWarn>
-    <PackageId>Banzai.Autofac</PackageId>
+    <PackageId>Banzai.Ioc.Autofac</PackageId>
     <PackageTags>Banzai Pipeline Dataflow Workflow Autofac</PackageTags>
     <LangVersion>default</LangVersion>
     <AssemblyVersion>4.0.0</AssemblyVersion>

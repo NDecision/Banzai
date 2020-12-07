@@ -477,9 +477,12 @@ If you have a MultiNode (Pipeline/Group/FirstMatch) that has a subject Type of T
 Create an envelope for your subject and use this as the subject passed to the flow instead of passing the naked subject.  This envelope can contain the subject
 but can also contain other properties or data that is necessary for the workflow.  Favor this over sending information in the State property of the ExecutionContext.
 
+## Banzai.Serialization.SystemJson
+Banzai.Serialization.Json allow Banzai flows to be serialized as JSON strings via System.Text.Json so that they can be stored and rehydrated.  Alternately, a flow can be
+entirely defined in JSON.
 
-## Banzai.Json
-Banzai.Json allow Banzai flows to be serialized as JSON strings so that they can be stored and rehydrated.  Alternately, a flow can be
+## Banzai.Serialization.JsonNet
+Banzai.Serialization.Json allow Banzai flows to be serialized as JSON strings via Json.NET so that they can be stored and rehydrated.  Alternately, a flow can be
 entirely defined in JSON.
 
 ### Implementing IComponentSerializer
@@ -488,7 +491,7 @@ The JSON serializer uses JSON.Net for this purpose.
 
 The JSON serializer can be registered by calling:
 
-    Banzai.Json.Registrar.RegisterAsDefault();
+    Banzai.Serialization.Json.Registrar.RegisterAsDefault();
 
 Internally, this simply sets the serializer to be used:
 
@@ -497,9 +500,9 @@ Internally, this simply sets the serializer to be used:
 ### Abbreviating the JSON Output
 
 Typically, the output of JSON serialization is fairly verbose when it comes to serializing types.
-Banzai.Json allows these items to be abbreviated using the following calls:
+Banzai serialization allows these items to be abbreviated using the following calls:
 
-In order to abbreviate the core node types, the following call can be made in configuration.  This is automatically called when using Banzai.Json.
+In order to abbreviate the core node types, the following call can be made in configuration.  This is automatically called when using Banzai Json serialization.
 
     TypeAbbreviationCache.RegisterCoreTypes();
 
