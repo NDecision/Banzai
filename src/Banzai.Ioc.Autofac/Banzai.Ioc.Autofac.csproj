@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>An easy Autofac extension for registering nodes in Banzai</Description>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <NoWarn>NU1603</NoWarn>
+    <PackageId>Banzai.Autofac</PackageId>
+    <PackageTags>Banzai Pipeline Dataflow Workflow Autofac</PackageTags>
+    <LangVersion>default</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="6.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Banzai\Banzai.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,13 +1,13 @@
 ﻿using System.Threading.Tasks;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 
 namespace Banzai.Test
 {
-    [TestFixture]
+    
     public class WhenRunningFirstMatchNode
     {
-        [Test]
+        [Fact]
         public async Task Successful_FirstMatch_Node_Runs_First_Node_And_Not_Second_Node_When_Matched()
         {
             var matchNode = new FirstMatchNode<TestObjectA>();
@@ -30,7 +30,7 @@ namespace Banzai.Test
             testObject.TestValueInt.Should().Be(0);
         }
 
-        [Test]
+        [Fact]
         public async Task Successful_FirstMatch_Node_Runs_Second_Node_When_First_Not_Matched()
         {
             var matchNode = new FirstMatchNode<TestObjectA>();
@@ -53,7 +53,7 @@ namespace Banzai.Test
             testObject.TestValueInt.Should().Be(100);
         }
 
-        [Test]
+        [Fact]
         public async Task FirstMatch_Node_Fails_When_Selected_Node_Fails()
         {
             var matchNode = new FirstMatchNode<TestObjectA>();
@@ -76,7 +76,7 @@ namespace Banzai.Test
             testObject.TestValueInt.Should().Be(0);
         }
 
-        [Test]
+        [Fact]
         public async Task FirstMatch_Node_Fails_When_Selected_Node_Faults()
         {
             var matchNode = new FirstMatchNode<TestObjectA>();

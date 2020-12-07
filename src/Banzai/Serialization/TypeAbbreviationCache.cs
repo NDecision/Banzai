@@ -18,9 +18,9 @@ namespace Banzai.Serialization
         /// </summary>
         public static void RegisterCoreTypes()
         {
-            RegisterType(typeof(Object));
+            RegisterType(typeof(Object), failOnCollision:false);
             //AutoRegister the canned node types
-            RegisterFromAssembly(typeof(INode<>).Assembly);
+            RegisterFromAssembly(typeof(INode<>).Assembly, failOnCollision:false);
         }
 
         /// <summary>

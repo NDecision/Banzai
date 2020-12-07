@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 
 namespace Banzai.Test
 {
-    [TestFixture]
+    
     public class WhenRequestingNodeResultErrors
     {
-        [Test]
+        [Fact]
         public async Task Pipeline_Run_With_Initial_Failure_Returns_Failed_Status()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
@@ -27,7 +27,7 @@ namespace Banzai.Test
             exceptions.Count().Should().Be(1);
         }
 
-        [Test]
+        [Fact]
         public async Task Pipeline_With_ContinueOnError_Excludes_Initial_Exception()
         {
             var pipelineNode = new PipelineNode<TestObjectA>
@@ -47,7 +47,7 @@ namespace Banzai.Test
             exceptions.Count().Should().Be(0);
         }
 
-        [Test]
+        [Fact]
         public async Task Pipeline_With_ContinueOnError_Returns_Exceptions_On_All_Failures()
         {
             var pipelineNode = new PipelineNode<TestObjectA>
@@ -67,7 +67,7 @@ namespace Banzai.Test
             exceptions.Count().Should().Be(2);
         }
 
-        [Test]
+        [Fact]
         public async Task Nested_Exception_Is_Included_In_Collection()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
@@ -87,7 +87,7 @@ namespace Banzai.Test
             exceptions.Count().Should().Be(1);
         }
 
-        [Test]
+        [Fact]
         public async Task Group_Run_With_Multiple_Failures_Returns_Failed_Statuses()
         {
             var pipelineNode = new GroupNode<TestObjectA>();

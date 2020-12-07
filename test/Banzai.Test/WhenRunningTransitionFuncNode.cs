@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 
 namespace Banzai.Test
 {
-    [TestFixture]
+    
     public class WhenRunningTransitionFuncNode
     {
-        [Test]
+        [Fact]
         public async Task Simple_TransitionSourceFunc_Succeeds()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
@@ -28,7 +28,7 @@ namespace Banzai.Test
             pipelineNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
-        [Test]
+        [Fact]
         public async Task Faulting_TransitionSourceFunc_Returns_Fail_Result()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
@@ -48,7 +48,7 @@ namespace Banzai.Test
             pipelineNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
-        [Test]
+        [Fact]
         public async Task Faulting_TransitionResultFunc_Returns_Fail_Result()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
@@ -69,7 +69,7 @@ namespace Banzai.Test
             pipelineNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
-        [Test]
+        [Fact]
         public async Task Simple_TransitionSourceAsyncFunc_Succeeds()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
@@ -89,7 +89,7 @@ namespace Banzai.Test
             pipelineNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
-        [Test]
+        [Fact]
         public async Task Simple_TransitionResultFunc_Succeeds()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
@@ -110,7 +110,7 @@ namespace Banzai.Test
             pipelineNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
-        [Test]
+        [Fact]
         public async Task Simple_TransitionResultAsyncFunc_Succeeds()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();

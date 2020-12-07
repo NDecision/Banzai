@@ -1,13 +1,13 @@
 ﻿using System.Threading.Tasks;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 
 namespace Banzai.Test
 {
-    [TestFixture]
+    
     public class WhenCancellingProcessing
     {
-        [Test]
+        [Fact]
         public async Task When_Cancelling_Pipeline_At_First_Node_Then_Status_Is_NotRun()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
@@ -29,7 +29,7 @@ namespace Banzai.Test
             testNode2.Status.Should().Be(NodeRunStatus.NotRun);
         }
 
-        [Test]
+        [Fact]
         public async Task When_Cancelling_Pipeline_At_Later_Node_Then_Status_Is_Success()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
@@ -54,7 +54,7 @@ namespace Banzai.Test
             testNode3.Status.Should().Be(NodeRunStatus.NotRun);
         }
 
-        [Test]
+        [Fact]
         public async Task Parent_Pipeline_Cancels_Execution_When_Child_Pipeline_Node_Cancelled()
         {
             var testNode1 = new SimpleTestNodeA1();

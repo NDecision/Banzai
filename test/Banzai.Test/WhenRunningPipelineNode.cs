@@ -1,14 +1,14 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 
 namespace Banzai.Test
 {
-    [TestFixture]
+    
     public class WhenRunningPipelineNode
     {
-        [Test]
+        [Fact]
         public async Task Successful_Pipeline_Run_Status_Is_Succeeded()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
@@ -22,7 +22,7 @@ namespace Banzai.Test
             pipelineNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
-        [Test]
+        [Fact]
         public async Task Pipeline_Result_Should_Equal_Initial_Subject()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
@@ -37,7 +37,7 @@ namespace Banzai.Test
             result.Subject.Should().BeSameAs(testObject);
         }
 
-        [Test]
+        [Fact]
         public async Task Pipeline_Child_Result_Count_Equals_Child_Node_Count()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
@@ -52,7 +52,7 @@ namespace Banzai.Test
             result.ChildResults.Count().Should().Be(2);
         }
 
-        [Test]
+        [Fact]
         public async Task Pipeline_Result_Ids_Equal_Node_Ids()
         {
             var pipelineNode = new PipelineNode<TestObjectA>{Id="PipelineNode1", FlowId = "Flow1"};
@@ -74,7 +74,7 @@ namespace Banzai.Test
             secondResult.FlowId.Should().Be("Flow1");
         }
 
-        [Test]
+        [Fact]
         public async Task Pipeline_Run_With_Initial_Failure_Returns_Failed_Status()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
@@ -89,7 +89,7 @@ namespace Banzai.Test
             pipelineNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
-        [Test]
+        [Fact]
         public async Task Pipeline_Run_With_Failure_After_Success_Returns_Failed_Status()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
@@ -105,7 +105,7 @@ namespace Banzai.Test
         }
 
 
-        [Test]
+        [Fact]
         public async Task Pipeline_Run_With_Initial_Failure_And_ContinueOnError_Returns_SucceededWithErrors_Status()
         {
             var pipelineNode = new PipelineNode<TestObjectA> { LocalOptions = new ExecutionOptions { ContinueOnFailure = true } };
@@ -120,7 +120,7 @@ namespace Banzai.Test
             pipelineNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
-        [Test]
+        [Fact]
         public async Task Pipeline_Run_With_Final_Failure_And_ContinueOnError_Returns_SucceededWithErrors_Status()
         {
             var pipelineNode = new PipelineNode<TestObjectA> {LocalOptions = new ExecutionOptions {ContinueOnFailure = true}};
@@ -135,7 +135,7 @@ namespace Banzai.Test
             pipelineNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
-        [Test]
+        [Fact]
         public async Task Pipeline_Run_With_Initial_Fault_Returns_Failed_Status()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
@@ -150,7 +150,7 @@ namespace Banzai.Test
             pipelineNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
-        [Test]
+        [Fact]
         public async Task Pipeline_Run_With_Fault_After_Success_Returns_Failed_Status()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
@@ -165,7 +165,7 @@ namespace Banzai.Test
             pipelineNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
-        [Test]
+        [Fact]
         public async Task Pipeline_Run_With_Initial_Fault_And_ContinueOnError_Returns_SucceededWithErrors_Status()
         {
             var pipelineNode = new PipelineNode<TestObjectA> { LocalOptions = new ExecutionOptions { ContinueOnFailure = true } };
@@ -180,7 +180,7 @@ namespace Banzai.Test
             pipelineNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
-        [Test]
+        [Fact]
         public async Task Pipeline_Run_With_Final_Fault_And_ContinueOnError_Returns_SucceededWithErrors_Status()
         {
             var pipelineNode = new PipelineNode<TestObjectA> { LocalOptions = new ExecutionOptions { ContinueOnFailure = true } };
@@ -195,7 +195,7 @@ namespace Banzai.Test
             pipelineNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
-        [Test]
+        [Fact]
         public async Task Failed_Pipeline_Run_Returns_Failed_Status()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
@@ -210,7 +210,7 @@ namespace Banzai.Test
             pipelineNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
-        [Test]
+        [Fact]
         public async Task Faulted_Pipeline_Run_Returns_Failed_Status()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
@@ -225,7 +225,7 @@ namespace Banzai.Test
             pipelineNode.Status.Should().Be(NodeRunStatus.Completed);
         }
 
-        [Test]
+        [Fact]
         public async Task Successful_Pipeline_Result_Matches_Expectations()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
@@ -241,7 +241,7 @@ namespace Banzai.Test
             testObject.TestValueInt.Should().Be(100);
         }
 
-        [Test]
+        [Fact]
         public async Task Nested_Pipeline_Results_Contain_All_Child_Results()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();

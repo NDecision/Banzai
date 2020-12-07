@@ -1,6 +1,6 @@
 ![Banzai Pipeline Image](http://upload.wikimedia.org/wikipedia/commons/0/03/Empty_wave_at_Banzai_Pipeline.jpeg)
 
-## Banzai!! - Your Simple Pipeline Solution - 3.0
+## Banzai!! - Your Simple Pipeline Solution - 4.0
 [![Build status](https://ci.appveyor.com/api/projects/status/nbwvadetke6kx5ua)](https://ci.appveyor.com/project/eswann/banzai)
 
 Banzai is an easy .Net pipeline solution that contains composable nodes for constructing simple and complex pipelines.  
@@ -435,12 +435,12 @@ The [Banzai.Serilog package](https://www.nuget.org/packages/Banzai.Serilog/) wil
 
 Obviously, you must configure Log4Net or NLog as you normally would.
 
-Banzai will log a number of Error/Info/Debug operations to the log by default.  From any INode (v1.0.7 or greater), a LogWriter
+Banzai will log a number of Error/Info/Debug operations to the log by default.  From any INode (v1.0.7 or greater), a Logger
 will be exposed for your own custom logging.  At the DEBUG logging level, node stopwatch timings for every node run will also be logged.
 
 Setting up Log4Net (after installing the package)
 
-    LogWriter.SetFactory(new Log4NetWriterFactory());
+    Logger.SetFactory(new Log4NetWriterFactory());
 
 
 ## Advanced Scenarios

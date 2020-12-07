@@ -1,13 +1,13 @@
 ﻿using System.Threading.Tasks;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 
 namespace Banzai.Test
 {
-    [TestFixture]
+    
     public class WhenPassingState
     {
-        [Test]
+        [Fact]
         public async Task Adding_State_To_A_Node_Is_Available_In_Following_Node()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
@@ -21,7 +21,7 @@ namespace Banzai.Test
             result.Status.Should().Be(NodeResultStatus.Succeeded);
         }
 
-        [Test]
+        [Fact]
         public async Task Adding_State_To_A_Node_Is_Available_In_Global_Context()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
@@ -34,10 +34,10 @@ namespace Banzai.Test
             NodeResult result = await pipelineNode.ExecuteAsync(context);
             result.Status.Should().Be(NodeResultStatus.Succeeded);
 
-            Assert.AreEqual("Bar", context.State.Foo);
+            Assert.Equal("Bar", context.State.Foo);
         }
 
-        [Test]
+        [Fact]
         public void Accessing_Nonexistent_State_Returns_Null()
         {
             var testObject = new TestObjectA();

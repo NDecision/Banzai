@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="$USER_HOME$/.nuget/packages/microsoft.net.test.sdk/16.7.1/build/netcoreapp2.1" t="Include">
+      <e p="Microsoft.NET.Test.Sdk.Program.cs" t="Include" />
+    </e>
+    <e p="$USER_HOME$/.nuget/packages/xunit.runner.visualstudio/2.4.3/build/netcoreapp2.1/xunit.runner.reporters.netcoreapp10.dll" t="Include" />
+    <e p="$USER_HOME$/.nuget/packages/xunit.runner.visualstudio/2.4.3/build/netcoreapp2.1/xunit.runner.utility.netcoreapp10.dll" t="Include" />
+    <e p="$USER_HOME$/.nuget/packages/xunit.runner.visualstudio/2.4.3/build/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll" t="Include" />
+    <e p="$PROJECT_DIR$/../.gitignore" t="Include" />
+    <e p="$PROJECT_DIR$/../LICENSE" t="Include" />
+    <e p="$PROJECT_DIR$/../README.md" t="Include" />
+    <e p="$PROJECT_DIR$" t="IncludeFlat">
+      <e p="Banzai" t="IncludeRecursive">
+        <e p="Banzai.csproj" t="IncludeRecursive" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="ExecutionContext.cs" t="Include" />
+        <e p="ExecutionOptions.cs" t="Include" />
+        <e p="Factories" t="Include">
+          <e p="CustomDataExtensions.cs" t="Include" />
+          <e p="CustomDataMetaDataBuilder.cs" t="Include" />
+          <e p="FlowBuilder.cs" t="Include" />
+          <e p="FlowComponent.cs" t="Include" />
+          <e p="FlowComponentBuilder.cs" t="Include" />
+          <e p="IFlowBuilder.cs" t="Include" />
+          <e p="IFlowComponentBuilder.cs" t="Include" />
+          <e p="IFlowRegistrar.cs" t="Include" />
+          <e p="IMetaDataBuilder.cs" t="Include" />
+          <e p="INodeFactory.cs" t="Include" />
+          <e p="NodeFactoryBase.cs" t="Include" />
+        </e>
+        <e p="FirstMatchNode.cs" t="Include" />
+        <e p="FirstMatchNodeBase.cs" t="Include" />
+        <e p="FuncNode.cs" t="Include" />
+        <e p="GroupNode.cs" t="Include" />
+        <e p="GroupNodeBase.cs" t="Include" />
+        <e p="IExecutionContext.cs" t="Include" />
+        <e p="IFirstMatchNode.cs" t="Include" />
+        <e p="IFirstMatchNodeBase.cs" t="Include" />
+        <e p="IFuncNode.cs" t="Include" />
+        <e p="IGroupNode.cs" t="Include" />
+        <e p="IGroupNodeBase.cs" t="Include" />
+        <e p="IMultiNode.cs" t="Include" />
+        <e p="INode.cs" t="Include" />
+        <e p="IPipelineNode.cs" t="Include" />
+        <e p="IPipelineNodeBase.cs" t="Include" />
+        <e p="IShouldExecuteBlock.cs" t="Include" />
+        <e p="ITransitionFuncNode.cs" t="Include" />
+        <e p="ITransitionNode.cs" t="Include" />
+        <e p="Logging" t="Include">
+          <e p="LoggerProvider.cs" t="Include" />
+        </e>
+        <e p="MultiNode.cs" t="Include" />
+        <e p="Node.cs" t="Include" />
+        <e p="NodeExtensions.cs" t="Include" />
+        <e p="NodeResult.cs" t="Include" />
+        <e p="NodeResultStatus.cs" t="Include" />
+        <e p="NodeRunStatus.cs" t="Include" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netstandard2.0" t="Include">
+              <e p="Banzai.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="PipelineNode.cs" t="Include" />
+        <e p="PipelineNodeBase.cs" t="Include" />
+        <e p="ResultExtensions.cs" t="Include" />
+        <e p="Serialization" t="Include">
+          <e p="IComponentSerializer.cs" t="Include" />
+          <e p="SerializerProvider.cs" t="Include" />
+          <e p="TypeAbbreviationCache.cs" t="Include" />
+        </e>
+        <e p="ShouldExecuteBlock.cs" t="Include" />
+        <e p="TransitionFuncNode.cs" t="Include" />
+        <e p="TransitionNode.cs" t="Include" />
+        <e p="Utility" t="Include">
+          <e p="DynamicDictionary.cs" t="Include" />
+          <e p="Guard.cs" t="Include" />
+          <e p="ListExtensions.cs" t="Include" />
+          <e p="NodeTimer.cs" t="Include" />
+          <e p="ParallelExtensions.cs" t="Include" />
+        </e>
+      </e>
+      <e p="Banzai.Ioc.Autofac" t="IncludeRecursive">
+        <e p="AutofacFlowRegistrar.cs" t="Include" />
+        <e p="AutofacNodeFactory.cs" t="Include" />
+        <e p="Banzai.Ioc.Autofac.csproj" t="IncludeRecursive" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Extensions.cs" t="Include" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netstandard2.0" t="Include">
+              <e p="Banzai.Ioc.Autofac.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="Banzai.Ioc.Ninject" t="IncludeRecursive">
+        <e p="Banzai.Ioc.Ninject.csproj" t="IncludeRecursive" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Extensions.cs" t="Include" />
+        <e p="NinjectFlowRegistrar.cs" t="Include" />
+        <e p="NinjectNodeFactory.cs" t="Include" />
+        <e p="NodeFactoryInjectionHeuristic.cs" t="Include" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netstandard2.0" t="Include">
+              <e p="Banzai.Ioc.Ninject.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Utility" t="Include">
+          <e p="TypeExtensions.cs" t="Include" />
+        </e>
+      </e>
+      <e p="Banzai.Serialization.JsonNet" t="IncludeRecursive">
+        <e p="Banzai.Serialization.JsonNet.csproj" t="IncludeRecursive" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="JsonComponentSerializer.cs" t="Include" />
+        <e p="JsonContractResolver.cs" t="Include" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netstandard2.0" t="Include">
+              <e p="Banzai.Serialization.JsonNet.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Registrar.cs" t="Include" />
+        <e p="TypeJsonConverter.cs" t="Include" />
+      </e>
+      <e p="Banzai.Serialization.SystemJson" t="IncludeRecursive">
+        <e p="Banzai.Serialization.SystemJson.csproj" t="IncludeRecursive" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="JsonComponentSerializer.cs" t="Include" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netstandard2.0" t="Include">
+              <e p="Banzai.Serialization.SystemJson.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Registrar.cs" t="Include" />
+        <e p="TypeJsonConverter.cs" t="Include" />
+      </e>
+      <e p="Banzai.sln" t="IncludeFlat" />
+      <e p="Directory.Build.props" t="Include" />
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="Solution Items" t="Include" />
+      <e p="test" t="Include" />
+    </e>
+    <e p="$PROJECT_DIR$/../test/Banzai.Ioc.Autofac.Test" t="IncludeRecursive">
+      <e p="Banzai.Ioc.Autofac.Test.csproj" t="IncludeRecursive" />
+      <e p="bin" t="ExcludeRecursive" />
+      <e p="obj" t="ExcludeRecursive">
+        <e p="Debug" t="Include">
+          <e p="net5.0" t="Include">
+            <e p="Banzai.Ioc.Autofac.Test.AssemblyInfo.cs" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="TestClasses.cs" t="Include" />
+      <e p="WhenBuildingFlows.cs" t="Include" />
+      <e p="WhenBuildingFlowsWithIds.cs" t="Include" />
+      <e p="WhenFlowAddsCustomData.cs" t="Include" />
+      <e p="WhenFlowAddsShouldExecute.cs" t="Include" />
+      <e p="WhenFlowAddsShouldExecuteBlock.cs" t="Include" />
+      <e p="WhenResolvingWithNodeFactory.cs" t="Include" />
+      <e p="WhenResolvingWithUntypedNodeFactory.cs" t="Include" />
+      <e p="WhenScanningAssemblies.cs" t="Include" />
+    </e>
+    <e p="$PROJECT_DIR$/../test/Banzai.Ioc.Ninject.Test" t="IncludeRecursive">
+      <e p="Banzai.Ioc.Ninject.Test.csproj" t="IncludeRecursive" />
+      <e p="bin" t="ExcludeRecursive" />
+      <e p="obj" t="ExcludeRecursive">
+        <e p="Debug" t="Include">
+          <e p="net5.0" t="Include">
+            <e p="Banzai.Ioc.Ninject.Test.AssemblyInfo.cs" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="TestClasses.cs" t="Include" />
+      <e p="WhenBuildingFlows.cs" t="Include" />
+      <e p="WhenBuildingFlowsWithIds.cs" t="Include" />
+      <e p="WhenFlowAddsCustomData.cs" t="Include" />
+      <e p="WhenFlowAddsShouldExecute.cs" t="Include" />
+      <e p="WhenFlowAddsShouldExecuteBlock.cs" t="Include" />
+      <e p="WhenResolvingWithNodeFactory.cs" t="Include" />
+      <e p="WhenResolvingWithUntypedNodeFactory.cs" t="Include" />
+      <e p="WhenScanningAssemblies.cs" t="Include" />
+    </e>
+    <e p="$PROJECT_DIR$/../test/Banzai.Serialization.JsonNet.Test" t="IncludeRecursive">
+      <e p="Banzai.Serialization.JsonNet.Test.csproj" t="IncludeRecursive" />
+      <e p="bin" t="ExcludeRecursive" />
+      <e p="obj" t="ExcludeRecursive">
+        <e p="Debug" t="Include">
+          <e p="net5.0" t="Include">
+            <e p="Banzai.Serialization.JsonNet.Test.AssemblyInfo.cs" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="TestClasses.cs" t="Include" />
+      <e p="WhenSerializingBasicFlow.cs" t="Include" />
+    </e>
+    <e p="$PROJECT_DIR$/../test/Banzai.Serialization.SystemJson.Test" t="IncludeRecursive">
+      <e p="Banzai.Serialization.SystemJson.Test.csproj" t="IncludeRecursive" />
+      <e p="bin" t="ExcludeRecursive" />
+      <e p="obj" t="ExcludeRecursive">
+        <e p="Debug" t="Include">
+          <e p="net5.0" t="Include">
+            <e p="Banzai.Serialization.SystemJson.Test.AssemblyInfo.cs" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="TestClasses.cs" t="Include" />
+      <e p="WhenSerializingBasicFlow.cs" t="Include" />
+    </e>
+    <e p="$PROJECT_DIR$/../test/Banzai.Test" t="IncludeRecursive">
+      <e p="Banzai.Test.csproj" t="IncludeRecursive" />
+      <e p="bin" t="ExcludeRecursive" />
+      <e p="obj" t="ExcludeRecursive">
+        <e p="Debug" t="Include">
+          <e p="net5.0" t="Include">
+            <e p="Banzai.Test.AssemblyInfo.cs" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="TestClasses.cs" t="Include" />
+      <e p="WhenAddingInheritedSubjectNodes.cs" t="Include" />
+      <e p="WhenCancellingProcessing.cs" t="Include" />
+      <e p="WhenChangingTheSubject.cs" t="Include" />
+      <e p="WhenPassingInheritedSubject.cs" t="Include" />
+      <e p="WhenPassingState.cs" t="Include" />
+      <e p="WhenRequestingNodeResultErrors.cs" t="Include" />
+      <e p="WhenRunningAgainstMultipleSubjects.cs" t="Include" />
+      <e p="WhenRunningFirstMatchNode.cs" t="Include" />
+      <e p="WhenRunningFuncNode.cs" t="Include" />
+      <e p="WhenRunningGroupNode.cs" t="Include" />
+      <e p="WhenRunningNode.cs" t="Include" />
+      <e p="WhenRunningPipelineNode.cs" t="Include" />
+      <e p="WhenRunningTransitionFuncNode.cs" t="Include" />
+      <e p="WhenRunningTransitionNode.cs" t="Include" />
+      <e p="WhenRunningWithDegreeOfParallelism.cs" t="Include" />
+      <e p="WhenRunningWithShouldExecuteBlocks.cs" t="Include" />
+    </e>
+    <e p="$APPLICATION_CONFIG_DIR$/scratches" t="IncludeRecursive" />
+    <e p="$USER_HOME$/Library/Caches/JetBrains/Rider2020.3/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/Library/Caches/JetBrains/Rider2020.3/resharper-host/local/Transient/Rider/v203/SolutionCaches/_Banzai.-708617042.00" t="ExcludeRecursive" />
+  </component>
+</project>

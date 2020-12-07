@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>A Banzai extension for serializing workflows to JSON</Description>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <NoWarn>NU1603</NoWarn>
+    <PackageId>Banzai.Json</PackageId>
+    <PackageTags>Banzai Pipeline Dataflow Workflow Json Json.Net</PackageTags>
+    <LangVersion>default</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Banzai\Banzai.csproj" />
+  </ItemGroup>
+
+</Project>

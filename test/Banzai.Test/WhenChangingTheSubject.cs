@@ -1,14 +1,14 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using NUnit.Framework;
+using Xunit;
 using FluentAssertions;
 
 namespace Banzai.Test
 {
-    [TestFixture]
+    
     public class WhenChangingTheSubject
     {
-        [Test]
+        [Fact]
         public async Task Node_May_Change_Context_Subject()
         {
             var testNode = new SubjectChangingNode1();
@@ -24,7 +24,7 @@ namespace Banzai.Test
             result.GetSubjectAs<TestObjectA>().TestValueString.Should().Be("New Instance");
         }
 
-        [Test]
+        [Fact]
         public async Task Pipeline_Node_Results_Following_Subject_Change_Node_Return_Changed_Subject()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
@@ -50,7 +50,7 @@ namespace Banzai.Test
             childResults[1].Subject.Should().Be(childResults[2].Subject);
         }
 
-        [Test]
+        [Fact]
         public async Task Pipeline_Overall_Result_Subject_Equals_Changed_Subject()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
@@ -74,7 +74,7 @@ namespace Banzai.Test
             result.Subject.Should().BeSameAs(childResults[1].Subject);
         }
 
-        [Test]
+        [Fact]
         public async Task Pipeline_Overall_Result_Subject_Equals_Last_Changed_Subject()
         {
             var pipelineNode = new PipelineNode<TestObjectA>();
@@ -103,7 +103,7 @@ namespace Banzai.Test
         }
 
 
-        [Test]
+        [Fact]
         public async Task Group_Overall_Result_Subject_Equals_Changed_Subject()
         {
             var groupNode = new GroupNode<TestObjectA>();
@@ -127,7 +127,7 @@ namespace Banzai.Test
             result.Subject.Should().BeSameAs(childResults[1].Subject);
         }
 
-        [Test]
+        [Fact]
         public async Task Group_Overall_Result_Subject_Equals_Last_Changed_Subject()
         {
             var groupNode = new GroupNode<TestObjectA>();

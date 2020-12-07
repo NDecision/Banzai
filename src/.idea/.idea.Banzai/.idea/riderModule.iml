@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="RIDER_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$USER_HOME$/.nuget/packages/microsoft.net.test.sdk/16.7.1/build/netcoreapp2.1" />
+    <content url="file://$USER_HOME$/.nuget/packages/xunit.runner.visualstudio/2.4.3/build/netcoreapp2.1/xunit.runner.reporters.netcoreapp10.dll" />
+    <content url="file://$USER_HOME$/.nuget/packages/xunit.runner.visualstudio/2.4.3/build/netcoreapp2.1/xunit.runner.utility.netcoreapp10.dll" />
+    <content url="file://$USER_HOME$/.nuget/packages/xunit.runner.visualstudio/2.4.3/build/netcoreapp2.1/xunit.runner.visualstudio.dotnetcore.testadapter.dll" />
+    <content url="file://$MODULE_DIR$/../../../.gitignore" />
+    <content url="file://$MODULE_DIR$/../../../LICENSE" />
+    <content url="file://$MODULE_DIR$/../../../README.md" />
+    <content url="file://$MODULE_DIR$/../.." />
+    <content url="file://$MODULE_DIR$/../../../test/Banzai.Ioc.Autofac.Test" />
+    <content url="file://$MODULE_DIR$/../../../test/Banzai.Ioc.Ninject.Test" />
+    <content url="file://$MODULE_DIR$/../../../test/Banzai.Serialization.JsonNet.Test" />
+    <content url="file://$MODULE_DIR$/../../../test/Banzai.Serialization.SystemJson.Test" />
+    <content url="file://$MODULE_DIR$/../../../test/Banzai.Test" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

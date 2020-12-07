@@ -1,15 +1,8 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Banzai
 {
-    /// <summary>
-    /// Defines a node in which the first matching ShouldExecute() node is executed.
-    /// </summary>
-    /// <typeparam name="T">Type on which the node operates.</typeparam>
-    public interface IFirstMatchNodeBase<T> : IMultiNode<T>
-    {
-    }
-
     /// <summary>
     /// Defines a base node in which the first matching ShouldExecute() node is executed.
     /// Inherit from this class for custom FirstMatchNodes.
@@ -26,7 +19,7 @@ namespace Banzai
         {
             NodeResult result = null;
 
-            LogWriter.Debug("Running first matching child node.");
+            Logger.LogDebug("Running first matching child node.");
             foreach (var childNode in Children)
             {
                 result = await childNode.ExecuteAsync(context).ConfigureAwait(false);
