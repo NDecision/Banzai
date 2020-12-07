@@ -32,7 +32,7 @@ jobs:
         uses: rohith/publish-nuget@v2
         with:
           PROJECT_FILE_PATH: src/Banzai/Banzai.csproj
-          # Regex pattern to extract version info in a capturing group
-          VERSION_REGEX: ^\s*<AssemblyVersion>(.*)<\/AssemblyVersion>\s*$
+          # Filepath with version info, relative to root of repository & defaults to PROJECT_FILE_PATH
+          VERSION_FILE_PATH: Directory.Build.props
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
           INCLUDE_SYMBOLS: true
