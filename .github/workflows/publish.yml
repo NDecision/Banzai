@@ -1,4 +1,4 @@
-name: publish to nuget
+name: Publish to Nuget
 on:
   push:
     branches:
@@ -27,10 +27,12 @@ jobs:
         run: dotnet test --no-restore --verbosity normal
 
       # Publish
-      - name: publish Banzai
-        id: publish_nuget
+      - name: Publish Banzai
+        id: publish_banzai
         uses: rohith/publish-nuget@v2
         with:
           PROJECT_FILE_PATH: src/Banzai/Banzai.csproj
+          # Regex pattern to extract version info in a capturing group
+          VERSION_REGEX: ^\s*<AssemblyVersion>(.*)<\/AssemblyVersion>\s*$
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
           INCLUDE_SYMBOLS: true
