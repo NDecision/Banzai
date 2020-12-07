@@ -4,13 +4,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.28010.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6BBE752C-25E1-492E-A5C2-81C61602E72E}"
-	ProjectSection(SolutionItems) = preProject
-		..\.gitignore = ..\.gitignore
-		Directory.Build.props = Directory.Build.props
-		..\LICENSE = ..\LICENSE
-		..\README.md = ..\README.md
-		..\.github\workflows\dotnet-core.yml = ..\.github\workflows\dotnet-core.yml
-	EndProjectSection
+ProjectSection(SolutionItems) = preProject
+	README.md = README.md
+	LICENSE = LICENSE
+	Banzai.sln.DotSettings.user = Banzai.sln.DotSettings.user
+	.gitignore = .gitignore
+	.github\workflows\dotnet-core.yml = .github\workflows\dotnet-core.yml
+EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banzai", "src\Banzai\Banzai.csproj", "{EF575F89-5CE9-43E0-9058-1B010E4E52E5}"
 EndProject
