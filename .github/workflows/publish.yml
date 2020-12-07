@@ -37,38 +37,38 @@ jobs:
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
           INCLUDE_SYMBOLS: true
       - name: Publish Banzai Autofac
-          id: publish_banzai_autofac
-          uses: rohith/publish-nuget@v2
-          with:
-            PROJECT_FILE_PATH: src/Banzai.Ioc.Autofac/Banzai.Ioc.Autofac.csproj
-            # Filepath with version info, relative to root of repository & defaults to PROJECT_FILE_PATH
-            VERSION_FILE_PATH: Directory.Build.props
-            NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-            INCLUDE_SYMBOLS: true
+        id: publish_banzai_autofac
+        uses: rohith/publish-nuget@v2
+        with:
+          PROJECT_FILE_PATH: src/Banzai.Ioc.Autofac/Banzai.Ioc.Autofac.csproj
+          # Filepath with version info, relative to root of repository & defaults to PROJECT_FILE_PATH
+          VERSION_FILE_PATH: Directory.Build.props
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+          INCLUDE_SYMBOLS: true
       - name: Publish Banzai Ninject
-          id: publish_banzai_ninject
-          uses: rohith/publish-nuget@v2
-          with:
-            PROJECT_FILE_PATH: src/Banzai.Ioc.Ninject/Banzai.Ioc.Ninject.csproj
-            # Filepath with version info, relative to root of repository & defaults to PROJECT_FILE_PATH
-            VERSION_FILE_PATH: Directory.Build.props
-            NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-            INCLUDE_SYMBOLS: true
+        id: publish_banzai_ninject
+        uses: rohith/publish-nuget@v2
+        with:
+          PROJECT_FILE_PATH: src/Banzai.Ioc.Ninject/Banzai.Ioc.Ninject.csproj
+          # Filepath with version info, relative to root of repository & defaults to PROJECT_FILE_PATH
+          VERSION_FILE_PATH: Directory.Build.props
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+          INCLUDE_SYMBOLS: true
       - name: Publish Banzai JsonNet
-          id: publish_banzai_jsonnet
-          uses: rohith/publish-nuget@v2
-          with:
-            PROJECT_FILE_PATH: src/Banzai.Serialization.JsonNet/Banzai.Serialization.JsonNet.csproj
-            # Filepath with version info, relative to root of repository & defaults to PROJECT_FILE_PATH
-            VERSION_FILE_PATH: Directory.Build.props
-            NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-            INCLUDE_SYMBOLS: true
+        id: publish_banzai_jsonnet
+        uses: rohith/publish-nuget@v2
+        with:
+          PROJECT_FILE_PATH: src/Banzai.Serialization.JsonNet/Banzai.Serialization.JsonNet.csproj
+          # Filepath with version info, relative to root of repository & defaults to PROJECT_FILE_PATH
+          VERSION_FILE_PATH: Directory.Build.props
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+          INCLUDE_SYMBOLS: true
       - name: Publish Banzai SystemJson
-          id: publish_banzai_systemjson
-          uses: rohith/publish-nuget@v2
-          with:
-            PROJECT_FILE_PATH: src/Banzai.Serialization.SystemJson/Banzai.Serialization.SystemJson.csproj
-            # Filepath with version info, relative to root of repository & defaults to PROJECT_FILE_PATH
-            VERSION_FILE_PATH: Directory.Build.props
-            NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-            INCLUDE_SYMBOLS: true
+        id: publish_banzai_systemjson
+        uses: rohith/publish-nuget@v2
+        with:
+          PROJECT_FILE_PATH: src/Banzai.Serialization.SystemJson/Banzai.Serialization.SystemJson.csproj
+          # Filepath with version info, relative to root of repository & defaults to PROJECT_FILE_PATH
+          VERSION_FILE_PATH: Directory.Build.props
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+          INCLUDE_SYMBOLS: true
