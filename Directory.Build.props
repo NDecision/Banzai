@@ -1,0 +1,11 @@
+<Project>
+  <PropertyGroup>
+      <Version>4.0.0</Version>
+      <Authors>Eric Swann</Authors>
+      <PackageProjectUrl>https://github.com/eswann/Banzai</PackageProjectUrl>
+      <PackageIconUrl>http://upload.wikimedia.org/wikipedia/commons/0/03/Empty_wave_at_Banzai_Pipeline.jpeg</PackageIconUrl>
+      <PackageLicenseUrl>https://raw.githubusercontent.com/eswann/Banzai/master/LICENSE</PackageLicenseUrl>
+      <PackageReleaseNotes>https://github.com/eswann/Banzai/releases/tag/$(Version)</PackageReleaseNotes>
+      <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+</Project>
