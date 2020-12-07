@@ -1,14 +1,17 @@
-name: .NET Core
+name: CI Build
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - '**'
+    branches-ignore:
+      - master
   pull_request:
-    branches: [ master ]
+    branches:
+      - '**'
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:

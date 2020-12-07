@@ -9,7 +9,6 @@ ProjectSection(SolutionItems) = preProject
 	LICENSE = LICENSE
 	Banzai.sln.DotSettings.user = Banzai.sln.DotSettings.user
 	.gitignore = .gitignore
-	.github\workflows\dotnet-core.yml = .github\workflows\dotnet-core.yml
 EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banzai", "src\Banzai\Banzai.csproj", "{EF575F89-5CE9-43E0-9058-1B010E4E52E5}"
@@ -35,6 +34,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banzai.Serialization.JsonNet.Test", "test\Banzai.Serialization.JsonNet.Test\Banzai.Serialization.JsonNet.Test.csproj", "{B4F8BB17-61F9-4F76-BE51-F11CF29BF489}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banzai.Serialization.SystemJson.Test", "test\Banzai.Serialization.SystemJson.Test\Banzai.Serialization.SystemJson.Test.csproj", "{14014F4D-04CC-48F5-9A33-EEC9500BF430}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{86975992-4DAF-451C-80B2-4FD3864EE237}"
+ProjectSection(SolutionItems) = preProject
+	.github\workflows\publish.yml = .github\workflows\publish.yml
+	.github\workflows\ci-build.yml = .github\workflows\ci-build.yml
+EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
