@@ -9,6 +9,7 @@ ProjectSection(SolutionItems) = preProject
 	LICENSE = LICENSE
 	Banzai.sln.DotSettings.user = Banzai.sln.DotSettings.user
 	.gitignore = .gitignore
+	Directory.Build.props = Directory.Build.props
 EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banzai", "src\Banzai\Banzai.csproj", "{EF575F89-5CE9-43E0-9058-1B010E4E52E5}"
