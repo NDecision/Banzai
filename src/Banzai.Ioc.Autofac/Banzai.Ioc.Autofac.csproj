@@ -8,6 +8,8 @@
     <PackageId>Banzai.Autofac</PackageId>
     <PackageTags>Banzai Pipeline Dataflow Workflow Autofac</PackageTags>
     <LangVersion>default</LangVersion>
+    <AssemblyVersion>4.0.0</AssemblyVersion>
+    <FileVersion>4.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
-using Xunit;
 using FluentAssertions;
+using Xunit;
 
 namespace Banzai.Test
 {
-    
     public class WhenPassingState
     {
         [Fact]
@@ -13,11 +12,24 @@ namespace Banzai.Test
             var pipelineNode = new PipelineNode<TestObjectA>();
 
             pipelineNode.AddChild(new SimpleTestNodeA1());
-            pipelineNode.AddChild(new FuncNode<TestObjectA> { ExecutedFunc = ctxt => { ctxt.State.Foo = "Bar"; return Task.FromResult(NodeResultStatus.Succeeded); } });
-            pipelineNode.AddChild(new FuncNode<TestObjectA> { ExecutedFunc = ctxt => (ctxt.State.Foo == "Bar") ? Task.FromResult(NodeResultStatus.Succeeded) : Task.FromResult(NodeResultStatus.Failed) });
+            pipelineNode.AddChild(new FuncNode<TestObjectA>
+            {
+                ExecutedFunc = ctxt =>
+                {
+                    ctxt.State.Foo = "Bar";
+                    return Task.FromResult(NodeResultStatus.Succeeded);
+                }
+            });
+            pipelineNode.AddChild(new FuncNode<TestObjectA>
+            {
+                ExecutedFunc = ctxt =>
+                    ctxt.State.Foo == "Bar"
+                        ? Task.FromResult(NodeResultStatus.Succeeded)
+                        : Task.FromResult(NodeResultStatus.Failed)
+            });
 
             var testObject = new TestObjectA();
-            NodeResult result = await pipelineNode.ExecuteAsync(testObject);
+            var result = await pipelineNode.ExecuteAsync(testObject);
             result.Status.Should().Be(NodeResultStatus.Succeeded);
         }
 
@@ -27,11 +39,18 @@ namespace Banzai.Test
             var pipelineNode = new PipelineNode<TestObjectA>();
 
             pipelineNode.AddChild(new SimpleTestNodeA1());
-            pipelineNode.AddChild(new FuncNode<TestObjectA> { ExecutedFunc = ctxt => { ctxt.State.Foo = "Bar"; return Task.FromResult(NodeResultStatus.Succeeded); } });
+            pipelineNode.AddChild(new FuncNode<TestObjectA>
+            {
+                ExecutedFunc = ctxt =>
+                {
+                    ctxt.State.Foo = "Bar";
+                    return Task.FromResult(NodeResultStatus.Succeeded);
+                }
+            });
 
             var testObject = new TestObjectA();
             var context = new ExecutionContext<TestObjectA>(testObject);
-            NodeResult result = await pipelineNode.ExecuteAsync(context);
+            var result = await pipelineNode.ExecuteAsync(context);
             result.Status.Should().Be(NodeResultStatus.Succeeded);
 
             Assert.Equal("Bar", context.State.Foo);
@@ -46,7 +65,6 @@ namespace Banzai.Test
             object result = context.State.NonexistentProperty;
 
             result.Should().BeNull();
-        } 
-
+        }
     }
 }
