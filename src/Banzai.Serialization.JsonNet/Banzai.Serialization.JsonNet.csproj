@@ -8,8 +8,8 @@
     <PackageId>Banzai.Serialization.JsonNet</PackageId>
     <PackageTags>Banzai Pipeline Dataflow Workflow Json Json.Net</PackageTags>
     <LangVersion>default</LangVersion>
-    <AssemblyVersion>4.0.0</AssemblyVersion>
-    <FileVersion>4.0.0</FileVersion>
+    <AssemblyVersion>4.0.1</AssemblyVersion>
+    <FileVersion>4.0.1</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
