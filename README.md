@@ -1,5 +1,8 @@
 ![Banzai Pipeline Image](http://upload.wikimedia.org/wikipedia/commons/0/03/Empty_wave_at_Banzai_Pipeline.jpeg)
 
+## FYI, EOLing this package. 
+I know this package still gets some downloads but I don't plan to upgrade/update at this point. I created this package 7 years ago to work with a specific product and thought it might be useful to some others. I haven't worked in the .Net space for a few years now. Please feel free to fork (of course) or if this package is critical to anybody, I'd be happy to transfer ownership of the Repo.
+
 ## Banzai!! - Your Simple Pipeline Solution - 4.0
 [![Build status](https://ci.appveyor.com/api/projects/status/nbwvadetke6kx5ua)](https://ci.appveyor.com/project/eswann/banzai)
 
