@@ -27,6 +27,7 @@ Flows are composed from nodes of which there are a few types explained below.  N
 All Node methods that are either overridden or provided via a function accept an [ExecutionContext](#executioncontext).  
 All node executions return a [NodeResult](#noderesult).
 
+````csharp
     //Create a pipeline node
     var pipelineNode = new PipelineNode<TestObjectA>();
 
@@ -37,7 +38,7 @@ All node executions return a [NodeResult](#noderesult).
     //Create the subject and execute the pipeline on it.
     var subject = new TestObjectA();
     NodeResult result = await pipelineNode.ExecuteAsync(subject);
-
+````
 
 ### Basic Nodes
 These are the nodes that contain functionality that runs against the subject of the pipeline.  Basically, this is where most of your code goes.
@@ -59,7 +60,7 @@ These are the nodes that contain functionality that runs against the subject of 
 
 
 Example of overriding to provide functionality
-
+````csharp
     public class SimpleTestNodeA1 : Node<TestObjectA>
     {
         public override Task<bool> ShouldExecuteAsync(ExecutionContext<TestObjectA> context)
@@ -73,9 +74,9 @@ Example of overriding to provide functionality
             return Task.FromResult(NodeResultStatus.Succeeded);
         }
     }
-
+````
 Example of providing functionality via functions
-
+````csharp
     var node = new Node<TestObjectA>();
 
     node.AddShouldExecute = context => Task.FromResult(context.Subject.TestValueInt == 5);
@@ -84,7 +85,7 @@ Example of providing functionality via functions
           context.Subject.TestValueString = "Completed"; 
           return Task.FromResult(NodeResultStatus.Succeeded); 
         };
-
+````
 ### Multi Nodes
 The following nodes allow you to organize and run other nodes together. These nodes are sealed and are intended for direct use.
 If you wish to create a custom MultiNode, reference [Abstract Multi Nodes](#abstract-multi-nodes) below.
@@ -92,7 +93,7 @@ If you wish to create a custom MultiNode, reference [Abstract Multi Nodes](#abst
 <b>PipelineNode/IPipelineNode</b> - Runs a group of nodes serially on the subject.  This will be the root node of most flows.
 
 ![Pipeline Node](/img/PipelineNode.png?raw=true "Pipeline Node")
-
+````csharp
     var pipelineNode = new PipelineNode<TestObjectA>();
 
     pipelineNode.AddChild(new SimpleTestNodeA1());
@@ -100,11 +101,11 @@ If you wish to create a custom MultiNode, reference [Abstract Multi Nodes](#abst
 
     var testObject = new TestObjectA();
     NodeResult result = await pipelineNode.ExecuteAsync(testObject);
-
+````
 <b>GroupNode/IGroupNode</b> - An aggregation of nodes that are run on a subject using the asyncrhonous Task.WhenAll pattern.
 
 ![Group Node](/img/GroupNode.png?raw=true "Group Node")
-
+````csharp
     var groupNode = new GroupNode<TestObjectA>();
 
     groupNode.AddChild(new SimpleTestNodeA1());
@@ -112,11 +113,11 @@ If you wish to create a custom MultiNode, reference [Abstract Multi Nodes](#abst
 
     var testObject = new TestObjectA();
     NodeResult result =  await groupNode.ExecuteAsync(testObject);
-
+````
 <b>FirstMatchNode/IFirstMatchNode</b> - An aggregation of nodes of which the first matching its ShouldExecute condition is run on the subject.
 
 ![First Match Node](/img/FirstMatchNode.png?raw=true "First Match Node")
-
+````csharp
     var matchNode = new FirstMatchNode<TestObjectA>();
 
     var firstNode = new SimpleTestNodeA1();
@@ -131,7 +132,7 @@ If you wish to create a custom MultiNode, reference [Abstract Multi Nodes](#abst
 
     var testObject = new TestObjectA();
     NodeResult result = await matchNode.ExecuteAsync(testObject);
-
+````
 ### Abstract Multi Nodes
 These nodes are synonymous with the above nodes, but are abstract and intended to serve as a base class for custom implementations.
 If you wish to create your own multi-node, inherit from one of these.  These abstract classes contain all of the functionality 
@@ -161,7 +162,7 @@ The aggregate result and any exceptions are passed back to the source node that 
 <b>TransitionSourceFuncAsync</b> - In TransitionFuncNode, allows assignment of source to destination transition function.
 
 <b>TransitionResultFuncAsync</b> - In TransitionFuncNode, allows assignment of post-run source transition function.
-
+````csharp
     public class SimpleTransitionNode : TransitionNode<TestObjectA, TestObjectB>
     {
         protected override TestObjectB TransitionSource(ExecutionContext<TestObjectA> sourceContext)
@@ -174,9 +175,9 @@ The aggregate result and any exceptions are passed back to the source node that 
             return sourceContext.Subject;
         }
     } 
-
+````
 Or
-
+````csharp
     var pipelineNode = new PipelineNode<TestObjectA>();
 
     pipelineNode.AddChild(new TransitionFuncNode<TestObjectA, TestObjectB>
@@ -184,12 +185,12 @@ Or
         ChildNode = new SimpleTestNodeB1(),
         TransitionSourceFunc = ctxt => new TestObjectB()
     });
-
+````
 ### Should Execute Blocks
 In some cases, you would like to create a reusable rule to determine if a node should execute, but keep the logic independent
 of the node itself.  In this case, there is the ShouldExecuteBlock.  This block provides one method to implement, ShouldExecuteAsync, 
 which returns a true or false:
-
+````csharp
     public class ShouldNotExecuteBlockA : ShouldExecuteBlock<TestObjectA>
     {
         public override Task<bool> ShouldExecuteAsync(IExecutionContext<TestObjectA> context)
@@ -197,12 +198,12 @@ which returns a true or false:
             return Task.FromResult(false);
         }
     }
-
+````
 To use the ShouldExecuteBlock, call the AddShouldExecuteBlock method of the Node:
-    
+````csharp
     var node = new FuncNode<TestObjectA>();
     node.AddShouldExecuteBlock(new ShouldNotExecuteBlockA());
-
+````
 
 ## Running Nodes
 In order to run a node, you can call one of the following methods, which exist on all nodes:
@@ -224,10 +225,10 @@ ExecutionContext to do so.
 
 <b>State</b> - The execution context also contains a dynamic State property that can be used to 
 flow any random state needed for the workflow.  Any node in the flow can update the state or add dynamic properties to the state.
-
+````csharp
     var context = new ExecutionContext<object>(new object());
     context.State.Foo = "Bar";
-
+````
 <b>GlobalOptions</b> - ExecutionOptions that are set in the context and applied to every node.
 
 <b>ParentResult</b> - The root result of this node execution and all of its children.
@@ -284,41 +285,41 @@ These extensions scan the indicated assembly for any custom nodes you have creat
 Nodes are registered as Transient/PerDependency.
 
 Scan the current assembly (Example in Autofac)
-
+````csharp
     var containerBuilder = new ContainerBuilder();
     containerBuilder.RegisterBanzaiNodes(GetType().Assembly);
-
+````
 or
-
+````csharp
     containerBuilder.RegisterBanzaiNodes<TypeFromAssembly>();
-
+````
 All the RegisterBanzaiNode methods have an optional parameter that automatically registers the Banzai nodes and other classes:
-
+````csharp
     containerBuilder.RegisterBanzaiNodes(GetType().Assembly, **true**);
-
+````
 Or to explicitly register the Banzai nodes and classes using the overload with no arguments:
-
+````csharp
     containerBuilder.RegisterBanzaiNodes();
-
+````
 ## Building Flows
 There are multiple ways in which flows can be built up.
 
 ### Manually Constructing Flows
 Any node can be manually added to the Children collection of any Multinode (Pipeline, Group, FirstMatch) using the AddChild or AddChildren methods.
 Multinodes can be added to other multinodes, allowing a node tree to be built.
-
+````csharp
     var pipelineNode = new PipelineNode<TestObjectA>();
 
     pipelineNode.AddChild(new SimpleTestNodeA1());
     pipelineNode.AddChild(new SimpleTestNodeA2());
-
+````
 Alternately, if the children are known at design time, the children may simply be added in the parents constructor.  
 However, this approach will be problematic if the child nodes have dependencies injected. 
 
 ### Injecting Child Nodes
 If nodes are registerd with the DI container (See [Registering Nodes](#registering-nodes)), they can be injected into the 
 constructor of any node.
-
+````csharp
     public class Pipeline1 : PipelineNode<TestObjectA>
     {
         private ISimpleTestNode _child1;
@@ -328,7 +329,7 @@ constructor of any node.
             _child1 = child1;
         }
     }
-
+````
 ### Injecting INodeFactory
 As an alternative to directly injecting child nodes into a parent node, you can use the INodeFactory instead.  An INodeFactory
 is automatically set up when you register core constructs with RegisterBanzaiNodes. Any node that implements IMultiNode 
@@ -339,7 +340,7 @@ so this declutters the constructor and I see this as a cross-cutting concern.  A
 rather than just receiving the same child flows each time via straight injection.
 
 If you've used Banzai.Autofac or Banzai.Ninject to register your nodes, INodeFactory will be able to request nodes via any interface implemented or via the class type itself.
-
+````csharp
     var containerBuilder = new ContainerBuilder();
     containerBuilder.RegisterBanzaiNodes(GetType().Assembly, true);
 
@@ -353,9 +354,9 @@ If you've used Banzai.Autofac or Banzai.Ninject to register your nodes, INodeFac
             var node = nodeFactory.GetNode<ITestNode<object>>();
         }
     }
-
+````
 or
-
+````csharp
     public class MyComplexNode : IPipeline<object>
     {
         public override void OnBeforeExecute(ExecutionContext<object> context)
@@ -364,10 +365,10 @@ or
             var node = NodeFactory.GetNode<ITestNode<object>>();
         }
     }
-
+````
 In addition, an untyped INodeFactory can be injected so that nodes of any subject type may be retrieved.  This is primarily present for 
 injection into services.
-
+````csharp
     public class MyService
     {
         public MyComplexNode(INodeFactory nodeFactory)
@@ -375,7 +376,7 @@ injection into services.
             var node = nodeFactory.GetNode<ITestNode<object>>();
         }
     }
-
+````
 ### Using FlowBuilder
 FlowBuilder allows you to build complex workflows with a simple fluent interface.  Complex flows can be constructed by 
 adding both nodes and subflows.  Once a flow is registered, it can be accessed from the container or via the INodeFactory.
@@ -402,7 +403,7 @@ adding both nodes and subflows.  Once a flow is registered, it can be accessed f
 <b>SetShouldExecute</b> - Allows a ShouldExecute function to be set on the fly when building a flow with flowbuilder.
 
 <b>Register</b> - Must be called to indicate the flow definition as been completed and to register the flow with the container. 
-
+````csharp
     var flowBuilder = new FlowBuilder<object>(new AutofacFlowRegistrar(containerBuilder));
 
     flowBuilder.CreateFlow("TestFlow1")
@@ -417,16 +418,16 @@ adding both nodes and subflows.  Once a flow is registered, it can be accessed f
     flowBuilder.Register();
 
     var container = containerBuilder.Build();
-
+````
 Access it via the container:
-
+````csharp
     var flow = container.ResolveNamed<FlowComponent<object>>("TestFlow1");
-
+````
 Or via the nodefactory:
-
+````csharp
     var nodeFactory = container.Resolve<INodeFactory<object>>();
     var flow = (IPipelineNode<object>)factory.GetFlow("TestFlow1");
-
+````
 
 ## Logging
 By default, Banzai will log to the Debug console in debug mode and will not log in release mode.
@@ -453,18 +454,18 @@ expect inheritance to work.
 Suppose you have the types TestObjectA and a subclass of TestObjectA called TestObjectASub:  TestObjectASub --> TestObjectA.
 
 If you have a flow that accepts TestObjectA, it will also accept TestObjectSubA.
-
+````csharp
     var testNode = new SimpleTestNode_For_TestObjectA();
     var testObjectASub = new TestObjectASub();
 
     //Add TestObjectASub to test node created for TestObjectA
     var result = await testNode.ExecuteAsync(testObjectASub);
-
+````
 #### Node Contravariance
 Again suppose you have the types TestObjectA and a subclass of TestObjectA called TestObjectASub:  TestObjectASub --> TestObjectA.
 
 If you have a MultiNode (Pipeline/Group/FirstMatch) that has a subject Type of TestObjectSubA, it will allow the addition of Nodes that work on TestObjectA.
-
+````csharp
     var testNodeA = new Node_Typed_For_TestObjectA();
     var testNodeASub = new Node_Typed_For_TestObjectASub();
 
@@ -473,7 +474,7 @@ If you have a MultiNode (Pipeline/Group/FirstMatch) that has a subject Type of T
     pipeline.AddChild(testNodeA);
     //Accepts node typed for TestObjectA
     pipeline.AddChild(testNodeASub);
-
+````
 ## Recommended Practices
 
 #### Subject Envelope
@@ -493,29 +494,30 @@ In order to serialize flows in any format, a provider can be created by implemen
 The JSON serializer uses JSON.Net for this purpose.
 
 The JSON serializer can be registered by calling:
-
+````csharp
     Banzai.Serialization.Json.Registrar.RegisterAsDefault();
-
+````
 Internally, this simply sets the serializer to be used:
-
+````csharp
     Banzai.Serialization.SerializerProvider.Serializer = new JsonComponentSerializer();
-
+````
 ### Abbreviating the JSON Output
 
 Typically, the output of JSON serialization is fairly verbose when it comes to serializing types.
 Banzai serialization allows these items to be abbreviated using the following calls:
 
 In order to abbreviate the core node types, the following call can be made in configuration.  This is automatically called when using Banzai Json serialization.
-
+````csharp
     TypeAbbreviationCache.RegisterCoreTypes();
-
+````
 To add additional types to the abbreviations:
 
+````csharp
     //Register a single type
     TypeAbbreviationCache.RegisterType(Typeof(MyNode), optionalName);
     //By Assembly
     TypeAbbreviationCache.RegisterFromAssembly(AssemblyContainingMyNodes);
-
+````
 
 ## Lots of examples present in the unit tests...
 
